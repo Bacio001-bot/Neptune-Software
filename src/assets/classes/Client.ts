@@ -4,9 +4,6 @@ import { Event } from "./Event";
 import { Client, Collection, GuildMember, Channel, ThreadChannel, Role } from "discord.js";
 
 export class CustomClient extends Client {
-    commands: any;
-    config: any;
-
     constructor() {
         super({
             intents: [
@@ -29,6 +26,10 @@ export class CustomClient extends Client {
         this.commands = new Collection();
 
         this.config = this.loadYaml("../../../config/config");
+        this.l = this.loadYaml("../../../config/lang");
+        this.cmds = this.loadYaml("../../../config/commands");
+        
+        this.prefix = this.config.bot.prefix;
     }
 
     loadYaml(filePath: string): any { return load(fs.readFileSync(`${filePath}`, 'utf-8')); }
@@ -91,4 +92,12 @@ export class CustomClient extends Client {
 
         this.login(this.config.bot.token); 
     }
+}
+
+interface CustomClient {
+    config: any;
+    l: any;
+    cmds: any;
+    commands: any;
+    prefix: string;
 }
