@@ -1,7 +1,7 @@
-import { CustomClient } from "./Client";
+import CustomClient from "./Client";
 import { ICommand } from "../interfaces/ICommand";
 
-export class Command extends CustomClient  {
+class Command extends CustomClient  {
     help: object;
     message: string;
 
@@ -26,3 +26,5 @@ export class Command extends CustomClient  {
         return this.message = message;
     }
 }
+
+export default Command;

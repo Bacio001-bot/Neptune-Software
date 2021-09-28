@@ -1,6 +1,6 @@
-import { CustomClient } from "./Client";
+import CustomClient from "./Client";
 
-export class Event extends CustomClient {
+class Event extends CustomClient {
     name: string;
     handlers: { filter: Function, run: Function }[];
 
@@ -32,3 +32,5 @@ export class Event extends CustomClient {
     }
 
 }
+
+export default Event;

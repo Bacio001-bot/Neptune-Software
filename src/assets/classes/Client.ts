@@ -1,9 +1,9 @@
-import fs from "fs";
 import { load } from "js-yaml";
-import { Event } from "./Event";
+import fs from "fs";
+import Event from "./Event";
 import { Client, Collection, GuildMember, Channel, ThreadChannel, Role } from "discord.js";
 
-export class CustomClient extends Client {
+class CustomClient extends Client {
     constructor() {
         super({
             intents: [
@@ -101,3 +101,5 @@ interface CustomClient {
     commands: any;
     prefix: string;
 }
+
+export default CustomClient;
