@@ -10,6 +10,10 @@ export class Event extends CustomClient {
         this.name = name;
         this.handlers = [];
     }
+    
+    getCommand(command: string): any {
+        return this.commands.get(command);
+    }
 
     async addHandler(name: string, filter: Function): Promise<void> {
         this.handlers.push({
