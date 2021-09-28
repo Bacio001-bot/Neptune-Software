@@ -1,4 +1,3 @@
-import { PermissionString } from "discord.js";
 import { CustomClient } from "./Client";
 import { ICommand } from "../interfaces/ICommand";
 
