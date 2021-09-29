@@ -1,5 +1,5 @@
 # xenon-software | xenon-ts-bot
-The following project is a template for all typescript of javascript (if converted) discord bot projects.
+The following project is a template for all typescript or javascript (if converted) discord bot projects.
 
 ## Classes
 
