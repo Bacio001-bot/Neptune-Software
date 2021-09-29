@@ -25,6 +25,10 @@ class Command extends CustomClient  {
     setMessage(message: string): string {
         return this.message = message;
     }
+    
+    getMessage(): string {
+        return this.message;
+    }
 }
 
 export default Command;
