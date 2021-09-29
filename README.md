@@ -10,5 +10,5 @@ The `Events.ts` class is an extension of the custom client class which we alread
 ## classes.Command.ts:
 The `Command.ts` class is an extension of the custom client class which we already created. It allows for all commands to extend this command class and specify command details in the super.
 
-## interfaces.ICommand.tsP
+## interfaces.ICommand.ts:
 The `ICommand.ts` class is an interface for the general command handler which is called with using the super of the Command extension in your class.
