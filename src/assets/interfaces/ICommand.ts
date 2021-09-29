@@ -9,9 +9,9 @@ export interface ICommand {
     deleteMessage?: boolean;
     cooldown?: boolean;
     requirements: {
-        guildOnly: boolean;
-        minimumArguments: number;
+        args: { min: number, max: number };
         userPermissions?: PermissionString[];
         clientPermissions?: PermissionString[];
+        guildOnly: boolean;
     }
 }
