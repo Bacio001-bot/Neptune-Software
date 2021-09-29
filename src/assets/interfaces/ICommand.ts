@@ -11,6 +11,7 @@ export interface ICommand {
     requirements: {
         guildOnly: boolean;
         minimumArguments: number;
-        permissions?: PermissionString[];
+        userPermissions?: PermissionString[];
+        clientPermissions?: PermissionString[];
     }
 }
