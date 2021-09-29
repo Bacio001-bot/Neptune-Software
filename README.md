@@ -12,3 +12,5 @@ The `Command.ts` class is an extension of the custom client class which we alrea
 
 ## interfaces.ICommand.ts:
 The `ICommand.ts` class is an interface for the general command handler which is called with using the super of the Command extension in your class.
+
+### Test
