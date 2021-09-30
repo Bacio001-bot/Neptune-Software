@@ -1,6 +1,3 @@
-import { load } from "js-yaml";
-import fs from "fs";
-import Event from "./Event";
 import { 
     Client, 
     Collection, 
@@ -9,6 +6,9 @@ import {
     ThreadChannel, 
     Role 
 } from "discord.js";
+import { load } from "js-yaml";
+import fs from "fs";
+import Event from "./Event";
 
 class CustomClient extends Client {
     constructor() {
