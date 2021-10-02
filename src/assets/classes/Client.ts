@@ -1,7 +1,15 @@
+import { 
+    Client, 
+    Collection, 
+    GuildMember, 
+    Channel, 
+    ThreadChannel, 
+    Role 
+} from "discord.js";
 import { load } from "js-yaml";
 import fs from "fs";
 import Event from "./Event";
-import { Client, Collection, GuildMember, Channel, ThreadChannel, Role } from "discord.js";
+import Interaction from "./Interaction";
 
 class CustomClient extends Client {
     constructor() {
@@ -24,6 +32,7 @@ class CustomClient extends Client {
         });        
 
         this.commands = new Collection();
+        this.interactions = new Collection();
 
         this.config = this.loadYaml("../../../config/config");
         this.l = this.loadYaml("../../../config/lang");
@@ -34,18 +43,60 @@ class CustomClient extends Client {
 
     loadYaml(filePath: string): any { return load(fs.readFileSync(`${filePath}`, 'utf-8')); }
 
-    loadCommands(): void {
+    loadInteractions(): void {
         const categories: any = [];
-        fs.readdirSync(`../../commands`).forEach(file => categories.push(file));
+        fs.readdirSync(`${process.cwd()}/build/interactions`).forEach(file => categories.push(file));
 
         for (const cat in categories) {
-            fs.readdir(`../../commands/${cat}`, async (err, commandFiles) => {
+            fs.readdir(`${process.cwd()}/build/interactions/${cat}`, async (err, commandFiles) => {
                 if (err) throw err;
 
                 commandFiles.forEach(f => {
                     if (!(f.split(".").pop() === "js")) return;
 
-                    const settings = import(`../../commands/${cat}/${f}`);
+                    const settings = import(`${process.cwd()}/build/interactions/${cat}/${f}`);
+                    const interactionName = f.split(".")[0];
+
+                    // @ts-ignore
+                    settings.name = interactionName;
+
+                    // @ts-ignore
+                    this.interactions.set(interactionName, settings);
+                    
+                })
+
+            })
+        }
+
+        this.on("interactionCreate", async (interaction) => {
+            if (interaction.isButton()) {
+                const module = this.interactions.get(interaction.customId);
+                if (!module) return;
+
+                try { await module.execute(interaction) } catch (e) { console.log(e) }
+            }
+
+            if (interaction.isSelectMenu()) {
+                const module = this.interactions.get(interaction.values);
+                if (!module) return;
+
+                try { await module.execute(interaction) } catch (e) { console.log(e) }
+            }
+        })
+    }
+
+    loadCommands(): void {
+        const categories: any = [];
+        fs.readdirSync(`${process.cwd()}/build/commands`).forEach(file => categories.push(file));
+
+        for (const cat in categories) {
+            fs.readdir(`${process.cwd()}/build/commands/${cat}`, async (err, commandFiles) => {
+                if (err) throw err;
+
+                commandFiles.forEach(f => {
+                    if (!(f.split(".").pop() === "js")) return;
+
+                    const settings = import(`${process.cwd()}/build/commands/${cat}/${f}`);
                     const commandName = f.split(".")[0];
 
                     // @ts-ignore
@@ -55,7 +106,7 @@ class CustomClient extends Client {
                     // @ts-ignore
                     settings.name = commandName;
                     // @ts-ignore
-                    settings.category = c;
+                    settings.category =  settings.category || cat;
 
                     // @ts-ignore
                     if (this.cmds[commandName] && cat !== "xenon") {
@@ -74,9 +125,9 @@ class CustomClient extends Client {
     }
 
     async loadEvents(): Promise<void> {
-        const eventFiles = fs.readdirSync(`../../events`).filter(file => file.endsWith('.js'));
+        const eventFiles = fs.readdirSync(`${process.cwd()}/build/events`).filter(file => file.endsWith('.js'));
         for (const file of eventFiles) {
-            const event: Event = (await import(`../../events/${file}`)).default()
+            const event: Event = (await import(`${process.cwd()}/build/events/${file}`)).default
             this.on(file.split(".")[0], (...args: any) => event.execute(...args));
         }
     }
@@ -133,7 +184,8 @@ interface CustomClient {
     config: any;
     l: any;
     cmds: any;
-    commands: any;
+    commands: Collection<any, any>;
+    interactions: Collection<any, any>;
     prefix: string;
 }
 
