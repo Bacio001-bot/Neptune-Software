@@ -1,7 +1,45 @@
-import chalk from "chalk";
+import chalk, { 
+    keyword, 
+    blueBright,
+    white,
+    hex,
+    Chalk,
+    yellow,
+    greenBright
+    } from "chalk";
 
-class Logger {
+class Logger {  
+    constructor(prefix = `${blueBright}[${white}!${blueBright}]`) {
+        this.prefixes = {
+            default: prefix,
+            log: `${white}[${yellow}LOG${white}]`,
+            command: `${white}[${blueBright}COMMAND${white}]`,
+            event: `${white}[${greenBright}EVENT${greenBright}]{white}]`
+        };
+    }
 
+    getPrefix(prefix: "default" | "log" | "command" | "event"): string { return this.prefixes[prefix]; }
+
+    setPrefix(prefix: string): string { return this.prefixes.default = prefix; }
+
+    color(color: string): Chalk { return keyword(color) || chalk[color] || hex(color); }
+
+    logCommand(log: string): void { 
+        return console.log(`${this.prefixes.log} ${this.prefixes.command}${white} ${log}`);
+    }
+
+    logEvent(log: string): void { 
+        return console.log(`${this.prefixes.log} ${this.prefixes.event}${white} ${log}`);
+    }
 }
 
-exportdefault Logger
+interface Logger {
+    prefixes: {
+        default: string;
+        log: string;
+        command: string;
+        event: string;
+    };
+}
+
+export default Logger;
