@@ -17,7 +17,8 @@ class Command extends CustomClient  {
             example: options.example || options.name,
             category: options.category || "xenon",
             guildOnly: options.requirements.guildOnly,
-            permissions: options.requirements.permissions || ["SEND_MESSAGES"]
+            userPermissions: options.requirements.userPermissions || ["SEND_MESSAGES"],
+            clientPermissions: options.requirements.clientPermissions || ["SEND_MESSAGES"]
         }
 
     }

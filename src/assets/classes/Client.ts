@@ -35,11 +35,46 @@ class CustomClient extends Client {
     loadYaml(filePath: string): any { return load(fs.readFileSync(`${filePath}`, 'utf-8')); }
 
     loadCommands(): void {
+        const categories: any = [];
+        fs.readdirSync(`../../commands`).forEach(file => categories.push(file));
 
+        for (const cat in categories) {
+            fs.readdir(`../../commands/${cat}`, async (err, commandFiles) => {
+                if (err) throw err;
+
+                commandFiles.forEach(f => {
+                    if (!(f.split(".").pop() === "js")) return;
+
+                    const settings = import(`../../commands/${cat}/${f}`);
+                    const commandName = f.split(".")[0];
+
+                    // @ts-ignore
+                    settings.aliases = [];
+                    // @ts-ignore
+                    settings.permissions = [];
+                    // @ts-ignore
+                    settings.name = commandName;
+                    // @ts-ignore
+                    settings.category = c;
+
+                    // @ts-ignore
+                    if (this.cmds[commandName] && cat !== "xenon") {
+                        // @ts-ignore
+                        if (this.cmds[commandName].permissions) this.cmds[commandName].permissions.forEach(perm => settings.permissions.push(perm));
+                        // @ts-ignore
+                        if (this.cmds[commandName].aliases) this.cmds[commandName].aliases.forEach(alias => settings.aliases.push(alias));
+                        // @ts-ignore
+                        if (this.cmds[commandName].enabled === true || cat === "setings") this.commands.set(commandName, settings);
+                    } else this.commands.set(commandName, settings);
+                    
+                })
+
+            })
+        }
     }
 
     async loadEvents(): Promise<void> {
-        const eventFiles = fs.readdirSync(`${process.cwd()}/events`).filter(file => file.endsWith('.js'));
+        const eventFiles = fs.readdirSync(`../../events`).filter(file => file.endsWith('.js'));
         for (const file of eventFiles) {
             const event: Event = (await import(`../../events/${file}`)).default()
             this.on(file.split(".")[0], (...args: any) => event.execute(...args));
