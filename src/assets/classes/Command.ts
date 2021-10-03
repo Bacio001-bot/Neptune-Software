@@ -1,14 +1,14 @@
 import CustomClient from "./Client";
 import { ICommand } from "../interfaces/ICommand";
-
+ 
 class Command extends CustomClient  {
     help: object;
-    message: string;
+    ranMessage: string;
 
     constructor(options: ICommand) {
         super();
 
-        this.message = "";
+        this.ranMessage = "";
         
         this.help = {
             name: options.name,
@@ -24,11 +24,11 @@ class Command extends CustomClient  {
     }
 
     setMessage(message: string): string {
-        return this.message = message;
+        return this.ranMessage = message;
     }
     
     getMessage(): string {
-        return this.message;
+        return this.ranMessage;
     }
 }
 

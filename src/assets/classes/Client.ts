@@ -8,6 +8,7 @@ import {
 } from "discord.js";
 import { load } from "js-yaml";
 import fs from "fs";
+import Command from "./Command";
 import Event from "./Event";
 import Interaction from "./Interaction";
 
@@ -48,20 +49,20 @@ class CustomClient extends Client {
         fs.readdirSync(`${process.cwd()}/build/interactions`).forEach(file => categories.push(file));
 
         for (const cat in categories) {
-            fs.readdir(`${process.cwd()}/build/interactions/${cat}`, async (err, commandFiles) => {
+            fs.readdir(`${process.cwd()}/build/interactions/${cat}`, async (err, interactionFiles) => {
                 if (err) throw err;
 
-                commandFiles.forEach(f => {
+                interactionFiles.forEach(async f => {
                     if (!(f.split(".").pop() === "js")) return;
 
-                    const settings = import(`${process.cwd()}/build/interactions/${cat}/${f}`);
+                    const settings: Interaction = (await import(`${process.cwd()}/build/interactions/${cat}/${f}`)).default;
                     const interactionName = f.split(".")[0];
 
                     // @ts-ignore
                     settings.name = interactionName;
 
                     // @ts-ignore
-                    this.interactions.set(interactionName, settings);
+                    this.interactions.set(`${cat}/${interactionName}`, settings);
                     
                 })
 
@@ -93,10 +94,11 @@ class CustomClient extends Client {
             fs.readdir(`${process.cwd()}/build/commands/${cat}`, async (err, commandFiles) => {
                 if (err) throw err;
 
-                commandFiles.forEach(f => {
+                commandFiles.forEach(async f => {
                     if (!(f.split(".").pop() === "js")) return;
 
-                    const settings = import(`${process.cwd()}/build/commands/${cat}/${f}`);
+                    const imported = await import(`${process.cwd()}/build/commands/${cat}/${f}`);
+                    const settings: Command = imported.default();
                     const commandName = f.split(".")[0];
 
                     // @ts-ignore

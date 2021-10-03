@@ -1,6 +1,7 @@
-import { Command } from "../../assets/classes/Command";
+import { Message } from "discord.js";
+import Command from "../../assets/classes/Command";
 
-export class Help extends Command {
+export default class Help extends Command {
     constructor() {
         super({
             name: "help",
@@ -11,14 +12,15 @@ export class Help extends Command {
             deleteMessage: true,
             cooldown: true,
             requirements: {
-                guildOnly: true,
-                minimumArguments: 0,
-                permissions: ["SEND_MESSAGES"]
+                args: { min: 0, max: 0 },
+                userPermissions: ["SEND_MESSAGES"],
+                clientPermissions: ["SEND_MESSAGES"],
+                guildOnly: false
             }
         });
     }
 
-    execute() {
+    execute(message: Message): void {
         
     }
 }
