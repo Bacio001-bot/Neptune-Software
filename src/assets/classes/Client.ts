@@ -78,7 +78,8 @@ class CustomClient extends Client {
             }
 
             if (interaction.isSelectMenu()) {
-                const module = this.interactions.get(interaction.values);
+                const value = interaction.values.toString();
+                const module = this.interactions.get(value);
                 if (!module) return;
 
                 try { await module.execute(interaction) } catch (e) { console.log(e) }
@@ -186,8 +187,8 @@ interface CustomClient {
     config: any;
     l: any;
     cmds: any;
-    commands: Collection<any, any>;
-    interactions: Collection<any, any>;
+    commands: Collection<string, any>;
+    interactions: Collection<string, any>;
     prefix: string;
 }
 
