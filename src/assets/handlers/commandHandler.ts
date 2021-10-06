@@ -12,7 +12,7 @@ export default (client: CustomClient, message: Message): void => {
 
     if (!command) {
         client.commands.forEach(com => {
-            if (com.name != undefined) if (com.aliases.includes(command)) command = client.commands.get(com.name);
+            if (com.help.name != undefined) if (com.aliases.includes(cmd)) command = client.commands.get(com.help.name);
         })
     }
 

@@ -1,14 +1,15 @@
 import Event from "../assets/classes/Event";
 import { Message } from "discord.js";
+import CustomClient from "../assets/classes/Client";
 
 export default class MessageEvent extends Event {
-    constructor() {
-        super("messageCreate");
+    constructor(client: CustomClient) {
+        super(client, "messageCreate");
 
         this.addHandler("commandHandler", (message: Message) => {
             let run = true;
 
-            if (!message.content.startsWith(this.prefix)) run = false;
+            if (!message.content.startsWith(this.client.prefix)) run = false;
             if (!message.author) run = false;
             
             return run;
@@ -16,6 +17,6 @@ export default class MessageEvent extends Event {
     }
 
     async execute(message: Message): Promise<void> {
-        console.log(this.commands.size)
+        
     }
 }

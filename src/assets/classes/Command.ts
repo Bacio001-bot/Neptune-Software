@@ -1,12 +1,13 @@
 import CustomClient from "./Client";
 import { ICommand } from "../interfaces/ICommand";
  
-class Command extends CustomClient  {
+class Command {
+    client: CustomClient;
     help: object;
     ranMessage: string;
 
-    constructor(options: ICommand) {
-        super();
+    constructor(client: CustomClient, options: ICommand) {
+        this.client = client;
 
         this.ranMessage = "";
         

@@ -1,9 +1,10 @@
 import { Message } from "discord.js";
+import CustomClient from "../../assets/classes/Client";
 import Command from "../../assets/classes/Command";
 
 export default class HelpCommand extends Command {
-    constructor() {
-        super({
+    constructor(client: CustomClient) {
+        super(client, {
             name: "help",
             description: "Receieve a list of commands and info!",
             arguments: "none",
@@ -21,7 +22,6 @@ export default class HelpCommand extends Command {
     }
 
     execute(message: Message): void {
-        console.log("ran")
         message.channel.send("help command ran")
     }
 }

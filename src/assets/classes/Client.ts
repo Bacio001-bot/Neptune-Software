@@ -33,7 +33,7 @@ class CustomClient extends Client {
             ]
         });
         
-        this.commands = new Map();
+        this.commands = new Collection();
         this.interactions = new Collection();
 
         this.logger = new Logger();
@@ -91,44 +91,41 @@ class CustomClient extends Client {
         })
     }
 
-    loadCommands(): Promise<Map<string, any>> {
-        return new Promise<Map<string, any>>((resolve, reject) => {
+    loadCommands(): Promise<Collection<string, any>> {
+        return new Promise<Collection<string, any>>((resolve, reject) => {
             const categories: string[] = [];
+            const commandFiles: string[] = [];
             fs.readdirSync(`${process.cwd()}/build/commands`).forEach(file => categories.push(file));
 
             categories.forEach((cat: string) => {
-                fs.readdir(`${process.cwd()}/build/commands/${cat}`, (err, commandFiles) => {
-                    if (err) throw err;
+                fs.readdirSync(`${process.cwd()}/build/commands/${cat}`).forEach(file => commandFiles.push(file));
+            
+                commandFiles.forEach(async f => {
+                    if (!(f.split(".").pop() === "js") || f.endsWith("d.ts")) return;
 
-                    commandFiles.forEach(async f => {
-                        if (!(f.split(".").pop() === "js") || f.endsWith("d.ts")) return;
+                    const settings: Command = new (await import(`${process.cwd()}/build/commands/${cat}/${f}`)).default(this);
 
-                        const settings: Command = new (await import(`${process.cwd()}/build/commands/${cat}/${f}`)).default();
+                    // @ts-ignore
+                    const commandName = settings.help.name;
+                    // @ts-ignore
+                    settings.aliases = [];
+                    // @ts-ignore
+                    settings.permissions = [];
+                    // @ts-ignore
+                    settings.category =  settings.category || cat;
+                    // @ts-ignore
+                    if (this.cmds[commandName] && cat !== "xenon") {
+                        // @ts-ignore
+                        if (this.cmds[commandName].permissions) this.cmds[commandName].permissions.forEach(perm => settings.permissions.push(perm));
+                        // @ts-ignore
+                        if (this.cmds[commandName].aliases) this.cmds[commandName].aliases.forEach(alias => settings.aliases.push(alias));
+                        // @ts-ignore
+                        if (this.cmds[commandName].enabled || cat === "settings") this.commands.set(commandName, settings)
+                    } else this.commands.set(commandName, settings);
 
-                        // @ts-ignore
-                        const commandName = settings.help.name;
-                        // @ts-ignore
-                        settings.aliases = [];
-                        // @ts-ignore
-                        settings.permissions = [];
-                        // @ts-ignore
-                        settings.category =  settings.category || cat;
-                        // @ts-ignore
-                        if (this.cmds[commandName] && cat !== "xenon") {
-                            // @ts-ignore
-                            if (this.cmds[commandName].permissions) this.cmds[commandName].permissions.forEach(perm => settings.permissions.push(perm));
-                            // @ts-ignore
-                            if (this.cmds[commandName].aliases) this.cmds[commandName].aliases.forEach(alias => settings.aliases.push(alias));
-                            // @ts-ignore
-                            if (this.cmds[commandName].enabled || cat === "settings") this.commands.set(commandName, settings)
-                        } else this.commands.set(commandName, settings);
-
-                        this.logger.message(`Loaded Command: ${commandName}`);
-                        console.log(this.commands.size)
-                    })
+                    this.logger.message(`Loaded Command: ${commandName}`);
                 })
             })
-            console.log(this.commands.size)
             return resolve(this.commands);
         })
     }
@@ -136,7 +133,7 @@ class CustomClient extends Client {
     async loadEvents(): Promise<void> {
         const eventFiles = fs.readdirSync(`${process.cwd()}/build/events`).filter(file => file.endsWith('.js'));
         for (const file of eventFiles) {
-            const event: Event = new (await import(`${process.cwd()}/build/events/${file}`)).default();
+            const event: Event = new (await import(`${process.cwd()}/build/events/${file}`)).default(this);
             this.on(event.name, (...args: any) => event._run(...args));
             this.logger.message(`Loaded Event: ${file.split(".")[0]}`)
         }
@@ -196,7 +193,7 @@ interface CustomClient {
     prefix: string;
     token: string;
     logger: Logger;
-    commands: Map<string, any>;
+    commands: Collection<string, any>;
     interactions: Collection<string, any>;
 }
 

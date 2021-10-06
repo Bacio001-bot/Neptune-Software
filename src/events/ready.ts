@@ -1,11 +1,12 @@
+import CustomClient from "../assets/classes/Client";
 import Event from "../assets/classes/Event";
 
 export default class ReadyEvent extends Event {
-    constructor() {
-        super("ready");
+    constructor(client: CustomClient) {
+        super(client, "ready");
     }
 
     async execute(): Promise<void> {
-        this.logger.message(`Successfully Logged Into ${this.user?.tag}`);
+        this.client.logger.message(`Successfully Logged Into ${this.client.user?.tag}`);
     }
 }
