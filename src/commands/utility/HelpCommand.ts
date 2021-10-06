@@ -1,7 +1,7 @@
 import { Message } from "discord.js";
 import Command from "../../assets/classes/Command";
 
-export default class Help extends Command {
+export default class HelpCommand extends Command {
     constructor() {
         super({
             name: "help",
@@ -21,6 +21,7 @@ export default class Help extends Command {
     }
 
     execute(message: Message): void {
-        
+        console.log("ran")
+        message.channel.send("help command ran")
     }
 }

@@ -8,6 +8,7 @@ import {
 } from "discord.js";
 import { load } from "js-yaml";
 import fs from "fs";
+import Logger from "./Logger";
 import Command from "./Command";
 import Event from "./Event";
 import Interaction from "./Interaction";
@@ -30,16 +31,19 @@ class CustomClient extends Client {
                 "GUILD_PRESENCES",
                 "GUILD_INVITES"
             ]
-        });        
-
-        this.commands = new Collection();
+        });
+        
+        this.commands = new Map();
         this.interactions = new Collection();
 
-        this.config = this.loadYaml("../../../config/config");
-        this.l = this.loadYaml("../../../config/lang");
-        this.cmds = this.loadYaml("../../../config/commands");
+        this.logger = new Logger();
+
+        this.config = this.loadYaml(`${process.cwd()}/config/config.yml`);
+        this.l = this.loadYaml(`${process.cwd()}/config/lang.yml`);
+        this.cmds = this.loadYaml(`${process.cwd()}/config/commands.yml`);
         
         this.prefix = this.config.bot.prefix;
+        this.token = this.config.bot.token;
     }
 
     loadYaml(filePath: string): any { return load(fs.readFileSync(`${filePath}`, 'utf-8')); }
@@ -48,14 +52,14 @@ class CustomClient extends Client {
         const categories: any = [];
         fs.readdirSync(`${process.cwd()}/build/interactions`).forEach(file => categories.push(file));
 
-        for (const cat in categories) {
+        categories.forEach(async cat => { 
             fs.readdir(`${process.cwd()}/build/interactions/${cat}`, async (err, interactionFiles) => {
                 if (err) throw err;
 
                 interactionFiles.forEach(async f => {
                     if (!(f.split(".").pop() === "js")) return;
 
-                    const settings: Interaction = (await import(`${process.cwd()}/build/interactions/${cat}/${f}`)).default;
+                    const settings: Interaction = new (await import(`${process.cwd()}/build/interactions/${cat}/${f}`)).default();
                     const interactionName = f.split(".")[0];
 
                     // @ts-ignore
@@ -67,7 +71,7 @@ class CustomClient extends Client {
                 })
 
             })
-        }
+        })
 
         this.on("interactionCreate", async (interaction) => {
             if (interaction.isButton()) {
@@ -87,62 +91,65 @@ class CustomClient extends Client {
         })
     }
 
-    loadCommands(): void {
-        const categories: any = [];
-        fs.readdirSync(`${process.cwd()}/build/commands`).forEach(file => categories.push(file));
+    loadCommands(): Promise<Map<string, any>> {
+        return new Promise<Map<string, any>>((resolve, reject) => {
+            const categories: string[] = [];
+            fs.readdirSync(`${process.cwd()}/build/commands`).forEach(file => categories.push(file));
 
-        for (const cat in categories) {
-            fs.readdir(`${process.cwd()}/build/commands/${cat}`, async (err, commandFiles) => {
-                if (err) throw err;
+            categories.forEach((cat: string) => {
+                fs.readdir(`${process.cwd()}/build/commands/${cat}`, (err, commandFiles) => {
+                    if (err) throw err;
 
-                commandFiles.forEach(async f => {
-                    if (!(f.split(".").pop() === "js")) return;
+                    commandFiles.forEach(async f => {
+                        if (!(f.split(".").pop() === "js") || f.endsWith("d.ts")) return;
 
-                    const imported = await import(`${process.cwd()}/build/commands/${cat}/${f}`);
-                    const settings: Command = imported.default();
-                    const commandName = f.split(".")[0];
+                        const settings: Command = new (await import(`${process.cwd()}/build/commands/${cat}/${f}`)).default();
 
-                    // @ts-ignore
-                    settings.aliases = [];
-                    // @ts-ignore
-                    settings.permissions = [];
-                    // @ts-ignore
-                    settings.name = commandName;
-                    // @ts-ignore
-                    settings.category =  settings.category || cat;
-
-                    // @ts-ignore
-                    if (this.cmds[commandName] && cat !== "xenon") {
                         // @ts-ignore
-                        if (this.cmds[commandName].permissions) this.cmds[commandName].permissions.forEach(perm => settings.permissions.push(perm));
+                        const commandName = settings.help.name;
                         // @ts-ignore
-                        if (this.cmds[commandName].aliases) this.cmds[commandName].aliases.forEach(alias => settings.aliases.push(alias));
+                        settings.aliases = [];
                         // @ts-ignore
-                        if (this.cmds[commandName].enabled === true || cat === "setings") this.commands.set(commandName, settings);
-                    } else this.commands.set(commandName, settings);
-                    
+                        settings.permissions = [];
+                        // @ts-ignore
+                        settings.category =  settings.category || cat;
+                        // @ts-ignore
+                        if (this.cmds[commandName] && cat !== "xenon") {
+                            // @ts-ignore
+                            if (this.cmds[commandName].permissions) this.cmds[commandName].permissions.forEach(perm => settings.permissions.push(perm));
+                            // @ts-ignore
+                            if (this.cmds[commandName].aliases) this.cmds[commandName].aliases.forEach(alias => settings.aliases.push(alias));
+                            // @ts-ignore
+                            if (this.cmds[commandName].enabled || cat === "settings") this.commands.set(commandName, settings)
+                        } else this.commands.set(commandName, settings);
+
+                        this.logger.message(`Loaded Command: ${commandName}`);
+                        console.log(this.commands.size)
+                    })
                 })
-
             })
-        }
+            console.log(this.commands.size)
+            return resolve(this.commands);
+        })
     }
 
     async loadEvents(): Promise<void> {
         const eventFiles = fs.readdirSync(`${process.cwd()}/build/events`).filter(file => file.endsWith('.js'));
         for (const file of eventFiles) {
-            const event: Event = (await import(`${process.cwd()}/build/events/${file}`)).default
-            this.on(file.split(".")[0], (...args: any) => event.execute(...args));
+            const event: Event = new (await import(`${process.cwd()}/build/events/${file}`)).default();
+            this.on(event.name, (...args: any) => event._run(...args));
+            this.logger.message(`Loaded Event: ${file.split(".")[0]}`)
         }
     }
 
-    getChannel(find: string): Channel | ThreadChannel | null {
+    getChannel(find: any): Channel | ThreadChannel | null {
         const guild = this.guilds.cache.get(this.config.bot.serverID);
         let ch = guild?.channels.cache.find(ch => ch.name === find) || this.channels.cache.get(find);
         if (ch) return ch;
         return null;
     } 
 
-    getRole(find: string): Role | null {
+    getRole(find: any): Role | null {
         const guild = this.guilds.cache.get(this.config.bot.serverID);
 
         let role: Role | undefined = 
@@ -154,7 +161,7 @@ class CustomClient extends Client {
         return null;
     }
 
-    getUser(find: string): GuildMember | null {
+    getUser(find: any): GuildMember | null {
         const guild = this.guilds.cache.get(this.config.bot.serverID);
 
         let member = 
@@ -176,10 +183,9 @@ class CustomClient extends Client {
     }
 
     start(): void {
+        this.loadCommands()
         this.loadEvents();
-        this.loadCommands();
-
-        this.login(this.config.bot.token); 
+        this.login(this.token);
     }
 }
 
@@ -187,9 +193,11 @@ interface CustomClient {
     config: any;
     l: any;
     cmds: any;
-    commands: Collection<string, any>;
-    interactions: Collection<string, any>;
     prefix: string;
+    token: string;
+    logger: Logger;
+    commands: Map<string, any>;
+    interactions: Collection<string, any>;
 }
 
 export default CustomClient;

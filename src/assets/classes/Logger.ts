@@ -5,16 +5,18 @@ import chalk, {
     hex, 
     Chalk, 
     yellow, 
-    greenBright 
+    greenBright, 
+    gray,
+    bgGray
     } from "chalk";
 
 class Logger {       
-    constructor(prefix = `${blueBright}[${white}!${blueBright}]`) {
+    constructor(prefix = `${chalk.gray("[")}${chalk.blueBright("!")}${chalk.gray("]")}`,) {
         this.prefixes = {
             default: prefix,
-            log: `${white("[")}${yellow("LOG")}${white("]")}`,
-            command: `${white("[")}${blueBright("COMMANDS")}${white("]")}`,
-            event: `${white("[")}${greenBright("EVENTS")}${white("]")}`
+            log: `${chalk.gray("[")}${chalk.yellow("LOG")}${chalk.gray("]")}`,
+            command: `${chalk.gray("[")}${chalk.blueBright("COMMANDS")}${chalk.gray("]")}`,
+            event: `${chalk.gray("[")}${chalk.blueBright("EVENTS")}${chalk.gray("]")}`
         };
     }
 
@@ -24,7 +26,9 @@ class Logger {
 
     color(color: string): Chalk { return keyword(color) || chalk[color] || hex(color); }
 
-    log(log: string): void { return console.log(`${this.prefixes.log} ${log}\n`) }
+    message(message: string): void { return console.log(`${this.prefixes.default} ${message}\n`); }
+
+    log(log: string): void { return console.log(`${this.prefixes.log} ${log}\n`); }
 
     logCommand(log: string): void { return this.log(`${this.prefixes.command} ${white(log)}`); }
 

@@ -1,3 +1,5 @@
-const { CustomClient } = require("./assets/classes/Client");
+import CustomClient from "./assets/classes/Client";
+const client = new CustomClient();
 
-const Client = new CustomClient().start();
+client.start()
+

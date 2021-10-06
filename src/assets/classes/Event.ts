@@ -18,17 +18,15 @@ class Event extends CustomClient {
     async addHandler(name: string, filter: Function): Promise<void> {
         this.handlers.push({
             filter: filter,
-            run: (await import(`../handlers/${name}.js`)).default
+            run: (await import(`../handlers/${name}`)).default
         })
         return;
     }
 
-    execute(...args: any): void {
-        for (let handler of this.handlers) {
-            if (handler.filter()) handler.run(...args);
-            // @ts-ignore
-            this.run(...args);
-        }
+    _run(...args: any): void {
+        for (let handler of this.handlers) if (handler.filter(...args)) handler.run(this, ...args);
+        // @ts-ignore
+        this.execute(...args);
     }
 
 }

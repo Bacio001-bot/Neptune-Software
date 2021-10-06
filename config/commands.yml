@@ -1,0 +1,10 @@
+
+help:
+  enabled: true 
+  permissions: ["@everyone"]
+  aliases: ["bothelp"]
+
+userinfo:
+  enabled: true 
+  permissions: ["@everyone"]
+  aliases: [""]
