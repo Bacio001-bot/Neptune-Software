@@ -4,11 +4,17 @@ import {
     GuildMember, 
     Channel, 
     ThreadChannel, 
-    Role 
+    Role, 
+    Message
 } from "discord.js";
+import {
+    createBot,
+    Bot
+} from "mineflayer";
 import { load } from "js-yaml";
 import fs from "fs";
-import Logger from "./Logger";
+import Messages from "../helpers/Messages";
+import Logger from "../helpers/Logger";
 import Command from "./Command";
 import Event from "./Event";
 import Interaction from "./Interaction";
@@ -32,18 +38,34 @@ class CustomClient extends Client {
                 "GUILD_INVITES"
             ]
         });
+
+        let auth = this.config.minecraft.bot.auth;
+        if (auth !== "microsoft" && auth !== "mojang") auth = "mojang";
+
+        this.bot = createBot({
+            host: this.config.minecraft.bot.server_ip,
+            port: 25565,
+            username: this.config.minecraft.bot.username,
+            password: this.config.minecraft.bot.password,
+            auth: auth,
+            version: "1.8.8"
+        })
         
         this.commands = new Collection();
         this.interactions = new Collection();
 
-        this.logger = new Logger();
+        this.logger = new Logger(this);
+        this.messages = new Messages(this);
 
         this.config = this.loadYaml(`${process.cwd()}/config/config.yml`);
         this.l = this.loadYaml(`${process.cwd()}/config/lang.yml`);
         this.cmds = this.loadYaml(`${process.cwd()}/config/commands.yml`);
+
+        this.mineflayer = this.config.mineflayer;
         
         this.prefix = this.config.bot.prefix;
         this.token = this.config.bot.token;
+        this.adminUsers = this.config.bot.admin_users;
     }
 
     loadYaml(filePath: string): any { return load(fs.readFileSync(`${filePath}`, 'utf-8')); }
@@ -130,13 +152,60 @@ class CustomClient extends Client {
         })
     }
 
-    async loadEvents(): Promise<void> {
-        const eventFiles = fs.readdirSync(`${process.cwd()}/build/events`).filter(file => file.endsWith('.js'));
-        for (const file of eventFiles) {
-            const event: Event = new (await import(`${process.cwd()}/build/events/${file}`)).default(this);
-            this.on(event.name, (...args: any) => event._run(...args));
-            this.logger.message(`Loaded Event: ${file.split(".")[0]}`)
+    async loadEvents(type: "discord" | "mineflayer"): Promise<void> {
+        if (type === "discord") {
+            const eventFiles = fs.readdirSync(`${process.cwd()}/build/events/discord`).filter(file => file.endsWith('.js'));
+            for (const file of eventFiles) {
+                const event: Event = new (await import(`${process.cwd()}/build/events/discord/${file}`)).default(this, this.bot);
+                this.on(event.name, (...args: any) => event._run(...args));
+                this.logger.message(`Loaded Event: ${file.split(".")[0]}`)
+            }
+        } else {
+            const eventFiles = fs.readdirSync(`${process.cwd()}/build/mineflayer/discord`).filter(file => file.endsWith('.js'));
+            for (const file of eventFiles) {
+                const event: Event = new (await import(`${process.cwd()}/build/events/mineflayer/${file}`)).default(this, this.bot);
+                // @ts-ignore
+                this.bot.on(event.name, (...args: any) => event._run(...args));
+                this.logger.message(`Loaded Event: ${file.split(".")[0]}`)
+            }
         }
+    }
+
+    checkPermissions(command: string, message: Message): boolean {
+        const cmd = this.getCommand(command);
+        const settings = this.cmds[cmd.help.name];
+
+        if (!cmd) return false;
+
+        const roles: any = [];
+
+        let hasPerms: boolean = false;
+
+        if (!settings) roles.push(this.getRole("@everyone"));
+        else if (settings.permissions) { 
+            settings.permissions.forEach(role => {
+                if (!this.getRole(role)) return;
+                roles.push(this.getRole(role));
+            })
+        } else roles.push(this.getRole("@everyone"));
+
+        roles.forEach(role => {
+            if (message.member?.roles.cache.find(r => r.id === role.id)) hasPerms = true
+        })
+
+        if (this.adminUsers && this.adminUsers.includes(message.author.id)) hasPerms = true; 
+
+        return hasPerms;
+    }
+
+    getCommand(command: string): any {
+        let cmd: any = this.commands.get(command);
+
+        if (!command) this.commands.forEach(com => {
+            if (com.help.name != undefined) if (com.aliases.includes(command)) cmd = this.commands.get(com.help.name);
+        })
+
+        return cmd;
     }
 
     getChannel(find: any): Channel | ThreadChannel | null {
@@ -181,20 +250,24 @@ class CustomClient extends Client {
 
     start(): void {
         this.loadCommands()
-        this.loadEvents();
+        this.loadEvents("discord");
         this.login(this.token);
     }
 }
 
 interface CustomClient {
+    bot: Bot;
+    logger: Logger;
+    messages: Messages;
+    commands: Collection<string, any>;
+    interactions: Collection<string, any>;
+    prefix: string;
+    token: string;
+    adminUsers: string[] | null;
+    mineflayer: any;
     config: any;
     l: any;
     cmds: any;
-    prefix: string;
-    token: string;
-    logger: Logger;
-    commands: Collection<string, any>;
-    interactions: Collection<string, any>;
 }
 
 export default CustomClient;

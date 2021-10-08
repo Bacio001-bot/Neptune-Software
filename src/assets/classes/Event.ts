@@ -1,19 +1,18 @@
+import { Bot } from "mineflayer";
 import CustomClient from "./Client";
 
 class Event {
     client: CustomClient;
+    bot: Bot;
     name: string;
     handlers: { filter: Function, run: Function }[];
 
-    constructor(client: CustomClient, name: string) {
+    constructor(client: CustomClient, bot: Bot, name: string) {
         this.client = client;
+        this.bot = bot;
 
         this.name = name;
         this.handlers = [];
-    }
-    
-    getCommand(command: string): any {
-        return this.client.commands.get(command);
     }
 
     async addHandler(name: string, filter: Function): Promise<void> {

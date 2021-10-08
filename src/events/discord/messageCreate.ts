@@ -1,12 +1,13 @@
-import Event from "../assets/classes/Event";
+import Event from "../../assets/classes/Event";
+import { Bot } from "mineflayer";
 import { Message } from "discord.js";
-import CustomClient from "../assets/classes/Client";
+import CustomClient from "../../assets/classes/Client";
 
 export default class MessageEvent extends Event {
-    constructor(client: CustomClient) {
-        super(client, "messageCreate");
+    constructor(client: CustomClient, bot: Bot) {
+        super(client, bot, "messageCreate");
 
-        this.addHandler("commandHandler", (message: Message) => {
+        this.addHandler("commandHandler", (message: Message): boolean => {
             let run = true;
 
             if (!message.content.startsWith(this.client.prefix)) run = false;

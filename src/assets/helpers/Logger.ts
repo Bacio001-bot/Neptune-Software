@@ -8,10 +8,13 @@ import chalk, {
     greenBright, 
     gray,
     bgGray
-    } from "chalk";
+} from "chalk";
+import CustomClient from "../classes/Client";
 
 class Logger {       
-    constructor(prefix = `${chalk.gray("[")}${chalk.blueBright("!")}${chalk.gray("]")}`,) {
+    constructor(client: CustomClient, prefix = `${chalk.gray("[")}${chalk.blueBright("!")}${chalk.gray("]")}`) {
+        this.client = client;
+
         this.prefixes = {
             default: prefix,
             log: `${chalk.gray("[")}${chalk.yellow("LOG")}${chalk.gray("]")}`,
@@ -37,6 +40,7 @@ class Logger {
 }
 
 interface Logger {
+    client: CustomClient;
     prefixes: {
         default: string;
         log: string;

@@ -13,7 +13,7 @@ export default class HelpCommand extends Command {
             deleteMessage: true,
             cooldown: true,
             requirements: {
-                args: { min: 0, max: 0 },
+                args: { min: 1, max: 1 },
                 userPermissions: ["SEND_MESSAGES"],
                 clientPermissions: ["SEND_MESSAGES"],
                 guildOnly: false
