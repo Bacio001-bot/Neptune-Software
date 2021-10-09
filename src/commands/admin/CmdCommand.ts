@@ -3,14 +3,14 @@ import { Bot } from "mineflayer";
 import CustomClient from "../../assets/classes/Client";
 import Command from "../../assets/classes/Command";
 
-export default class HelpCommand extends Command {
+export default class CmdCommand extends Command {
     constructor(client: CustomClient, bot: Bot) {
         super(client, bot, {
-            name: "help",
-            description: "Receieve a list of commands and info!",
-            arguments: "none",
-            example: "help",
-            category: "utility",
+            name: "cmd",
+            description: "Run A Command Ingame",
+            arguments: "commands",
+            example: "/help",
+            category: "admin",
             type: "discord",
             deleteMessage: true,
             cooldown: true,
@@ -23,7 +23,9 @@ export default class HelpCommand extends Command {
         });
     }
 
-    execute(message: Message): void {
-        message.channel.send("help command ran");
+    execute(message: Message, args: string[]): void {
+     
+        this.bot.chat(`/${args.join(" ")}`);
+        this.messages.success("Command Ran", `\`${this.bot.username}\` Sent the command:\n\`\`\`\n${args.join(" ")}\`\`\``, message);
     }
 }

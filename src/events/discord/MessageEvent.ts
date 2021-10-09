@@ -5,7 +5,7 @@ import CustomClient from "../../assets/classes/Client";
 
 export default class MessageEvent extends Event {
     constructor(client: CustomClient, bot: Bot) {
-        super(client, bot, "messageCreate");
+        super(client, bot, "on", "messageCreate");
 
         this.addHandler("commandHandler", (message: Message): boolean => {
             let run = true;

@@ -1,14 +1,15 @@
 minecraft:
   bot: 
-    server_ip: "" 
-    username: ""  
-    password: "" 
-    auth: "" 
+    server_ip: "pvp.thearchon.net" 
+    username: "davmill415@icloud.com"  
+    password: "Navid415" 
+    auth: "mojang" 
 
 discord:
   bot:
     token: "NzcxMTc0NDQ4NzU3NjA0Mzcy.X5oSLA.xmPfrgbn4cMDW7Ip1qlW44UB_a4"
     prefix: ";"
     cooldown: "5" 
+    serverID: "822160519891910687"
     admin_users:
       - "804462623768707103"

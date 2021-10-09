@@ -7,10 +7,7 @@ import {
     Role, 
     Message
 } from "discord.js";
-import {
-    createBot,
-    Bot
-} from "mineflayer";
+import { createBot, Bot } from "mineflayer";
 import { load } from "js-yaml";
 import fs from "fs";
 import Messages from "../helpers/Messages";
@@ -18,6 +15,7 @@ import Logger from "../helpers/Logger";
 import Command from "./Command";
 import Event from "./Event";
 import Interaction from "./Interaction";
+import Table from "cli-table";
 
 class CustomClient extends Client {
     constructor() {
@@ -38,18 +36,6 @@ class CustomClient extends Client {
                 "GUILD_INVITES"
             ]
         });
-
-        let auth = this.config.minecraft.bot.auth;
-        if (auth !== "microsoft" && auth !== "mojang") auth = "mojang";
-
-        this.bot = createBot({
-            host: this.config.minecraft.bot.server_ip,
-            port: 25565,
-            username: this.config.minecraft.bot.username,
-            password: this.config.minecraft.bot.password,
-            auth: auth,
-            version: "1.8.8"
-        })
         
         this.commands = new Collection();
         this.interactions = new Collection();
@@ -63,9 +49,20 @@ class CustomClient extends Client {
 
         this.mineflayer = this.config.mineflayer;
         
-        this.prefix = this.config.bot.prefix;
-        this.token = this.config.bot.token;
-        this.adminUsers = this.config.bot.admin_users;
+        this.prefix = this.config.discord.bot.prefix;
+        this.token = this.config.discord.bot.token;
+        this.adminUsers = this.config.discord.bot.admin_users;
+
+        const auth = this.config.minecraft.bot.auth;
+
+        this.bot = createBot({
+            host: this.config.minecraft.bot.server_ip,
+            port: 25565,
+            username: this.config.minecraft.bot.username,
+            password: this.config.minecraft.bot.password,
+            auth: (auth !== "microsoft" && auth !== "mojang") ? "mojang" : "mojang",
+            version: "1.8.8"
+        })
     }
 
     loadYaml(filePath: string): any { return load(fs.readFileSync(`${filePath}`, 'utf-8')); }
@@ -116,36 +113,37 @@ class CustomClient extends Client {
     loadCommands(): Promise<Collection<string, any>> {
         return new Promise<Collection<string, any>>((resolve, reject) => {
             const categories: string[] = [];
-            const commandFiles: string[] = [];
             fs.readdirSync(`${process.cwd()}/build/commands`).forEach(file => categories.push(file));
 
-            categories.forEach((cat: string) => {
-                fs.readdirSync(`${process.cwd()}/build/commands/${cat}`).forEach(file => commandFiles.push(file));
-            
-                commandFiles.forEach(async f => {
-                    if (!(f.split(".").pop() === "js") || f.endsWith("d.ts")) return;
+            categories.forEach(async (cat: string) => {
+                
+                fs.readdir(`${process.cwd()}/build/commands/${cat}`, async (err, files) => {
+                    if (err) throw err;
 
-                    const settings: Command = new (await import(`${process.cwd()}/build/commands/${cat}/${f}`)).default(this);
-
-                    // @ts-ignore
-                    const commandName = settings.help.name;
-                    // @ts-ignore
-                    settings.aliases = [];
-                    // @ts-ignore
-                    settings.permissions = [];
-                    // @ts-ignore
-                    settings.category =  settings.category || cat;
-                    // @ts-ignore
-                    if (this.cmds[commandName] && cat !== "xenon") {
+                    files.forEach(async f => {
+                        if (!(f.split(".").pop() === "js") || f.endsWith("d.ts")) return;
+                        const settings: Command = new (await import(`${process.cwd()}/build/commands/${cat}/${f}`)).default(this, this.bot);
+    
                         // @ts-ignore
-                        if (this.cmds[commandName].permissions) this.cmds[commandName].permissions.forEach(perm => settings.permissions.push(perm));
+                        const commandName = settings.help.name;
                         // @ts-ignore
-                        if (this.cmds[commandName].aliases) this.cmds[commandName].aliases.forEach(alias => settings.aliases.push(alias));
+                        settings.aliases = [];
                         // @ts-ignore
-                        if (this.cmds[commandName].enabled || cat === "settings") this.commands.set(commandName, settings)
-                    } else this.commands.set(commandName, settings);
-
-                    this.logger.message(`Loaded Command: ${commandName}`);
+                        settings.permissions = [];
+                        // @ts-ignore
+                        settings.category =  settings.category || cat;
+                        // @ts-ignore
+                        if (this.cmds[commandName] && cat !== "xenon") {
+                            // @ts-ignore
+                            if (this.cmds[commandName].permissions) this.cmds[commandName].permissions.forEach(perm => settings.permissions.push(perm));
+                            // @ts-ignore
+                            if (this.cmds[commandName].aliases) this.cmds[commandName].aliases.forEach(alias => settings.aliases.push(alias));
+                            // @ts-ignore
+                            if (this.cmds[commandName].enabled || cat === "settings") this.commands.set(commandName, settings)
+                        } else this.commands.set(commandName, settings);
+    
+                        this.logger.message(`Loaded Command: ${commandName}`);
+                    })
                 })
             })
             return resolve(this.commands);
@@ -154,20 +152,43 @@ class CustomClient extends Client {
 
     async loadEvents(type: "discord" | "mineflayer"): Promise<void> {
         if (type === "discord") {
+            const table = new Table({
+                chars: { 'top': '═' , 'top-mid': '╤' , 'top-left': '╔' , 'top-right': '╗'
+                       , 'bottom': '═' , 'bottom-mid': '╧' , 'bottom-left': '╚' , 'bottom-right': '╝'
+                       , 'left': '║' , 'left-mid': '╟' , 'mid': '─' , 'mid-mid': '┼'
+                       , 'right': '║' , 'right-mid': '╢' , 'middle': '│' }
+            });
             const eventFiles = fs.readdirSync(`${process.cwd()}/build/events/discord`).filter(file => file.endsWith('.js'));
             for (const file of eventFiles) {
                 const event: Event = new (await import(`${process.cwd()}/build/events/discord/${file}`)).default(this, this.bot);
-                this.on(event.name, (...args: any) => event._run(...args));
-                this.logger.message(`Loaded Event: ${file.split(".")[0]}`)
+                if (event.name !== undefined) {
+                    // @ts-ignore
+                    if (event.type === "on") this.on(event.name, (...args: any) => event._run(...args));
+                    // @ts-ignore
+                    else this.once(event.name, (...args: any) => event._run(...args));
+                    table.push([this.logger.chalk().white(event.name), this.logger.chalk().green("Loaded")])
+                }
             }
+            console.log(this.logger.chalk().blueBright(table.toString()) + "\n");
         } else {
-            const eventFiles = fs.readdirSync(`${process.cwd()}/build/mineflayer/discord`).filter(file => file.endsWith('.js'));
+            const table = new Table({
+                chars: { 'top': '═' , 'top-mid': '╤' , 'top-left': '╔' , 'top-right': '╗'
+                       , 'bottom': '═' , 'bottom-mid': '╧' , 'bottom-left': '╚' , 'bottom-right': '╝'
+                       , 'left': '║' , 'left-mid': '╟' , 'mid': '─' , 'mid-mid': '┼'
+                       , 'right': '║' , 'right-mid': '╢' , 'middle': '│' }
+            });
+            const eventFiles = fs.readdirSync(`${process.cwd()}/build/events/mineflayer/`).filter(file => file.endsWith('.js'));
             for (const file of eventFiles) {
                 const event: Event = new (await import(`${process.cwd()}/build/events/mineflayer/${file}`)).default(this, this.bot);
-                // @ts-ignore
-                this.bot.on(event.name, (...args: any) => event._run(...args));
-                this.logger.message(`Loaded Event: ${file.split(".")[0]}`)
+                if (event.name !== undefined) {
+                    // @ts-ignore
+                    if (event.type === "on") this.bot.on(event.name, (...args: any) => event._run(...args));
+                    // @ts-ignore
+                    else this.bot.once(event.name, (...args: any) => event._run(...args));
+                    table.push([this.logger.chalk().white(event.name), this.logger.chalk().green("Loaded")])
+                }
             }
+            console.log(this.logger.chalk().blueBright(table.toString()) + "\n");
         }
     }
 
@@ -209,14 +230,14 @@ class CustomClient extends Client {
     }
 
     getChannel(find: any): Channel | ThreadChannel | null {
-        const guild = this.guilds.cache.get(this.config.bot.serverID);
+        const guild = this.guilds.cache.get(this.config.discord.bot.serverID);
         let ch = guild?.channels.cache.find(ch => ch.name === find) || this.channels.cache.get(find);
         if (ch) return ch;
         return null;
     } 
 
     getRole(find: any): Role | null {
-        const guild = this.guilds.cache.get(this.config.bot.serverID);
+        const guild = this.guilds.cache.get(this.config.discord.bot.serverID);
 
         let role: Role | undefined = 
         guild?.roles.cache.find(rl => rl.name.toLowerCase() === find.toLowerCase()) || 
@@ -228,7 +249,7 @@ class CustomClient extends Client {
     }
 
     getUser(find: any): GuildMember | null {
-        const guild = this.guilds.cache.get(this.config.bot.serverID);
+        const guild = this.guilds.cache.get(this.config.discord.bot.serverID);
 
         let member = 
         guild?.members.cache.get(find) || guild?.members.cache.find(m => m.user.username.toLowerCase().includes(find.toLowerCase())) ||
@@ -251,6 +272,7 @@ class CustomClient extends Client {
     start(): void {
         this.loadCommands()
         this.loadEvents("discord");
+        this.loadEvents("mineflayer");
         this.login(this.token);
     }
 }

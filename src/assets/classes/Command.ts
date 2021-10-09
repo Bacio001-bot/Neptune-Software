@@ -1,16 +1,24 @@
 import { User } from "discord.js";
-import ms from "ms";
+import { Bot } from "mineflayer";
+import Logger from "../helpers/Logger";
+import Messages from "../helpers/Messages";
 import CustomClient from "./Client";
 import ICommand from "../interfaces/Command";
  
 class Command {
     client: CustomClient;
+    bot: Bot;
+    logger: Logger;
+    messages: Messages;
     help: object;
     ranMessage: string;
     cooldown: Set<string>;
 
-    constructor(client: CustomClient, options: ICommand) {
+    constructor(client: CustomClient, bot: Bot, options: ICommand) {
         this.client = client;
+        this.bot = bot;
+        this.logger = this.client.logger;
+        this.messages = this.client.messages;
 
         this.ranMessage = "";
         

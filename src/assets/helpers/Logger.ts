@@ -1,13 +1,6 @@
 import chalk, { 
-    keyword, 
-    blueBright, 
     white, 
-    hex, 
     Chalk, 
-    yellow, 
-    greenBright, 
-    gray,
-    bgGray
 } from "chalk";
 import CustomClient from "../classes/Client";
 
@@ -27,15 +20,15 @@ class Logger {
 
     setPrefix(prefix: string): string { return this.prefixes.default = prefix; }
 
-    color(color: string): Chalk { return keyword(color) || chalk[color] || hex(color); }
-
     message(message: string): void { return console.log(`${this.prefixes.default} ${message}\n`); }
 
     log(log: string): void { return console.log(`${this.prefixes.log} ${log}\n`); }
 
-    logCommand(log: string): void { return this.log(`${this.prefixes.command} ${white(log)}`); }
+    logCommand(log: string): void { return this.log(`${this.prefixes.command} ${log}`); }
 
-    logEvent(log: string): void { return this.log(`${this.prefixes.event} ${white(log)}`); }
+    logEvent(log: string): void { return this.log(`${this.prefixes.event} ${log}`); }
+
+    chalk(): Chalk { return chalk };
 
 }
 

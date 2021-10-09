@@ -38,7 +38,7 @@ export default (client: CustomClient, message: Message): void => {
 
     try {
         command.setMessage(message);
-        command.execute(message);
+        command.execute(message, args);
     } catch (error) {
         console.log(error);
     }

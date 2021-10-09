@@ -14,12 +14,22 @@ export default class Messages {
         this.client = client;
     }
 
-    success(message: Message, channel: Channel | ThreadChannel): void {
-
+    success(title: string, description: string, message: Message): void {
+        const embed = new MessageEmbed()
+            .setAuthor(`✅ ${title}`)
+            .setDescription(description)
+            .setColor("GREEN")
+            .setFooter(`Requested By: ${message.author.tag}`, message.author.displayAvatarURL({ dynamic: true }));
+        message.channel.send({embeds: [embed]});
     }
 
-    error(message: Message, channel: Channel | ThreadChannel): void {
-
+    error(title: string, description: string, message: Message): void {
+        const embed = new MessageEmbed()
+            .setAuthor(`❌ ${title}`)
+            .setDescription(description)
+            .setColor("RED")
+            .setFooter(`Requested By: ${message.author.tag}`, message.author.displayAvatarURL({ dynamic: true }));
+        message.channel.send({embeds: [embed]});
     }
 
     loading(message: Message, channel: Channel | ThreadChannel): void {
@@ -32,11 +42,5 @@ export default class Messages {
 
     invalidRole(message: Message, channel: Channel | ThreadChannel): void {
 
-    }
-
-    buildEmbed(options?: MessageEmbedOptions | MessageEmbed | undefined): MessageEmbed { 
-        const embed = new MessageEmbed(options);
-
-        return embed;
     }
 }

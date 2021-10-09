@@ -4,10 +4,10 @@ import { Bot } from "mineflayer";
 
 export default class ReadyEvent extends Event {
     constructor(client: CustomClient, bot: Bot) {
-        super(client, bot, "ready");
+        super(client, bot, "once", "ready");
     }
 
     async execute(): Promise<void> {
-        this.client.logger.message(`Successfully Logged Into ${this.client.user?.tag}`);
+        this.client.logger.message(`${this.client.user?.username} `);
     }
 }

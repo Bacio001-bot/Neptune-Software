@@ -1,17 +1,19 @@
 import { Bot } from "mineflayer";
+import Logger from "../helpers/Logger";
 import CustomClient from "./Client";
 
 class Event {
-    client: CustomClient;
-    bot: Bot;
-    name: string;
-    handlers: { filter: Function, run: Function }[];
-
-    constructor(client: CustomClient, bot: Bot, name: string) {
+    constructor(client: CustomClient, bot: Bot, type: "on" | "once", name: string) {
         this.client = client;
         this.bot = bot;
+        this.logger = this.client.logger;
 
+        this.mineflayer = this.client.config.minecraft;
+        this.discord = this.client.config.discord;
+
+        this.type = type;
         this.name = name;
+
         this.handlers = [];
     }
 
@@ -29,6 +31,17 @@ class Event {
         this.execute(...args);
     }
 
+}
+
+interface Event {
+    client: CustomClient;
+    bot: Bot;
+    logger: Logger;
+    type: string;
+    name: string;
+    handlers: { filter: Function, run: Function }[];
+    mineflayer: any;
+    discord: any;
 }
 
 export default Event;

@@ -6,6 +6,7 @@ export default interface ICommand {
     arguments?: string;
     example?: string;
     category?: string;
+    type: "discord" | "minecraft" | "both";
     deleteMessage?: boolean;
     cooldown?: boolean;
     requirements: {

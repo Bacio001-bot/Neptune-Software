@@ -1,15 +1,17 @@
 import { Message } from "discord.js";
+import { Bot } from "mineflayer";
 import CustomClient from "../../assets/classes/Client";
 import Command from "../../assets/classes/Command";
 
 export default class UserCommand extends Command {
-    constructor(client: CustomClient) {
-        super(client, {
+    constructor(client: CustomClient, bot: Bot) {
+        super(client, bot, {
             name: "userinfo",
             description: "Get data on a specified user!",
             arguments: "[user]",
             example: "userinfo WhatWalls",
             category: "utility",
+            type: "discord",
             deleteMessage: true,
             cooldown: true,
             requirements: {
