@@ -1,0 +1,23 @@
+{
+    "channels": {
+        "checks": {
+            "weewooID": "",
+            "wallCheckID": "",
+            "bufferCheckID": ""
+        },
+        "logs": {
+            "depositsID": "",
+            "rotatesID": "",
+            "serverchatID": "",
+            "ftopID": "",
+            "flistID": ""
+        }
+    },
+    "roles": {
+        "wallChecks": ""
+    },
+    "other": {
+        "shield": ""
+    }
+    
+}

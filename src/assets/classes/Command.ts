@@ -5,6 +5,7 @@ import Messages from "../helpers/Messages";
 import CustomClient from "./Client";
 import UserDatabase from "../databases/Users";
 import ICommand from "../interfaces/Command";
+import SettingsDatabase from "../databases/Settings";
  
 class Command {
     client: CustomClient;
@@ -12,6 +13,7 @@ class Command {
     logger: Logger;
     messages: Messages;
     userdb: UserDatabase;
+    settingsdb: SettingsDatabase;
     help: object;
     ranMessage: string;
     cooldown: Set<string>;
@@ -24,6 +26,7 @@ class Command {
         this.messages = this.client.messages;
 
         this.userdb = this.client.userdb;
+        this.settingsdb = this.client.settingsdb;
 
         this.ranMessage = "";
         

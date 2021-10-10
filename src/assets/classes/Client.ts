@@ -17,6 +17,7 @@ import Command from "./Command";
 import Event from "./Event";
 import Interaction from "./Interaction";
 import UsersDatabase from "../databases/Users";
+import SettingsDatabase from "../databases/Settings";
 
 class CustomClient extends Client {
     constructor() {
@@ -51,6 +52,7 @@ class CustomClient extends Client {
         this.mineflayer = this.config.mineflayer;
 
         this.userdb = new UsersDatabase();
+        this.settingsdb = new SettingsDatabase();
         
         this.prefix = this.config.discord.bot.prefix;
         this.token = this.config.discord.bot.token;
@@ -273,6 +275,7 @@ interface CustomClient {
     commands: Collection<string, any>;
     interactions: Collection<string, any>;
     userdb: UsersDatabase;
+    settingsdb: SettingsDatabase;
     prefix: string;
     token: string;
     adminUsers: string[] | null;
