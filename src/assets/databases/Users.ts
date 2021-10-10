@@ -43,21 +43,63 @@ class UsersDatabase extends Database {
         return this.users.delete(`/users[${index}]`);
     }
 
+    removeAll() {
+        Array.from(this.listUsers()).map(() => {
+            this.users.delete(`/users[${0}]`);
+        })
+        return true;
+    }
+
     getUser(findBy: string): number {
         const index = this.users.getIndex("/users", findBy);
         return this.users.getData(`/users[${index}]`);
     }
 
-    updateUser(user: GuildMember | string, field: string, value: any) {
-        
+    updateUser(findBy: GuildMember | string, field: string, subfield: string, value: any) {
+        let user: string;
+        //@ts-ignore
+        if(findBy.id) user = this.getUser(`${findBy}`);
+        //@ts-ignore
+        else user = this.getUser(findBy);
+        console.log(user)
+        //@ts-ignore
+        if(subfield !== "") user[field][subfield] = value;
+        else user[field] = value;
+        this.users.save()
+        return true;
     }
 
-    resetUser() {
-        
+    resetUser(findBy: GuildMember | string) {
+        let user: string;
+        //@ts-ignore
+        if(findBy.id) user = this.getUser(`${findBy}`);
+        //@ts-ignore
+        else user = this.getUser(findBy);
+
+        //@ts-ignore
+        user["checks"]["wallChecks"] = 0;
+        user["checks"]["bufferChecks"] = 0;
+        user["checks"]["lastWallChecked"] = 0;
+        user["checks"]["lastBufferChecked"] = 0;
+        user["money"]["deposits"] = 0;
+        user["money"]["withdraws"] = 0;
+        user["money"]["balance"] = 0;
+        this.users.save();
+        return true;
     }
 
     resetAll() {
-        
+        Array.from(this.listUsers()).map((user) => {
+            user["checks"]["wallChecks"] = 0;
+            user["checks"]["bufferChecks"] = 0;
+            user["checks"]["lastWallChecked"] = 0;
+            user["checks"]["lastBufferChecked"] = 0;
+            user["money"]["deposits"] = 0;
+            user["money"]["withdraws"] = 0;
+            user["money"]["balance"] = 0;
+            this.users.save();
+        })
+        return true;
     }
 
     listUsers(): Array<IUser> {
