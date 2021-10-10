@@ -11,10 +11,8 @@ export default class LoginEvent extends Event {
         this.bot.settings.viewDistance = "tiny";
         this.bot.settings.colorsEnabled = false;
 
-        this.logger.message(`${this.logger.chalk().blueBright.underline(`${this.bot.username}`)} has successfully logged in to ${this.mineflayer.bot.server_ip}`);
-        setTimeout(() => {
-            this.bot.chat("/ruby");
-        }, 2000);
+        this.logger.logMinecraft(`${this.logger.highlight(`${this.bot.username}`)} has successfully logged in to ${this.mineflayer.bot.server_ip}`);
+        setTimeout(() => this.bot.chat("/ruby"), 2000);
 
     }
 }

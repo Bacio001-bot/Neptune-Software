@@ -1,5 +1,6 @@
 import { Bot } from "mineflayer";
 import Logger from "../helpers/Logger";
+import UserDatabase from "../databases/Users";
 import CustomClient from "./Client";
 
 class Event {
@@ -10,6 +11,8 @@ class Event {
 
         this.mineflayer = this.client.config.minecraft;
         this.discord = this.client.config.discord;
+
+        this.userdb = this.client.userdb;
 
         this.type = type;
         this.name = name;
@@ -37,6 +40,7 @@ interface Event {
     client: CustomClient;
     bot: Bot;
     logger: Logger;
+    userdb: UserDatabase;
     type: string;
     name: string;
     handlers: { filter: Function, run: Function }[];

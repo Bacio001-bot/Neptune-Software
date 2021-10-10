@@ -3,6 +3,7 @@ import { Bot } from "mineflayer";
 import Logger from "../helpers/Logger";
 import Messages from "../helpers/Messages";
 import CustomClient from "./Client";
+import UserDatabase from "../databases/Users";
 import ICommand from "../interfaces/Command";
  
 class Command {
@@ -10,6 +11,7 @@ class Command {
     bot: Bot;
     logger: Logger;
     messages: Messages;
+    userdb: UserDatabase;
     help: object;
     ranMessage: string;
     cooldown: Set<string>;
@@ -17,8 +19,11 @@ class Command {
     constructor(client: CustomClient, bot: Bot, options: ICommand) {
         this.client = client;
         this.bot = bot;
+
         this.logger = this.client.logger;
         this.messages = this.client.messages;
+
+        this.userdb = this.client.userdb;
 
         this.ranMessage = "";
         

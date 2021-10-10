@@ -1,7 +1,4 @@
-import chalk, { 
-    white, 
-    Chalk, 
-} from "chalk";
+import chalk from "chalk";
 import CustomClient from "../classes/Client";
 
 class Logger {       
@@ -12,7 +9,9 @@ class Logger {
             default: prefix,
             log: `${chalk.gray("[")}${chalk.yellow("LOG")}${chalk.gray("]")}`,
             command: `${chalk.gray("[")}${chalk.blueBright("COMMANDS")}${chalk.gray("]")}`,
-            event: `${chalk.gray("[")}${chalk.blueBright("EVENTS")}${chalk.gray("]")}`
+            event: `${chalk.gray("[")}${chalk.blueBright("EVENTS")}${chalk.gray("]")}`,
+            discord: `${chalk.gray("[")}${chalk.redBright("DISCORD")}${chalk.gray("]")}`,
+            minecraft: `${chalk.gray("[")}${chalk.greenBright("MINECRAFT")}${chalk.gray("]")}`,
         };
     }
 
@@ -28,7 +27,31 @@ class Logger {
 
     logEvent(log: string): void { return this.log(`${this.prefixes.event} ${log}`); }
 
-    chalk(): Chalk { return chalk };
+    logDiscord(log: string): void { return this.log(`${this.prefixes.discord} ${log}`); }
+
+    logMinecraft(log: string): void { return this.log(`${this.prefixes.minecraft} ${log}`); }
+
+    highlight(text: string): string { return chalk.gray(text); }
+
+    chalk(): chalk.Chalk { return chalk; }
+
+    logo(): void {
+        console.log(
+
+            chalk.black ("-----------------------------------------------------------------------\n"),
+            chalk.blueBright("██╗  ██╗███████╗███╗   ██╗ ██████╗ ███╗   ██╗   "),chalk.white ("  ██████╗ ███████╗██╗   ██╗\n"),
+            chalk.blueBright("╚██╗██╔╝██╔════╝████╗  ██║██╔═══██╗████╗  ██║   "),chalk.white ("  ██╔══██╗██╔════╝██║   ██║\n"),
+            chalk.blueBright(" ╚███╔╝ █████╗  ██╔██╗ ██║██║   ██║██╔██╗ ██║   "),chalk.white ("  ██║  ██║█████╗  ██║   ██║\n"),
+            chalk.blueBright(" ██╔██╗ ██╔══╝  ██║╚██╗██║██║   ██║██║╚██╗██║   "),chalk.white ("  ██║  ██║██╔══╝  ╚██╗ ██╔╝\n"),
+            chalk.blueBright("██╔╝ ██╗███████╗██║ ╚████║╚██████╔╝██║ ╚████║   "),chalk.white ("  ██████╔╝███████╗ ╚████╔╝ \n"),
+            chalk.blueBright("╚═╝  ╚═╝╚══════╝╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═══╝   "),chalk.white (" ╚═════╝ ╚══════╝  ╚═══╝  \n"),
+            chalk.gray("\n[»] "),chalk.bold("Xenon Faction Bot V3"),
+            chalk.gray("\n[»] "),chalk.bold(`Config contents validated`),
+            chalk.gray("\n[»] "),chalk.bold("Developers: WhatWalls | V8 | Spike | NJWF1 | Meeler | Bacio"),
+            chalk.gray("\n[»] "),chalk.bold("discord.gg/xenondev\n"),
+          
+          );
+    }
 
 }
 
@@ -39,6 +62,8 @@ interface Logger {
         log: string;
         command: string;
         event: string;
+        discord: string;
+        minecraft: string;
     };
 }
 

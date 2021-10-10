@@ -24,7 +24,6 @@ export default class CmdCommand extends Command {
     }
 
     execute(message: Message, args: string[]): void {
-     
         this.bot.chat(`/${args.join(" ")}`);
         this.messages.success("Command Ran", `\`${this.bot.username}\` Sent the command:\n\`\`\`\n${args.join(" ")}\`\`\``, message);
     }

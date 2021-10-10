@@ -7,6 +7,7 @@ import {
     Role, 
     Message
 } from "discord.js";
+import { JsonDB } from "node-json-db";
 import { createBot, Bot } from "mineflayer";
 import { load } from "js-yaml";
 import fs from "fs";
@@ -15,7 +16,7 @@ import Logger from "../helpers/Logger";
 import Command from "./Command";
 import Event from "./Event";
 import Interaction from "./Interaction";
-import Table from "cli-table";
+import UsersDatabase from "../databases/Users";
 
 class CustomClient extends Client {
     constructor() {
@@ -48,6 +49,8 @@ class CustomClient extends Client {
         this.cmds = this.loadYaml(`${process.cwd()}/config/commands.yml`);
 
         this.mineflayer = this.config.mineflayer;
+
+        this.userdb = new UsersDatabase();
         
         this.prefix = this.config.discord.bot.prefix;
         this.token = this.config.discord.bot.token;
@@ -142,7 +145,7 @@ class CustomClient extends Client {
                             if (this.cmds[commandName].enabled || cat === "settings") this.commands.set(commandName, settings)
                         } else this.commands.set(commandName, settings);
     
-                        this.logger.message(`Loaded Command: ${commandName}`);
+                        this.logger.logCommand(`Successfully Loaded: ${commandName}`);
                     })
                 })
             })
@@ -152,12 +155,6 @@ class CustomClient extends Client {
 
     async loadEvents(type: "discord" | "mineflayer"): Promise<void> {
         if (type === "discord") {
-            const table = new Table({
-                chars: { 'top': '═' , 'top-mid': '╤' , 'top-left': '╔' , 'top-right': '╗'
-                       , 'bottom': '═' , 'bottom-mid': '╧' , 'bottom-left': '╚' , 'bottom-right': '╝'
-                       , 'left': '║' , 'left-mid': '╟' , 'mid': '─' , 'mid-mid': '┼'
-                       , 'right': '║' , 'right-mid': '╢' , 'middle': '│' }
-            });
             const eventFiles = fs.readdirSync(`${process.cwd()}/build/events/discord`).filter(file => file.endsWith('.js'));
             for (const file of eventFiles) {
                 const event: Event = new (await import(`${process.cwd()}/build/events/discord/${file}`)).default(this, this.bot);
@@ -166,17 +163,10 @@ class CustomClient extends Client {
                     if (event.type === "on") this.on(event.name, (...args: any) => event._run(...args));
                     // @ts-ignore
                     else this.once(event.name, (...args: any) => event._run(...args));
-                    table.push([this.logger.chalk().white(event.name), this.logger.chalk().green("Loaded")])
+                    this.logger.logEvent(`Successfully Loaded: ${event.name}`);
                 }
             }
-            console.log(this.logger.chalk().blueBright(table.toString()) + "\n");
         } else {
-            const table = new Table({
-                chars: { 'top': '═' , 'top-mid': '╤' , 'top-left': '╔' , 'top-right': '╗'
-                       , 'bottom': '═' , 'bottom-mid': '╧' , 'bottom-left': '╚' , 'bottom-right': '╝'
-                       , 'left': '║' , 'left-mid': '╟' , 'mid': '─' , 'mid-mid': '┼'
-                       , 'right': '║' , 'right-mid': '╢' , 'middle': '│' }
-            });
             const eventFiles = fs.readdirSync(`${process.cwd()}/build/events/mineflayer/`).filter(file => file.endsWith('.js'));
             for (const file of eventFiles) {
                 const event: Event = new (await import(`${process.cwd()}/build/events/mineflayer/${file}`)).default(this, this.bot);
@@ -185,10 +175,9 @@ class CustomClient extends Client {
                     if (event.type === "on") this.bot.on(event.name, (...args: any) => event._run(...args));
                     // @ts-ignore
                     else this.bot.once(event.name, (...args: any) => event._run(...args));
-                    table.push([this.logger.chalk().white(event.name), this.logger.chalk().green("Loaded")])
+                    this.logger.logEvent(`Successfully Loaded: ${event.name}`);
                 }
             }
-            console.log(this.logger.chalk().blueBright(table.toString()) + "\n");
         }
     }
 
@@ -283,6 +272,7 @@ interface CustomClient {
     messages: Messages;
     commands: Collection<string, any>;
     interactions: Collection<string, any>;
+    userdb: UsersDatabase;
     prefix: string;
     token: string;
     adminUsers: string[] | null;

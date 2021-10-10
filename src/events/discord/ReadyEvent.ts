@@ -8,6 +8,7 @@ export default class ReadyEvent extends Event {
     }
 
     async execute(): Promise<void> {
-        this.client.logger.message(`${this.client.user?.username} `);
+        this.logger.logo();
+        this.logger.logDiscord(`${this.logger.highlight(`${this.client.user?.tag}`)} has successfully logged into discord`);
     }
 }

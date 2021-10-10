@@ -7,8 +7,8 @@ export default class KickedEvent extends Event {
         super(client, bot, "on", "kicked");
     }
 
-    execute(reason: string) {
-        this.logger.message(`${this.logger.chalk().blueBright.underline(`${this.bot.username}`)} was kicked for ${reason}`);
+    execute(reason: { color: string; text: string; }) {
+        this.logger.logMinecraft(`${this.logger.chalk().blueBright.underline(`${this.bot.username}`)} was kicked for ${reason.text}`);
         this.bot.quit()
     }
 }
