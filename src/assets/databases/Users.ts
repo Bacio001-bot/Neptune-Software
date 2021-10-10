@@ -8,7 +8,7 @@ class UsersDatabase extends Database {
     constructor() {
         super();
         this.users = new JsonDB(new Config(`${process.cwd()}/storage/users.json`, true, true, "/"));
-    }
+    };
 
     addUser(user: GuildMember, ign: string): Promise<boolean> {
         return new Promise((res, rej) => {
@@ -31,7 +31,7 @@ class UsersDatabase extends Database {
                     withdraws: 0, 
                     balance: 0,
                 }
-            }
+            };
 
             this.users.push("/users[]", userData, true);
             res(true);
@@ -46,7 +46,7 @@ class UsersDatabase extends Database {
     removeAll() {
         Array.from(this.listUsers()).map(() => {
             this.users.delete(`/users[${0}]`);
-        })
+        });
         return true;
     }
 
@@ -61,11 +61,10 @@ class UsersDatabase extends Database {
         if(findBy.id) user = this.getUser(`${findBy}`);
         //@ts-ignore
         else user = this.getUser(findBy);
-        console.log(user)
         //@ts-ignore
         if(subfield !== "") user[field][subfield] = value;
         else user[field] = value;
-        this.users.save()
+        this.users.save();
         return true;
     }
 
