@@ -51,6 +51,8 @@ class CustomClient extends Client {
 
         this.mineflayer = this.config.mineflayer;
 
+        this.commandData = [];
+
         this.userdb = new UsersDatabase();
         this.settingsdb = new SettingsDatabase();
         
@@ -278,6 +280,7 @@ interface CustomClient {
     settingsdb: SettingsDatabase;
     prefix: string;
     token: string;
+    commandData: string[];
     adminUsers: string[] | null;
     mineflayer: any;
     config: any;

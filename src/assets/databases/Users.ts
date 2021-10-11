@@ -1,3 +1,4 @@
+  
 import Database from "./Database";
 import IUser from "../interfaces/User";
 import { GuildMember } from "discord.js";
@@ -12,12 +13,12 @@ class UsersDatabase extends Database {
 
     addUser(user: GuildMember, ign: string): Promise<boolean> {
         return new Promise((res, rej) => {
-            if (this.getUser(user.id) || this.getUser(ign) ) rej(false);
+            if (this.getUser(user.id, "discordID") || this.getUser(ign, "ign") ) return rej(false);
 
-            const userData = {
+            const userData: IUser = {
                 discordID: user.id,
                 discordTag: user.user.tag,
-                ign: ign,
+                ign: ign.toLowerCase(),
                 paypal: "none",
                 rank: "recruit",
                 checks: {
@@ -38,44 +39,40 @@ class UsersDatabase extends Database {
         }) 
     }
 
-    removeUser(findBy: string) {
-        const index = this.users.getIndex("/users", findBy);
-        return this.users.delete(`/users[${index}]`);
+    removeUser(findBy: string, property: string): void {
+        return this.users.delete(`/users[${this.users.getIndex("/users", findBy, property)}]`);
     }
 
-    removeAll() {
-        Array.from(this.listUsers()).map(() => {
-            this.users.delete(`/users[${0}]`);
-        });
-        return true;
+    removeAll(): void {
+        Array.from(this.listUsers()).map(() => this.users.delete(`/users[${0}]`));
     }
 
-    getUser(findBy: string): number {
-        const index = this.users.getIndex("/users", findBy);
-        return this.users.getData(`/users[${index}]`);
+    getUser(findBy: string, property: string): IUser | null {
+        const index = this.users.getIndex("/users", findBy, property);
+        if (index === -1) return null;
+        return this.users.getObject<IUser>(`/users[${index}]`);
     }
 
-    updateUser(findBy: GuildMember | string, field: string, subfield: string, value: any) {
-        let user: string;
-        //@ts-ignore
-        if(findBy.id) user = this.getUser(`${findBy}`);
-        //@ts-ignore
-        else user = this.getUser(findBy);
-        //@ts-ignore
-        if(subfield !== "") user[field][subfield] = value;
-        else user[field] = value;
-        this.users.save();
-        return true;
+    updateUser(findBy: string, property: string, field: string, value: any): void {
+        const user: IUser | null = this.getUser(findBy, property);
+        if (!user) return;
+
+        if(user[field] != undefined) {
+            user[field] = value;
+            this.users.save();
+            return;
+        }
+
+        for (let type in user) if(user[type][field] != undefined) {
+            user[type][field] = value;
+            this.users.save()
+            return;
+        }
     }
 
-    resetUser(findBy: GuildMember | string) {
-        let user: string;
-        //@ts-ignore
-        if(findBy.id) user = this.getUser(`${findBy}`);
-        //@ts-ignore
-        else user = this.getUser(findBy);
-
-        //@ts-ignore
+    resetUser(findBy: string, property: string): void {
+        const user = this.getUser(findBy, property);
+        if (!user) return;
         user["checks"]["wallChecks"] = 0;
         user["checks"]["bufferChecks"] = 0;
         user["checks"]["lastWallChecked"] = 0;
@@ -83,11 +80,9 @@ class UsersDatabase extends Database {
         user["money"]["deposits"] = 0;
         user["money"]["withdraws"] = 0;
         user["money"]["balance"] = 0;
-        this.users.save();
-        return true;
     }
 
-    resetAll() {
+    resetAll(): void {
         Array.from(this.listUsers()).map((user) => {
             user["checks"]["wallChecks"] = 0;
             user["checks"]["bufferChecks"] = 0;
@@ -96,13 +91,11 @@ class UsersDatabase extends Database {
             user["money"]["deposits"] = 0;
             user["money"]["withdraws"] = 0;
             user["money"]["balance"] = 0;
-            this.users.save();
         })
-        return true;
     }
 
-    listUsers(): Array<IUser> {
-        return this.users.getData("/users");
+    listUsers(): IUser[] {
+        return this.users.getObject("/users");
     }
     
     countUsers(): number {

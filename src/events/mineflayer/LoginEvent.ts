@@ -1,6 +1,6 @@
-import { Bot } from "mineflayer";
 import Event from "../../assets/classes/Event";
 import CustomClient from "../../assets/classes/Client";
+import { Bot } from "mineflayer";
 
 export default class LoginEvent extends Event {
     constructor(client: CustomClient, bot: Bot) {

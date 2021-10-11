@@ -1,0 +1,1 @@
+export type RankString = "recruit" | "member" | "mod" | "coleader" | "leader";

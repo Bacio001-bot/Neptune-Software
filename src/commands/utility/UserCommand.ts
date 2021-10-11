@@ -24,6 +24,6 @@ export default class UserCommand extends Command {
     }
 
     execute(message: Message): void {
-        message.channel.send("user info command thing")
+        message.channel.send("user info command thing");
     }
 }

@@ -1,4 +1,5 @@
 import { PermissionString } from "discord.js";
+import { RankString } from "./Types";
 
 export default interface ICommand {
     name: string;
@@ -13,6 +14,7 @@ export default interface ICommand {
         args: { min: number, max: number };
         userPermissions?: PermissionString[];
         clientPermissions?: PermissionString[];
+        ingamePermissions?: RankString[];
         guildOnly: boolean;
     }
 }

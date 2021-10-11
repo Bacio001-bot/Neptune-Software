@@ -1,6 +1,6 @@
 import Event from "../../assets/classes/Event";
-import { Bot } from "mineflayer";
 import CustomClient from "../../assets/classes/Client";
+import { Bot } from "mineflayer";
 
 export default class DeathEvent extends Event {
     constructor(client: CustomClient, bot: Bot) {

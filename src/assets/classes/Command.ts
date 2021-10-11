@@ -16,6 +16,7 @@ class Command {
     settingsdb: SettingsDatabase;
     help: object;
     ranMessage: string;
+    username: string;
     cooldown: Set<string>;
 
     constructor(client: CustomClient, bot: Bot, options: ICommand) {
@@ -29,6 +30,7 @@ class Command {
         this.settingsdb = this.client.settingsdb;
 
         this.ranMessage = "";
+        this.username = "";
         
         this.help = {
             name: options.name,
@@ -36,11 +38,13 @@ class Command {
             arguments: options.arguments || "None",
             example: options.example || options.name,
             category: options.category || "xenon",
+            type: options.type || "discord",
             deleteMessage: options.deleteMessage || false,
             guildOnly: options.requirements.guildOnly,
             reqArgs: options.requirements.args,
             userPermissions: options.requirements.userPermissions || ["SEND_MESSAGES"],
-            clientPermissions: options.requirements.clientPermissions || ["SEND_MESSAGES"]
+            clientPermissions: options.requirements.clientPermissions || ["SEND_MESSAGES"],
+            ingamePermissions: options.requirements.ingamePermissions || ["recruit"]
         }
 
         this.cooldown = new Set();
@@ -61,6 +65,14 @@ class Command {
     
     getMessage(): string {
         return this.ranMessage;
+    }
+
+    setUsername(username: string): string {
+        return this.username = username;
+    }
+
+    getUsername(): string {
+        return this.username;
     }
 }
 

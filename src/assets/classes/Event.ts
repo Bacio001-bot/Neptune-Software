@@ -2,6 +2,7 @@ import { Bot } from "mineflayer";
 import Logger from "../helpers/Logger";
 import UserDatabase from "../databases/Users";
 import CustomClient from "./Client";
+import SettingsDatabase from "../databases/Settings";
 
 class Event {
     constructor(client: CustomClient, bot: Bot, type: "on" | "once", name: string) {
@@ -13,6 +14,7 @@ class Event {
         this.discord = this.client.config.discord;
 
         this.userdb = this.client.userdb;
+        this.settingsdb = this.client.settingsdb;
 
         this.type = type;
         this.name = name;
@@ -29,7 +31,7 @@ class Event {
     }
 
     _run(...args: any): void {
-        for (let handler of this.handlers) if (handler.filter(...args)) handler.run(this.client, ...args);
+        for (let handler of this.handlers) if (handler.filter(...args)) handler.run(this.client, this.bot, ...args);
         // @ts-ignore
         this.execute(...args);
     }
@@ -41,6 +43,7 @@ interface Event {
     bot: Bot;
     logger: Logger;
     userdb: UserDatabase;
+    settingsdb: SettingsDatabase;
     type: string;
     name: string;
     handlers: { filter: Function, run: Function }[];
