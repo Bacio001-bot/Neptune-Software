@@ -4,7 +4,7 @@ import { Bot } from "mineflayer";
 
 export default class ChatEvent extends Event {
     constructor(client: CustomClient, bot: Bot) {
-        super(client, bot, "on", "chat");
+        super(client, bot, "on", "message");
 
         this.addHandler("minecraftHandler", (username: string, message: string): boolean => {
             let run = true;

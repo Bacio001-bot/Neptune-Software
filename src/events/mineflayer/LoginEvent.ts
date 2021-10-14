@@ -7,7 +7,10 @@ export default class LoginEvent extends Event {
         super(client, bot, "once", "login");
     }
 
-    execute() {
+    /**
+     * @returns {void}
+     */
+    execute(): void {
         this.bot.settings.viewDistance = "tiny";
         this.bot.settings.colorsEnabled = false;
 

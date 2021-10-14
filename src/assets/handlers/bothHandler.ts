@@ -62,7 +62,6 @@ export default (client: CustomClient, bot: Bot, username: any, message: string):
         })
         
         if (!command) return;
-        console.log("ran mineflayer handler")
                                 
         if (command.help.reqArgs) {
             const { min, max } = command.help.reqArgs;

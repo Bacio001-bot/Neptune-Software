@@ -37,9 +37,12 @@ export default (client: CustomClient, bot: Bot, message: Message): void => {
 
     if (command.cooldown.has(message.author.id)) return;
 
+    client.commandData = [];
+
     try {
         command.setMessage(message);
         command.execute(message, args);
+        client.commandData = [];
     } catch (error) {
         console.log(error);
     }

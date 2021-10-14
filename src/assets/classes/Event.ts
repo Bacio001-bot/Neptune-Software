@@ -1,11 +1,12 @@
-import { Bot } from "mineflayer";
 import Logger from "../helpers/Logger";
 import UserDatabase from "../databases/Users";
 import CustomClient from "./Client";
 import SettingsDatabase from "../databases/Settings";
-
+import { Bot } from "mineflayer";
+import { ClientEventString, BotEventString } from "../interfaces/Types";
+ 
 class Event {
-    constructor(client: CustomClient, bot: Bot, type: "on" | "once", name: string) {
+    constructor(client: CustomClient, bot: Bot, type: "on" | "once", name: ClientEventString | BotEventString) {
         this.client = client;
         this.bot = bot;
         this.logger = this.client.logger;

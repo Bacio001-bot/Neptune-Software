@@ -15,7 +15,7 @@ export default class TestCommand extends Command {
             deleteMessage: true,
             cooldown: true,
             requirements: {
-                args: { min: 0, max: 0 },
+                args: { min: 1, max: 1 },
                 userPermissions: ["SEND_MESSAGES"],
                 clientPermissions: ["SEND_MESSAGES"],
                 ingamePermissions: ["recruit", "member"],
@@ -25,8 +25,7 @@ export default class TestCommand extends Command {
     }
 
     execute(message: any, args: string[], username: string): void {
-        console.log("ran command")
-        if (!message.author) this.bot.chat("ran");
-        else message.channel.send("ran")
+            
+        
     }
 }

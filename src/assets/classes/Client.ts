@@ -125,7 +125,7 @@ class CustomClient extends Client {
             categories.forEach(async (cat: string) => {
                 
                 fs.readdir(`${process.cwd()}/build/commands/${cat}`, async (err, files) => {
-                    if (err) throw err;
+                    if (err) reject(err);
 
                     files.forEach(async f => {
                         if (!(f.split(".").pop() === "js") || f.endsWith("d.ts")) return;

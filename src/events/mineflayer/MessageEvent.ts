@@ -6,8 +6,12 @@ export default class MessageEvent extends Event {
     constructor(client: CustomClient, bot: Bot) {
         super(client, bot, "on", "message");
     }
-
-    execute(message: any) {
+    /**
+     * @param {any} message
+     * TODO: Fix commandData to only push command response message
+     * @returns {void}
+     */
+    execute(message: any): void {
         
         const chat = message
             .toString()
