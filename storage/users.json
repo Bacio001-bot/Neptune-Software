@@ -1,21 +1,43 @@
 {
     "users": [
         {
-            "discordID": "804462623768707103",
-            "discordTag": "WhatWalls#1111",
-            "ign": "whatwalls",
-            "paypal": "zapdev.co@gmail.com",
-            "rank": "recruit",
-            "checks": {
-                "wallChecks": 0,
-                "bufferChecks": 0,
-                "lastWallChecked": 0,
-                "lastBufferChecked": 0
-            },
-            "money": {
-                "deposits": 0,
-                "withdraws": 0,
-                "balance": 0
+            "discordID": "173347297181040640",
+            "discordTag": "Bacio001#2484",
+            "discordName": "Bacio001",
+            "verifyCode": "NULL",
+            "tickets": {
+                "openTickets": 1,
+                "closedTickets": 14
+            }
+        },
+        {
+            "discordID": "681637554889555976",
+            "discordTag": "!IGNLuuk#0001",
+            "discordName": "!IGNLuuk",
+            "verifyCode": "NULL",
+            "tickets": {
+                "openTickets": -1,
+                "closedTickets": 2
+            }
+        },
+        {
+            "discordID": "435354879087869952",
+            "discordTag": "ABC#9606",
+            "discordName": "ABC",
+            "verifyCode": "146389",
+            "tickets": {
+                "openTickets": 0,
+                "closedTickets": 0
+            }
+        },
+        {
+            "discordID": "799619366370672661",
+            "discordTag": "NJWF1#5435",
+            "discordName": "NJWF1",
+            "verifyCode": "NULL",
+            "tickets": {
+                "openTickets": 0,
+                "closedTickets": 4
             }
         }
     ]

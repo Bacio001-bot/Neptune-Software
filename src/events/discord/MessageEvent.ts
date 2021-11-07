@@ -5,10 +5,15 @@ import CustomClient from "../../assets/classes/Client";
 
 export default class MessageEvent extends Event {
     constructor(client: CustomClient, bot: Bot) {
-        super(client, bot, "on", "messageCreate");
+        super(client, "on", "messageCreate");
 
         this.addHandler("discordHandler", (message: Message): boolean => {
             let run = true;
+
+            let result = this.userdb.getUser(message.author.id, "discordID");
+            if(!result && message.member && !message.author.bot) {
+                this.userdb.addUser(message.member, 'NULL');
+            }
 
             const args = message.content.split(/\s+/g);
 
@@ -16,7 +21,7 @@ export default class MessageEvent extends Event {
         
             if (!cmd) return false;
         
-            let command = client.commands.get(cmd);
+            let command = client.getCommand(cmd);
 
             if (!command) return false;
 
@@ -37,7 +42,7 @@ export default class MessageEvent extends Event {
         
             if (!cmd) return false;
         
-            let command = client.commands.get(cmd);
+            let command = client.getCommand(cmd);
 
             if (!command) return false;
 

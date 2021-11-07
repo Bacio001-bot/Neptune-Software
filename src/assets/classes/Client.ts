@@ -2,13 +2,15 @@ import {
     Client, 
     Collection, 
     GuildMember, 
-    Channel, 
+    TextChannel,
+    CategoryChannel,
     ThreadChannel, 
     Role, 
-    Message
+    Message,
+    Guild,
+    MessageEmbed
 } from "discord.js";
-import { JsonDB } from "node-json-db";
-import { createBot, Bot } from "mineflayer";
+import PlaceHolder from "../helpers/Placeholder";
 import { load } from "js-yaml";
 import fs from "fs";
 import Messages from "../helpers/Messages";
@@ -18,104 +20,57 @@ import Event from "./Event";
 import Interaction from "./Interaction";
 import UsersDatabase from "../databases/Users";
 import SettingsDatabase from "../databases/Settings";
+import BundlesDatabase from "../databases/Bundels";
+import Placeholder from "../helpers/Placeholder";
+
 
 class CustomClient extends Client {
     constructor() {
         super({
             intents: [
-                "DIRECT_MESSAGES",
-                "GUILDS",
-                "GUILD_MEMBERS",
-                "GUILD_MESSAGES",
-                "GUILD_PRESENCES",
-                "GUILD_BANS",
-                "GUILD_MESSAGE_REACTIONS",
-                "DIRECT_MESSAGE_REACTIONS",
-                "GUILD_MESSAGE_TYPING",
-                "GUILD_WEBHOOKS",
-                "GUILD_INTEGRATIONS",
-                "GUILD_PRESENCES",
-                "GUILD_INVITES"
+                'GUILDS',
+                'GUILD_MEMBERS',
+                'GUILD_BANS',
+                'GUILD_EMOJIS_AND_STICKERS',
+                'GUILD_INTEGRATIONS',
+                'GUILD_WEBHOOKS',
+                'GUILD_INVITES',
+                'GUILD_VOICE_STATES',
+                'GUILD_PRESENCES',
+                'GUILD_MESSAGES',
+                'GUILD_MESSAGE_REACTIONS',
+                'GUILD_MESSAGE_TYPING',
+                'DIRECT_MESSAGES',
+                'DIRECT_MESSAGE_REACTIONS',
+                'DIRECT_MESSAGE_TYPING'
+                
             ]
         });
         
         this.commands = new Collection();
         this.interactions = new Collection();
+        this.buttons = new Collection();
+        this.menus = new Collection();
 
         this.logger = new Logger(this);
         this.messages = new Messages(this);
 
+        this.userdb = new UsersDatabase();
+        this.bundledb = new BundlesDatabase();
+        this.placeholder = new PlaceHolder(this);
         this.config = this.loadYaml(`${process.cwd()}/config/config.yml`);
         this.l = this.loadYaml(`${process.cwd()}/config/lang.yml`);
         this.cmds = this.loadYaml(`${process.cwd()}/config/commands.yml`);
 
-        this.mineflayer = this.config.mineflayer;
-
         this.commandData = [];
-
-        this.userdb = new UsersDatabase();
-        this.settingsdb = new SettingsDatabase();
         
         this.prefix = this.config.discord.bot.prefix;
         this.token = this.config.discord.bot.token;
         this.adminUsers = this.config.discord.bot.admin_users;
 
-        const auth = this.config.minecraft.bot.auth;
-
-        this.bot = createBot({
-            host: this.config.minecraft.bot.server_ip,
-            port: 25565,
-            username: this.config.minecraft.bot.username,
-            password: this.config.minecraft.bot.password,
-            auth: (auth !== "microsoft" && auth !== "mojang") ? "mojang" : "mojang",
-            version: "1.8.8"
-        })
     }
 
     loadYaml(filePath: string): any { return load(fs.readFileSync(`${filePath}`, 'utf-8')); }
-
-    loadInteractions(): void {
-        const categories: any = [];
-        fs.readdirSync(`${process.cwd()}/build/interactions`).forEach(file => categories.push(file));
-
-        categories.forEach(async cat => { 
-            fs.readdir(`${process.cwd()}/build/interactions/${cat}`, async (err, interactionFiles) => {
-                if (err) throw err;
-
-                interactionFiles.forEach(async f => {
-                    if (!(f.split(".").pop() === "js")) return;
-
-                    const settings: Interaction = new (await import(`${process.cwd()}/build/interactions/${cat}/${f}`)).default();
-                    const interactionName = f.split(".")[0];
-
-                    // @ts-ignore
-                    settings.name = interactionName;
-
-                    // @ts-ignore
-                    this.interactions.set(`${cat}/${interactionName}`, settings);
-                    
-                })
-
-            })
-        })
-
-        this.on("interactionCreate", async (interaction) => {
-            if (interaction.isButton()) {
-                const module = this.interactions.get(interaction.customId);
-                if (!module) return;
-
-                try { await module.execute(interaction) } catch (e) { console.log(e) }
-            }
-
-            if (interaction.isSelectMenu()) {
-                const value = interaction.values.toString();
-                const module = this.interactions.get(value);
-                if (!module) return;
-
-                try { await module.execute(interaction) } catch (e) { console.log(e) }
-            }
-        })
-    }
 
     loadCommands(): Promise<Collection<string, any>> {
         return new Promise<Collection<string, any>>((resolve, reject) => {
@@ -129,8 +84,8 @@ class CustomClient extends Client {
 
                     files.forEach(async f => {
                         if (!(f.split(".").pop() === "js") || f.endsWith("d.ts")) return;
-                        const settings: Command = new (await import(`${process.cwd()}/build/commands/${cat}/${f}`)).default(this, this.bot);
-    
+                        const settings: Command = new (await import(`${process.cwd()}/build/commands/${cat}/${f}`)).default(this);
+
                         // @ts-ignore
                         const commandName = settings.help.name;
                         // @ts-ignore
@@ -140,7 +95,7 @@ class CustomClient extends Client {
                         // @ts-ignore
                         settings.category =  settings.category || cat;
                         // @ts-ignore
-                        if (this.cmds[commandName] && cat !== "xenon") {
+                        if (this.cmds[commandName] && cat !== "ace") {
                             // @ts-ignore
                             if (this.cmds[commandName].permissions) this.cmds[commandName].permissions.forEach(perm => settings.permissions.push(perm));
                             // @ts-ignore
@@ -157,11 +112,40 @@ class CustomClient extends Client {
         })
     }
 
-    async loadEvents(type: "discord" | "mineflayer"): Promise<void> {
-        if (type === "discord") {
+    loadInteractions(): Promise<Collection<string, any>> {
+        return new Promise<Collection<string, any>>((resolve, reject) => {
+            const categories: string[] = [];
+            fs.readdirSync(`${process.cwd()}/build/interactions/buttons`).forEach(file => categories.push(file));
+
+            categories.forEach(async (cat: string) => {
+                
+                fs.readdir(`${process.cwd()}/build/interactions/buttons/${cat}`, async (err, files) => {
+                    if (err) reject(err);
+
+                    files.forEach(async f => {
+                        if (!(f.split(".").pop() === "js") || f.endsWith("d.ts")) return;
+                        const settings: Interaction = new (await import(`${process.cwd()}/build/interactions/buttons/${cat}/${f}`)).default(this);
+
+                        // @ts-ignore
+                        const buttonName = settings.help.name;
+
+                        // @ts-ignore
+                        settings.permissions = [];
+                        // @ts-ignore
+                        settings.category =  settings.category || cat;
+                        // @ts-ignore
+                         this.buttons.set(buttonName, settings);
+                        })
+                })
+            })
+            return resolve(this.buttons);
+        })
+    }
+
+    async loadEvents(): Promise<void> {
             const eventFiles = fs.readdirSync(`${process.cwd()}/build/events/discord`).filter(file => file.endsWith('.js'));
             for (const file of eventFiles) {
-                const event: Event = new (await import(`${process.cwd()}/build/events/discord/${file}`)).default(this, this.bot);
+                const event: Event = new (await import(`${process.cwd()}/build/events/discord/${file}`)).default(this);
                 if (event.name !== undefined) {
                     // @ts-ignore
                     if (event.type === "on") this.on(event.name, (...args: any) => event._run(...args));
@@ -170,67 +154,64 @@ class CustomClient extends Client {
                     this.logger.logEvent(`Successfully Loaded: ${event.name}`);
                 }
             }
-        } else {
-            const eventFiles = fs.readdirSync(`${process.cwd()}/build/events/mineflayer/`).filter(file => file.endsWith('.js'));
-            for (const file of eventFiles) {
-                const event: Event = new (await import(`${process.cwd()}/build/events/mineflayer/${file}`)).default(this, this.bot);
-                if (event.name !== undefined) {
-                    // @ts-ignore
-                    if (event.type === "on") this.bot.on(event.name, (...args: any) => event._run(...args));
-                    // @ts-ignore
-                    else this.bot.once(event.name, (...args: any) => event._run(...args));
-                    this.logger.logEvent(`Successfully Loaded: ${event.name}`);
-                }
-            }
-        }
+
     }
 
     checkPermissions(command: string, message: Message): boolean {
-        const cmd = this.getCommand(command);
-        const settings = this.cmds[cmd.help.name];
+        const cmd = this.getCommand(command) || this.getButtons(command) 
 
         if (!cmd) return false;
 
-        const roles: any = [];
-
         let hasPerms: boolean = false;
 
-        if (!settings) roles.push(this.getRole("@everyone"));
-        else if (settings.permissions) { 
-            settings.permissions.forEach(role => {
-                if (!this.getRole(role)) return;
-                roles.push(this.getRole(role));
-            })
-        } else roles.push(this.getRole("@everyone"));
+        if (cmd.help.userPermissions) if (message.member?.permissions.has(cmd.help.userPermissions)) hasPerms = true;
 
-        roles.forEach(role => {
-            if (message.member?.roles.cache.find(r => r.id === role.id)) hasPerms = true
-        })
-
-        if (this.adminUsers && this.adminUsers.includes(message.author.id)) hasPerms = true; 
+        if (this.adminUsers && this.adminUsers.includes(message.member?.id || message.author.id)) hasPerms = true; 
 
         return hasPerms;
+    }
+
+    getGuild(): Guild | undefined {
+        this.config = this.loadYaml(`${process.cwd()}/config/config.yml`);
+        return this.guilds.cache.get(this.config.discord.bot.serverID);
     }
 
     getCommand(command: string): any {
         let cmd: any = this.commands.get(command);
 
-        if (!command) this.commands.forEach(com => {
+        if (!cmd) this.commands.forEach(com => {
             if (com.help.name != undefined) if (com.aliases.includes(command)) cmd = this.commands.get(com.help.name);
         })
 
         return cmd;
     }
 
-    getChannel(find: any): Channel | ThreadChannel | null {
+    getButtons(button: string): any {
+        let btn: any = this.buttons.get(button);
+
+        if (!btn) this.buttons.forEach(bt => {
+            if (bt.help.name != undefined) btn = this.commands.get(bt.help.name);
+        })
+
+        return btn;
+    }
+
+    getCategory(find: any): CategoryChannel | null {
+        const guild = this.guilds.cache.get(this.config.discord.bot.serverID);
+        let ch = guild?.channels.cache.find(ch => ch.name === find && ch.type == "GUILD_CATEGORY");
+        if (ch) return (ch as CategoryChannel);
+        return null;
+    } 
+
+    getChannel(find: any): TextChannel | ThreadChannel | null {
         const guild = this.guilds.cache.get(this.config.discord.bot.serverID);
         let ch = guild?.channels.cache.find(ch => ch.name === find) || this.channels.cache.get(find);
-        if (ch) return ch;
+        if (ch) return (ch as TextChannel);
         return null;
     } 
 
     getRole(find: any): Role | null {
-        const guild = this.guilds.cache.get(this.config.discord.bot.serverID);
+        const guild = this.getGuild();
 
         let role: Role | undefined = 
         guild?.roles.cache.find(rl => rl.name.toLowerCase() === find.toLowerCase()) || 
@@ -242,7 +223,7 @@ class CustomClient extends Client {
     }
 
     getUser(find: any): GuildMember | null {
-        const guild = this.guilds.cache.get(this.config.discord.bot.serverID);
+        const guild = this.getGuild();
 
         let member = 
         guild?.members.cache.get(find) || guild?.members.cache.find(m => m.user.username.toLowerCase().includes(find.toLowerCase())) ||
@@ -263,29 +244,36 @@ class CustomClient extends Client {
     }
 
     start(): void {
-        this.loadCommands()
-        this.loadEvents("discord");
-        this.loadEvents("mineflayer");
+        this.loadCommands();
+        this.loadEvents();
+        this.loadInteractions();
         this.login(this.token);
     }
 }
 
 interface CustomClient {
-    bot: Bot;
     logger: Logger;
     messages: Messages;
     commands: Collection<string, any>;
+    buttons: Collection<string, any>;
+    menus: Collection<string, any>;
     interactions: Collection<string, any>;
     userdb: UsersDatabase;
     settingsdb: SettingsDatabase;
+    embed: MessageEmbed;
+    placeholder: PlaceHolder;
+    replace: (message: string, user: GuildMember | null, author: GuildMember | null, player: string | null) => string;
     prefix: string;
     token: string;
     commandData: string[];
+    commandExecuted: boolean;
     adminUsers: string[] | null;
     mineflayer: any;
     config: any;
     l: any;
     cmds: any;
+    bundledb: BundlesDatabase;
+
 }
 
 export default CustomClient;

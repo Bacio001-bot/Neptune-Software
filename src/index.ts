@@ -1,5 +1,4 @@
 import CustomClient from "./assets/classes/Client";
-const client = new CustomClient();
+const client = new CustomClient().start(); 
 
-client.start()
 

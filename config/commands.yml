@@ -1,10 +1,135 @@
 
-help:
+ticketpanel:
   enabled: true 
-  permissions: ["@everyone"]
-  aliases: ["bothelp"]
+  permissions: ["*"]
+  aliases: ["tpanel"]
 
-userinfo:
+rolepanel:
+  enabled: true 
+  permissions: ["*"]
+  aliases: ["rpanel"]
+
+ban:
+  enabled: true 
+  permissions: ["*"]
+  aliases: ["banish"]
+
+kick:
+  enabled: true 
+  permissions: ["*"]
+  aliases: ["bye"]
+
+mute:
+  enabled: true 
+  permissions: ["*"]
+  aliases: ["silence", "stfu"]
+
+unban:
+  enabled: true 
+  permissions: ["*"]
+  aliases: ["uban"]
+
+slowmode:
+  enabled: true 
+  permissions: ["*"]
+  aliases: ["sm"]
+
+promote:
+  enabled: true 
+  permissions: ["*"]
+  aliases: []
+
+assign:
+  enabled: true 
+  permissions: ["*"]
+  aliases: ["giverole", "grole", "addrole", "arole"]
+
+unassign:
+  enabled: true 
+  permissions: ["*"]
+  aliases: ["takerole", "trole", "removerole", "rrole"]
+
+serverinfo:
   enabled: true 
   permissions: ["@everyone"]
-  aliases: ["uinfo"]
+  aliases: ["sinfo"]
+
+verify:
+  enabled: true
+  permissions: ["@everyone"]
+  aliases: []
+
+bundleadd:
+  enabled: true
+  permissions: ["*"]
+  aliases: ["bunadd", "badd"]
+
+bundleremove:
+  enabled: true
+  permissions: ["*"]
+  aliases: ["bunremove", "bremove"]
+
+bundlequeue:
+  enabled: true
+  permissions: ["*"]
+  aliases: ["bunqueue", "bqueue"]
+
+bundlefinished:
+  enabled: true
+  permissions: ["*"]
+  aliases: ["bunfinished", "bfinished", "bdone", "bundone", "bunlist", "blist"]
+
+bundlegiven:
+  enabled: true
+  permissions: ["*"]
+  aliases: ["bungiven", "bgiven", "bungive", "bgive"]
+
+bundletaken:
+  enabled: true
+  permissions: ["*"]
+  aliases: ["buntaken", "btaken", "buntake", "btake"]
+
+embed:
+  enabled: true
+  permissions: ["*"]
+  aliases: ["say"]
+
+avatar:
+  enabled: true
+  permissions: ["@everyone"]
+  aliases: ["profilepic", "pic", "picture"]
+
+invites:
+  enabled: true 
+  permissions: ["@everyone"]
+  aliases: []
+
+invite:
+  enabled: true 
+  permissions: ["@everyone"]
+  aliases: []
+
+invitetop:
+  enabled: true
+  permissions: ["@everyone"]
+  aliases: []
+
+test:
+  enabled: true
+  permissions: ["@everyone"]
+  aliases: []
+
+ticketlog:
+  enabled: true
+  permissions: ["*"]
+  aliases: ["tlog"]
+
+ticketlist:
+  enabled: true
+  permissions: ["@everyone"]
+  aliases: ["tlist"]
+
+ticketdelete:
+  enabled: true
+  permissions: ["*"]
+  aliases: ["tdelete"]

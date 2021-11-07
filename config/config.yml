@@ -1,15 +1,92 @@
-minecraft:
-  bot: 
-    server_ip: "pvp.thearchon.net" 
-    username: "davmill415@icloud.com"  
-    password: "Navid415" 
-    auth: "mojang" 
-
 discord:
+  error:
+    dms_disabled_channel: "general" #Use this channel if dm's disabled by user
   bot:
-    token: "NzcxMTc0NDQ4NzU3NjA0Mzcy.X5oSLA.xmPfrgbn4cMDW7Ip1qlW44UB_a4"
-    prefix: ";"
+    token: "ODUxMTI5NzY2Mjk5MDQxODAy.YLzyXQ.4YI2yAoSgVBqJWnbuv8_OBLe9xM"
+    prefix: "s!"
     cooldown: "5" 
-    serverID: "822160519891910687"
+    serverID: "848553984988938271"
     admin_users:
-      - "804462623768707103"
+      - "173347297181040640"
+  embed:
+    color: "#FFD700"
+    footer: "This is my Footer"
+
+moderation:
+  mute:
+    role: "muted"
+  promotion:
+    roles: #Make sure all the roles are below the bot role NOTE: Roles are sorted Highest to lowest - Top role in list is Top role
+      - "milestone 1"
+      - "milestone 2"
+      - "milestone 3"
+
+role:
+  select: #Roles that can be selected with the select command
+    #TIP: If you want to have multiple select option messages you can run the command and refresh the options below and rerun
+    enabled: true
+    options: #Format (Emoji - Role_Name - Description)
+      - ["1️⃣", "milestone 1", "Get access to this game"]
+      - ["2️⃣", "milestone 2", "Get access to that game"]
+  auto: #Role that will be given on joining the server
+    enabled: true
+    name: "new role" 
+
+ticket:
+  enabled: true
+  log_channel: "logs"
+  user_transcript_enabled: true
+  categories: #Format (Emoji - Category_Lable - Guild_Category (Make sure they exist in the guild))
+    - ["👍", "First Category", "tickets"]
+    - ["💥", "Second Category", "tickets"]
+
+bundles:
+  enabled: true
+  names:
+    - "bundle1"
+    - "bundle2"
+    - "bundle3"
+  channel: "logs"
+
+member_join:
+  verify:
+    enabled: true
+    role: "Friends"
+  age:
+    enabled: true
+    required_days: "1d" #Days required for a account to be or gets kicked if not format (1s, 1m, 1d, 1w, 1M, 1y)
+  welcome: 
+    enabled: true
+    channel: "general"
+    text: "Welcome %MEMBER_MENTION% \n Questions: <#848553985538261016> \n Information: <#856523315438813184> \n Reviews: <#883759807251746927>  \n\n%MEMBER_USERNAME% we hope that you will have a great time in our server, `%GUILD_NAME%` This text is fully customizable to your liking!!"
+    memberCount: true
+    mentionUser: true
+
+logging:
+  voice:
+    enabled: true
+    channel: "logs"
+  role:
+    enabled: true
+    channel: "logs"
+  ban:
+    enabled: true
+    channel: "logs"
+  left:
+    enabled: true
+    channel: "logs"
+  join:
+    enabled: true
+    channel: "logs"
+  emoji:
+    enabled: true
+    channel: "logs"
+  boost:
+    enabled: true
+    channel: "logs"
+  ticket:
+    enabled: true
+    channel: "logs"
+  error:
+    enabled: true
+    channel: "logs"

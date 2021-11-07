@@ -1,32 +1,29 @@
+import IInteraction from "../interfaces/IInteraction";
 import CustomClient from "./Client";
+import Messages from "../helpers/Messages";
+import UserDatabase from "../databases/Users";
 
 class Interaction {
-    client: CustomClient;
-    name: string;
-    handlers: { filter: Function, run: Function }[];
 
-    constructor(client: CustomClient, name: string) {
+    constructor(client: CustomClient, options: IInteraction) {
+        
         this.client = client; 
-        this.name = name;
-        this.handlers = [];
+        this.messages = this.client.messages;
+        this.userdb = this.client.userdb;
+        this.help = {
+            name: options.name,
+            userPermissions: options.requirements.userPermissions || ["SEND_MESSAGES"],
+            clientPermissions: options.requirements.clientPermissions || ["SEND_MESSAGES"],
+        }
     }
-    
+}
 
-    async addHandler(name: string, filter: Function): Promise<void> {
-        this.handlers.push({
-            filter: filter,
-            run: (await import(`../handlers/${name}`)).default
-        })
+interface Interaction {
+    client: CustomClient;
+    help: object;
+    messages: Messages;
+    userdb: UserDatabase;
 
-        this.client.getCommand("help").aliases
-        return;
-    }
-
-    _run(...args: any): void {
-        for (let handler of this.handlers) if (handler.filter(...args)) handler.run(this.client, ...args);
-        // @ts-ignore
-        this.execute(...args);
-    }
 }
 
 export default Interaction;

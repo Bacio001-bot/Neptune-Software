@@ -38,17 +38,17 @@ class Logger {
     logo(): void {
         console.log(
 
-            chalk.black ("-----------------------------------------------------------------------\n"),
-            chalk.blueBright("██╗  ██╗███████╗███╗   ██╗ ██████╗ ███╗   ██╗   "),chalk.white ("  ██████╗ ███████╗██╗   ██╗\n"),
-            chalk.blueBright("╚██╗██╔╝██╔════╝████╗  ██║██╔═══██╗████╗  ██║   "),chalk.white ("  ██╔══██╗██╔════╝██║   ██║\n"),
-            chalk.blueBright(" ╚███╔╝ █████╗  ██╔██╗ ██║██║   ██║██╔██╗ ██║   "),chalk.white ("  ██║  ██║█████╗  ██║   ██║\n"),
-            chalk.blueBright(" ██╔██╗ ██╔══╝  ██║╚██╗██║██║   ██║██║╚██╗██║   "),chalk.white ("  ██║  ██║██╔══╝  ╚██╗ ██╔╝\n"),
-            chalk.blueBright("██╔╝ ██╗███████╗██║ ╚████║╚██████╔╝██║ ╚████║   "),chalk.white ("  ██████╔╝███████╗ ╚████╔╝ \n"),
-            chalk.blueBright("╚═╝  ╚═╝╚══════╝╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═══╝   "),chalk.white (" ╚═════╝ ╚══════╝  ╚═══╝  \n"),
-            chalk.gray("\n[»] "),chalk.bold("Xenon Faction Bot V3"),
+            chalk.black ("-------------------------------------------------------------------------------------------------------------------\n"),
+            chalk.blueBright(" █████╗  ██████╗███████╗  "),chalk.white ("   ███████╗███████╗██████╗ ██╗   ██╗██╗ ██████╗███████╗███████╗\n"),
+            chalk.blueBright("██╔══██╗██╔════╝██╔════╝  "),chalk.white ("   ██╔════╝██╔════╝██╔══██╗██║   ██║██║██╔════╝██╔════╝██╔════╝\n"),
+            chalk.blueBright("███████║██║     █████╗    "),chalk.white ("   ███████╗█████╗  ██████╔╝██║   ██║██║██║     █████╗  ███████╗\n"),
+            chalk.blueBright("██╔══██║██║     ██╔══╝    "),chalk.white ("   ╚════██║██╔══╝  ██╔══██╗╚██╗ ██╔╝██║██║     ██╔══╝  ╚════██║\n"),
+            chalk.blueBright("██║  ██║╚██████╗███████╗  "),chalk.white ("   ███████║███████╗██║  ██║ ╚████╔╝ ██║╚██████╗███████╗███████║\n"),
+            chalk.blueBright("╚═╝  ╚═╝ ╚═════╝╚══════╝  "),chalk.white ("   ╚══════╝╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚═╝ ╚═════╝╚══════╝╚══════╝\n"),
+            chalk.gray("\n[»] "),chalk.bold("Ace Services Server Bot V1"),
             chalk.gray("\n[»] "),chalk.bold(`Config contents validated`),
-            chalk.gray("\n[»] "),chalk.bold("Developers: WhatWalls | V8 | Spike | NJWF1 | Meeler | Bacio"),
-            chalk.gray("\n[»] "),chalk.bold("discord.gg/xenondev\n"),
+            chalk.gray("\n[»] "),chalk.bold("Developer: Bacio"),
+            chalk.gray("\n[»] "),chalk.bold("https://discord.gg/Rgkgmtvzv5\n"),
           
           );
     }

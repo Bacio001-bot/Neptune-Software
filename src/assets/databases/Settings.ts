@@ -49,12 +49,6 @@ class SettingsDatabase extends Database {
         for (let type in data) if(data[type][findBy] != undefined) return data[type][findBy];
         return false;
     };
-
-    isShield(): boolean {
-        const data = this.settings.getData(`/other`);
-        for (let type in data) if(data[type]["shield"] != undefined) return data[type]["shield"];
-        return false;
-    };
 };
 
 interface SettingsDatabase {

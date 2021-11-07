@@ -1,33 +1,21 @@
 import { User } from "discord.js";
-import { Bot } from "mineflayer";
 import Logger from "../helpers/Logger";
 import Messages from "../helpers/Messages";
 import CustomClient from "./Client";
 import UserDatabase from "../databases/Users";
-import ICommand from "../interfaces/Command";
+import ICommand from "../interfaces/ICommand";
 import SettingsDatabase from "../databases/Settings";
+import BundlesDatabase from "../databases/Bundels";
  
 class Command {
-    client: CustomClient;
-    bot: Bot;
-    logger: Logger;
-    messages: Messages;
-    userdb: UserDatabase;
-    settingsdb: SettingsDatabase;
-    help: object;
-    ranMessage: string;
-    username: string;
-    cooldown: Set<string>;
 
-    constructor(client: CustomClient, bot: Bot, options: ICommand) {
+    constructor(client: CustomClient, options: ICommand) {
         this.client = client;
-        this.bot = bot;
-
         this.logger = this.client.logger;
         this.messages = this.client.messages;
 
         this.userdb = this.client.userdb;
-        this.settingsdb = this.client.settingsdb;
+        this.bundledb = this.client.bundledb;
 
         this.ranMessage = "";
         this.username = "";
@@ -44,7 +32,6 @@ class Command {
             reqArgs: options.requirements.args,
             userPermissions: options.requirements.userPermissions || ["SEND_MESSAGES"],
             clientPermissions: options.requirements.clientPermissions || ["SEND_MESSAGES"],
-            ingamePermissions: options.requirements.ingamePermissions || ["recruit"]
         }
 
         this.cooldown = new Set();
@@ -58,15 +45,20 @@ class Command {
         this.cooldown.add(user.id);
         setTimeout(() => this.cooldown.delete(user.id), time)
     }
+}
 
-    setMessage(message: string): string {
-        return this.ranMessage = message;
-    }
+interface Command {
+    client: CustomClient;
+    logger: Logger;
+    messages: Messages;
+    userdb: UserDatabase;
+    settingsdb: SettingsDatabase;
+    help: object;
+    ranMessage: string;
+    username: string;
+    cooldown: Set<string>;
+    bundledb: BundlesDatabase;
     
-    getMessage(): string {
-        return this.ranMessage;
-    }
-
 }
 
 export default Command;
