@@ -11,6 +11,10 @@ discord:
   embed:
     color: "#FFD700"
     footer: "This is my Footer"
+  staff: 
+    roles:
+      - "wallcheck2"
+      - "test12345"
 
 moderation:
   mute:
@@ -26,19 +30,28 @@ role:
     #TIP: If you want to have multiple select option messages you can run the command and refresh the options below and rerun
     enabled: true
     options: #Format (Emoji - Role_Name - Description)
-      - ["1️⃣", "milestone 1", "Get access to this game"]
-      - ["2️⃣", "milestone 2", "Get access to that game"]
+      - ["1️⃣", "wallcheck", "Get access to this game"]
+      - ["2️⃣", "buffercheck", "Get access to that game"]
   auto: #Role that will be given on joining the server
     enabled: true
     name: "new role" 
 
+suggestion:
+  enabled: true
+  channel: "logs"
+
 ticket:
   enabled: true
+  pin_instruction: true
   log_channel: "logs"
+  archive_category: "archive"
   user_transcript_enabled: true
   categories: #Format (Emoji - Category_Lable - Guild_Category (Make sure they exist in the guild))
-    - ["👍", "First Category", "tickets"]
-    - ["💥", "Second Category", "tickets"]
+    - ["👍", "General Support", "tickets"]
+    - ["💥", "Store Support", "tickets"]
+    - ["✅", "Admin Support", "tickets"]
+    - ["⚙️", "Reports & Appeals", "tickets"]
+
 
 bundles:
   enabled: true

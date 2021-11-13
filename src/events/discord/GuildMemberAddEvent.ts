@@ -19,6 +19,11 @@ export default class GuildMemberAddEvent extends Event {
       }
   } 
 
+  if(this.client.config.role.auto.enabled) {
+    let role = this.client.getRole(this.client.config.role.auto.name)
+    if (role) member.roles.add(role) 
+  }
+
     if (this.client.config.member_join.age.enabled) {
       try {
         if (

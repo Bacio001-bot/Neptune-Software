@@ -1,6 +1,6 @@
 import CustomClient from "../classes/Client"; 
 import { Bot } from "mineflayer";
-import { Message } from "discord.js";
+import { Message, Role } from "discord.js";
 
 export default (client: CustomClient, bot: Bot, message: Message): void => {
     
@@ -11,6 +11,16 @@ export default (client: CustomClient, bot: Bot, message: Message): void => {
     if (!cmd) return;
 
     let command = client.getCommand(cmd);
+    
+    let perm = false
+
+    command.permissions.forEach((p) => {
+        message.member?.roles.cache.forEach((role) => {
+            if(role.name == p) return perm = true
+        })
+    })
+
+    if(!perm) return
 
     if (!command) return;
 

@@ -9,14 +9,22 @@ export default (client: CustomClient, bot: Bot, interaction: any): void => {
     }
 
     async function awaitInt2() {
-        return await interaction.reply({ content: '❌ Sorry you have no access to this interaction', ephemeral: true });
+        return await interaction.reply({ content: `❌ Sorry you don't have the right perms to use this interaction`, ephemeral: true });
     }
 
     let btn = interaction.customId
 
     let button = client.getButtons(btn);
 
-    if (!client.checkPermissions(btn, interaction)) {
+    let perm = false
+
+    client.config.discord.staff.roles.forEach((p) => {
+        interaction.member?.roles.cache.forEach((role) => {
+            if(role.name == p) return perm = true
+        })    
+    })
+
+    if (!client.checkPermissions(btn, interaction) && !perm) {
         awaitInt2()
         return;
     }

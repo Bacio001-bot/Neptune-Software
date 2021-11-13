@@ -2,42 +2,108 @@
     "users": [
         {
             "discordID": "173347297181040640",
-            "discordTag": "Bacio001#2484",
             "discordName": "Bacio001",
             "verifyCode": "NULL",
             "tickets": {
-                "openTickets": 1,
-                "closedTickets": 14
+                "openTickets": 12,
+                "closedTickets": 5
+            },
+            "messages": {
+                "everyone": 1,
+                "replies": 7,
+                "tts": 1,
+                "total": 281
             }
         },
         {
             "discordID": "681637554889555976",
-            "discordTag": "!IGNLuuk#0001",
             "discordName": "!IGNLuuk",
             "verifyCode": "NULL",
             "tickets": {
-                "openTickets": -1,
-                "closedTickets": 2
+                "openTickets": 0,
+                "closedTickets": 0
+            },
+            "messages": {
+                "everyone": 0,
+                "replies": 2,
+                "tts": 0,
+                "total": 19
             }
         },
         {
-            "discordID": "435354879087869952",
-            "discordTag": "ABC#9606",
-            "discordName": "ABC",
-            "verifyCode": "146389",
+            "discordID": "218685852367192075",
+            "discordName": "Yui The Pink Kitty",
+            "verifyCode": null,
             "tickets": {
                 "openTickets": 0,
                 "closedTickets": 0
+            },
+            "messages": {
+                "everyone": 0,
+                "replies": 0,
+                "tts": 0,
+                "total": 0
+            }
+        },
+        {
+            "discordID": "324596012955992065",
+            "discordName": "jack.",
+            "verifyCode": null,
+            "tickets": {
+                "openTickets": 0,
+                "closedTickets": 0
+            },
+            "messages": {
+                "everyone": 0,
+                "replies": 0,
+                "tts": 0,
+                "total": 6
+            }
+        },
+        {
+            "discordID": "159400035946201088",
+            "discordTag": "! ollie#3190",
+            "discordName": "! ollie",
+            "verifyCode": "102896",
+            "tickets": {
+                "openTickets": 0,
+                "closedTickets": 0
+            },
+            "messages": {
+                "everyone": 0,
+                "replies": 0,
+                "tts": 0,
+                "total": 1
+            }
+        },
+        {
+            "discordID": "686350213845090358",
+            "discordName": "BacioTest",
+            "verifyCode": "378841",
+            "tickets": {
+                "openTickets": 0,
+                "closedTickets": 0
+            },
+            "messages": {
+                "everyone": 0,
+                "replies": 0,
+                "tts": 0,
+                "total": 1
             }
         },
         {
             "discordID": "799619366370672661",
-            "discordTag": "NJWF1#5435",
             "discordName": "NJWF1",
             "verifyCode": "NULL",
             "tickets": {
                 "openTickets": 0,
-                "closedTickets": 4
+                "closedTickets": 0
+            },
+            "messages": {
+                "everyone": 0,
+                "replies": 0,
+                "tts": 0,
+                "total": 3
             }
         }
     ]

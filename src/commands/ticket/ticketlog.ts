@@ -57,8 +57,7 @@ export default class TicketLogCommand extends Command {
           let array = data.split(": ");
           let name = array[2].split(" ")
           let date = array[1].replace(',', '')
-          console.log(`${name[0]} - #${fileArgs[1]} - ${array[1].replace(',', '')}`)
-          console.log(array)
+
           if(array){
             let desc = embed.description ? `${embed.description}${ticketCount}. ${name[0]} - #${fileArgs[1]} - ${date.replace(` Subject`, '')} \n` : `${ticketCount}. ${name[0]} - #${fileArgs[1]} - ${date.replace(` Subject`, '')} \n`
             embed.setDescription(desc)

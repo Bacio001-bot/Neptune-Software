@@ -6,7 +6,7 @@ export default class BundleTaken extends Command {
   constructor(client: CustomClient) {
     super(client, {
       name: "bundletaken",
-      description: "Move faction from queue",
+      description: "Take faction from finished list",
       arguments: "<bundleId>",
       example: "/bundletaken 1 || /bundletaken all",
       category: "bundle",

@@ -7,7 +7,7 @@ export default class TicketdeleteCommand extends Command {
   constructor(client: CustomClient) {
     super(client, {
       name: "ticketdelete",
-      description: "Delete a ticketr",
+      description: "Delete a ticket",
       arguments: "<ticketid>",
       example: "/ticketdelete 123456",
       category: "ticket",

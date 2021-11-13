@@ -30,11 +30,12 @@ export default class TicketInteraction extends InteractionClass {
       let user = this.client.getUser(topicArgs[0]);
 
       if (user) {
+
         await interaction.channel.setParent(interaction.channel.parent, {
           lockPermissions: true,
         });
 
-        await interaction.channel.permissionOverwrites.edit(interaction.user, {
+        await interaction.channel.permissionOverwrites.edit(user, {
           VIEW_CHANNEL: true,
         });
 
@@ -48,7 +49,7 @@ export default class TicketInteraction extends InteractionClass {
 
         let channel = this.client.getChannel(this.client.config.logging.ticket.channel)
 
-        this.messages.ticketEvent(`Ticket Verbed`,
+        if (this.client.config.logging.ticket.enabled) this.messages.ticketEvent(`Ticket Verbed`,
         `**\`${interaction.user.tag}\` has verbed the ticket \`#${channelTopicArgs[1]}\`**`,
         channel as TextChannel,
         this.client.config.discord.embed.color)

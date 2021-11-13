@@ -6,7 +6,7 @@ import CustomClient from "../../assets/classes/Client";
 export default class InteractionEvent extends Event {
     constructor(client: CustomClient, bot: Bot) {
         super(client, "on", "interactionCreate");
-        this.addHandler("interactionHandler", (interaction: any): boolean => {
+        this.addHandler("InteractionHandler", (interaction: Interaction): boolean => {
             return true;
         })
     }

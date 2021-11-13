@@ -36,7 +36,7 @@ export default class TicketInteraction extends InteractionClass {
 
         let channel = this.client.getChannel(this.client.config.logging.ticket.channel)
 
-        this.messages.ticketEvent(`Ticket Raised`,
+        if (this.client.config.logging.ticket.enabled) this.messages.ticketEvent(`Ticket Raised`,
         `**\`${interaction.user.tag}\` has raised the ticket \`#${channelTopicArgs[1]}\`**`,
         channel as TextChannel,
         this.client.config.discord.embed.color)

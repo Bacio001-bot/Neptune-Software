@@ -20,8 +20,8 @@ export default class TicketInteraction extends InteractionClass {
       type: "discord",
       category: "ticket",
       requirements: {
-        userPermissions: ["SEND_MESSAGES"],
-        clientPermissions: ["SEND_MESSAGES"],
+        userPermissions: ["ADMINISTRATOR"],
+        clientPermissions: ["ADMINISTRATOR"],
         guildOnly: true,
       },
     });
@@ -65,16 +65,7 @@ export default class TicketInteraction extends InteractionClass {
             `Ticket from ${interaction.guild.name}`,
             interaction.guild.iconURL({ dynamic: true })
           );
-
-        if (topicArgs[2] == "TRUE") {
-          user?.send({
-            embeds: [embed],
-          }).catch((err) => console.log(err));
-          user?.send({
-            files: [log],
-          }).catch((err) => console.log(err));
-        }
-
+        
         let ticketLogs = this.client.getChannel(
           this.client.config.ticket.log_channel
         );
@@ -86,7 +77,7 @@ export default class TicketInteraction extends InteractionClass {
 
         let channel = this.client.getChannel(this.client.config.logging.ticket.channel)
 
-        this.messages.ticketEvent(`Ticket Close`,
+        if (this.client.config.logging.ticket.enabled) this.messages.ticketEvent(`Ticket Close`,
         `**\`${interaction.user.tag}\` has closed the ticket \`#${topicArgs[1]}\`**`,
         channel as TextChannel,
         this.client.config.discord.embed.color)

@@ -43,7 +43,6 @@ export default class Placeholder {
         if (player) {
             const userData = this.getUser(player, "ign");
             message = message
-                    .replace("{playerTag}", userData ? userData.discordTag : "Not Linked")
                     .replace("{playerID}", userData ? userData.discordID : "Not Linked")
 
             

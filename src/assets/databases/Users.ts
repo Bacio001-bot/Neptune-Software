@@ -18,13 +18,18 @@ class UsersDatabase extends Database {
 
       const userData: IUser = {
         discordID: user.id,
-        discordTag: user.user.tag,
         discordName: user.user.username,
         verifyCode: verifycode,
         tickets: {
           openTickets: 0,
           closedTickets:0,
         },        
+        messages: {
+          everyone: 0,
+          replies: 0,
+          tts: 0,
+          total: 0,
+        },
       };
 
       this.users.push("/users[]", userData, true);
@@ -62,21 +67,25 @@ class UsersDatabase extends Database {
     field: string,
     value: any
   ): void {
-    const user: IUser | null = this.getUser(findBy, property);
-    if (!user) return;
-
-    if (user[field] != undefined) {
-      user[field] = value;
-      this.users.save();
-      return;
-    }
-
-    for (let type in user)
-      if (user[type][field] != undefined) {
-        user[type][field] = value;
+    try {
+      const user: IUser | null = this.getUser(findBy, property);
+      if (!user) return;
+  
+      if (user[field] != undefined) {
+        user[field] = value;
         this.users.save();
         return;
       }
+  
+      for (let type in user)
+        if (user[type][field] != undefined) {
+          user[type][field] = value;
+          this.users.save();
+          return;
+        }
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   resetUser(findBy: string, property: string): void {

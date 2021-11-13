@@ -124,12 +124,47 @@ ticketlog:
   permissions: ["*"]
   aliases: ["tlog"]
 
-ticketlist:
-  enabled: true
-  permissions: ["@everyone"]
-  aliases: ["tlist"]
-
 ticketdelete:
   enabled: true
   permissions: ["*"]
   aliases: ["tdelete"]
+
+ticketstats:
+  enabled: true
+  permissions: ['@everyone']
+  aliases: ["tstats"]
+
+messagesstats:
+  enabled: true
+  permissions: ['@everyone']
+  aliases: ['mstats']
+
+suggest:
+  enabled: true
+  permissions: ['@everyone']
+  aliases: []
+
+ticketclose:
+  enabled: true
+  permissions: ['@everyone']
+  aliases: ['close']
+
+ticketadd:
+  enabled: true
+  permissions: ['*']
+  aliases: ['tadd']
+
+ticketremove:
+  enabled: true
+  permissions: ['*']
+  aliases: ['tremove']
+
+purge:
+  enabled: true
+  permissions: ['*']
+  aliases: []
+
+helppanel:
+  enabled: true
+  permissions: ["@everyone"]
+  aliases: ["help"]

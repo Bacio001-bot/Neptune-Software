@@ -14,7 +14,7 @@ export default class VerifyCommand extends Command {
       deleteMessage: true,
       cooldown: true,
       requirements: {
-        args: { min: 1, max: 1 },
+        args: { min: 0, max: 1 },
         userPermissions: ["SEND_MESSAGES"],
         clientPermissions: ["SEND_MESSAGES"],
         guildOnly: true,
@@ -24,6 +24,17 @@ export default class VerifyCommand extends Command {
 
   async execute(message: Message, args: string[]): Promise<void> {
     try {
+      if (!args[0] && message.member) {
+        let code = Math.floor(100000 + Math.random() * 900000).toString();
+        this.userdb.addUser(message.member, code);
+
+        this.messages.private(
+          "Verification System",
+          `To verify send \`${this.client.config.discord.bot.prefix}verify ${code}\` in \`${message.member.guild.name}\``,
+          message.member
+        );
+      }
+
       let result = this.userdb.getUser(args[0], "verifyCode");
 
       if (!result)
@@ -40,13 +51,15 @@ export default class VerifyCommand extends Command {
         );
       else {
         try {
-          let role = this.client.getRole(this.client.config.member_join.verify.role);
+          let role = this.client.getRole(
+            this.client.config.member_join.verify.role
+          );
 
           if (!role) return;
 
           message.member?.roles.add(role);
 
-          this.userdb.updateUser(args[0], "verifyCode", "verifyCode", null)
+          this.userdb.updateUser(args[0], "verifyCode", "verifyCode", null);
           this.messages.success(
             "Verified",
             `You have been verified and given the role \`${this.client.config.member_join.verify.role}\``,

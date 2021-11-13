@@ -190,7 +190,7 @@ class CustomClient extends Client {
         let btn: any = this.buttons.get(button);
 
         if (!btn) this.buttons.forEach(bt => {
-            if (bt.help.name != undefined) btn = this.commands.get(bt.help.name);
+            if (bt.help.name != undefined) btn = this.buttons.get(bt.help.name);
         })
 
         return btn;
@@ -198,13 +198,17 @@ class CustomClient extends Client {
 
     getCategory(find: any): CategoryChannel | null {
         const guild = this.guilds.cache.get(this.config.discord.bot.serverID);
-        let ch = guild?.channels.cache.find(ch => ch.name === find && ch.type == "GUILD_CATEGORY");
+        let ch = guild?.channels.cache.find(ch => ch.name === find && ch.type == "GUILD_CATEGORY") || guild?.channels.cache.find(ch => ch.id === find && ch.type == "GUILD_CATEGORY");
         if (ch) return (ch as CategoryChannel);
         return null;
     } 
 
     getChannel(find: any): TextChannel | ThreadChannel | null {
         const guild = this.guilds.cache.get(this.config.discord.bot.serverID);
+        if(find.includes('<#') && find.includes('>')) {
+            find = find.replace('<#', '')
+            find = find.replace('>', '')
+        }
         let ch = guild?.channels.cache.find(ch => ch.name === find) || this.channels.cache.get(find);
         if (ch) return (ch as TextChannel);
         return null;

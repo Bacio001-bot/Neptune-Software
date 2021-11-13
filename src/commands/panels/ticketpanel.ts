@@ -12,7 +12,7 @@ export default class TicketPanelCommand extends Command {
   constructor(client: CustomClient) {
     super(client, {
       name: "ticketpanel",
-      description: "Start Tickets",
+      description: "Sends the ticket panel",
       arguments: "<Channel>",
       example: "/tpanel",
       category: "panels",
@@ -56,10 +56,8 @@ export default class TicketPanelCommand extends Command {
           value: `${cat[1].replace(" ", "_")}`,
         });
       });
-
-      let tchannel = this.client.getChannel(args[0]);
-
-      let ticketchannel = (tchannel == null) ? (message.channel as TextChannel) : tchannel
+      
+      let ticketchannel = this.client.getChannel(args[0] || (message.channel as TextChannel).name);
 
       this.messages.success(
         "Ticket Panel Created",

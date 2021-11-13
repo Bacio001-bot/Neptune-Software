@@ -6,7 +6,7 @@ export default class UnbanCommand extends Command {
   constructor(client: CustomClient) {
     super(client, {
       name: "unban",
-      description: "Unban a Users",
+      description: "Unban a user",
       arguments: "<user> [reason]",
       example: "/unban Bacio001",
       category: "moderation",

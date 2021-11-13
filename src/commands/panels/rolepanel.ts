@@ -12,7 +12,7 @@ import {
     constructor(client: CustomClient) {
       super(client, {
         name: "rolepanel",
-        description: "Start Roles",
+        description: "Sends the reaction role panel",
         arguments: "<Channel>",
         example: "/rpanel",
         category: "panels",
@@ -20,7 +20,7 @@ import {
         deleteMessage: true,
         cooldown: true,
         requirements: {
-          args: { min: 1, max: 1 },
+          args: { min: 0, max: 1 },
           userPermissions: ["ADMINISTRATOR"],
           clientPermissions: ["ADMINISTRATOR"],
           guildOnly: true,
@@ -60,21 +60,19 @@ import {
 
           roleShowcase += `> ${r[0]} **${r[1]}** » ${r[2]}\n`
         });
-  
-        let rchannel = this.client.getChannel(args[0]);
-  
-        let rolechannel = (rchannel == null) ? (message.channel as TextChannel) : rchannel
+    
+        let rolechannel = this.client.getChannel(args[0] || (message.channel as TextChannel).name);
   
         this.messages.success(
           "Role Panel Created",
-          `Rol e panel has been sent to \`${rolechannel?.name}\``,
+          `Role panel has been sent to \`${rolechannel?.name}\``,
           message
         );
   
-        let rolePanelEmbed = new MessageActionRow().addComponents(
+        let roleMenu = new MessageActionRow().addComponents(
           new MessageSelectMenu()
-            .setCustomId("ticket_create")
-            .setPlaceholder("Create a ticket")
+            .setCustomId("role_assign")
+            .setPlaceholder("Select a role")
             .addOptions(roleSelectArray)
         );
   
@@ -89,7 +87,7 @@ import {
   
           rolechannel?.send({
           embeds: [rPanelEmbed],
-          components: [rolePanelEmbed],
+          components: [roleMenu],
         });
       } catch (err) {
         console.log(err)

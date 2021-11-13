@@ -16,7 +16,7 @@ export default class MuteCommand extends Command {
       deleteMessage: true,
       cooldown: true,
       requirements: {
-        args: { min: 1, max: 2 },
+        args: { min: 1, max: 1000 },
         userPermissions: ["MUTE_MEMBERS"],
         clientPermissions: ["MUTE_MEMBERS"],
         guildOnly: true,
@@ -49,7 +49,7 @@ export default class MuteCommand extends Command {
           message
         );
 
-      if (args[1]) reason = args.slice(2).join(" ");
+      if (args[2]) reason = args.slice(2).join(" ");
 
       if (!user)
         return this.messages.error(
@@ -60,15 +60,15 @@ export default class MuteCommand extends Command {
 
       if (!args[1])
         return this.messages.error(
-          "User Ban Error",
+          "Mute Error",
           `Specify a valid time`,
           message
         );
 
       if (this.client.config.discord.bot.admin_users.includes(user.id))
         return this.messages.error(
-          "User Mute Error",
-          `Specify a that isn't a max perm user`,
+          "Mute Error",
+          `Specify a user that isn't a max perm user`,
           message
         );
 
@@ -100,8 +100,16 @@ export default class MuteCommand extends Command {
           }
           return;
         }
-
-        let time = ms(ms(args[1]), { long: true });
+        let time
+        try {
+          time = ms(ms(args[1]), { long: true })
+        } catch(err) {
+          return this.messages.error(
+            "Mute Error",
+            `Supply a valid time`,
+            message
+          );
+        }
 
         this.messages.success(
           "User Muted",

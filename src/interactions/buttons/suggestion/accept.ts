@@ -2,7 +2,7 @@ import { Message, Interaction } from "discord.js";
 import CustomClient from "../../../assets/classes/Client";
 import InteractionClass from "../../../assets/classes/Interaction";
 
-export default class TicketInteraction extends InteractionClass {
+export default class SuggestionInteraction extends InteractionClass {
   constructor(client: CustomClient) {
     super(client, {
       name: "suggestion_accept",
@@ -19,11 +19,14 @@ export default class TicketInteraction extends InteractionClass {
 
   async execute(interaction: any, args: string[]): Promise<void> {
     try {
-      
+      let embed = interaction.message.embeds[0].setColor("#00ff00");
+      await interaction.message.edit({
+          embeds: [embed],
+      });
     } catch (err) {
       console.log(err);
       return this.messages.error(
-        "Ticket Error",
+        "Suggestion Error",
         `A error occured please contact the developer`,
         interaction.message
       );

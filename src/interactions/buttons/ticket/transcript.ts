@@ -32,7 +32,7 @@ export default class TicketInteraction extends InteractionClass {
 
           let channel = this.client.getChannel(this.client.config.logging.ticket.channel)
 
-          this.messages.ticketEvent(`Ticket Transcript Requested`,
+          if (this.client.config.logging.ticket.enabled) this.messages.ticketEvent(`Ticket Transcript Requested`,
           `**\`${interaction.user.tag}\` has requested a transcript for the ticket \`#${channelTopicArgs[1]}\`**`,
           channel as TextChannel,
           this.client.config.discord.embed.color)

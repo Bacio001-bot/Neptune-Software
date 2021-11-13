@@ -7,7 +7,7 @@ export default class AvatarCommand extends Command {
   constructor(client: CustomClient) {
     super(client, {
       name: "invitetop",
-      description: "Get invite top",
+      description: "Get invite leaderboard",
       arguments: "",
       example: "/invitetop",
       category: "info",

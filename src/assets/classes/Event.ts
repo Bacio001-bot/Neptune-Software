@@ -29,7 +29,7 @@ class Event {
     async addHandler(name: string, filter: Function): Promise<void> {
         this.handlers.push({
             filter: filter,
-            run: (await import(`../addons/${name}`)).default
+            run: (await import(`../addons/${name}.js`)).default
         })
         return;
     }

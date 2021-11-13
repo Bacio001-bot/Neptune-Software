@@ -39,7 +39,7 @@ export default class TicketInteraction extends InteractionClass {
                         VIEW_CHANNEL: true,
                     });
 
-                    ticketChannel.setTopic(`${interaction.user.id} - ${ticketId} - FALSE`)
+                    ticketChannel.setTopic(`${interaction.user.id} - ${ticketId} - FALSE - ${category.id}`)
 
                     const ticketRow = new MessageActionRow().addComponents(
                         new MessageButton()
@@ -61,7 +61,7 @@ export default class TicketInteraction extends InteractionClass {
                         .setStyle('DANGER'),
 
                         new MessageButton()
-                        .setCustomId('ticket_close')
+                        .setCustomId('ticket_preclose')
                         .setLabel('Close ')
                         .setEmoji('🔐')
                         .setStyle('PRIMARY')
@@ -70,11 +70,12 @@ export default class TicketInteraction extends InteractionClass {
                     let embed = new MessageEmbed()
                     .setAuthor(`${interaction.guild.name} Ticket utils panel - Ticket #${ticketId}`,this.client.user?.displayAvatarURL() || '')
                     .setThumbnail(interaction.user?.displayAvatarURL() || '')
-                    .setDescription(`<@${interaction.user.id}> *please describe the reason of your ticket!*\n\n **Format**\`\`\`Reason: I need support \nLevel of urgency: Medium \nAnything else:\`\`\`\n**Closing**\n After this ticket is finished you or staff can close this ticket by clicking on the button! \n\n**Transcript**\nIf you would like to get a transcript of this ticket click on the button before you close the ticket!`)
+                    .setDescription(`<@${interaction.user.id}> *please describe the reason of your ticket!*\n\n **Format**\`\`\`Reason: I need support \nLevel of urgency: Medium \nAnything else:\`\`\`\n**Closing**\n After this ticket is finished you or staff can close this ticket by clicking on the button! \n\n**Transcript**\nIf you would like to get a transcript of this ticket click on the button before you close the ticket!\n\n**NOTE: None staff members have to use ${this.client.config.discord.bot.prefix}close**`)
                     .setColor(this.client.config.discord.embed.color)
 
                     try {
-                        ticketChannel.send({embeds: [embed], components: [ticketRow]})
+                        let twelcomemessage = await ticketChannel.send({embeds: [embed], components: [ticketRow]})
+                        if(this.client.config.ticket.pin_instruction)await twelcomemessage.pin()  
                         let ping = await ticketChannel.send(`<@${interaction.user.id}>`)
                         ping.delete()
                     } catch (err) {
@@ -83,7 +84,7 @@ export default class TicketInteraction extends InteractionClass {
 
                     let channel = this.client.getChannel(this.client.config.logging.ticket.channel)
 
-                    this.messages.ticketEvent(`Ticket Created`,
+                    if (this.client.config.logging.ticket.enabled)this.messages.ticketEvent(`Ticket Created`,
                     `**\`${interaction.user.tag}\` has created the ticket \`#${ticketId}\`**`,
                     channel as TextChannel,
                     "GREEN")
