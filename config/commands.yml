@@ -91,7 +91,7 @@ bundletaken:
 
 embed:
   enabled: true
-  permissions: ["*"]
+  permissions: ["*", "test12345"]
   aliases: ["say"]
 
 avatar:
@@ -147,7 +147,7 @@ suggest:
 ticketclose:
   enabled: true
   permissions: ['@everyone']
-  aliases: ['close']
+  aliases: ['close', 'tclose']
 
 ticketadd:
   enabled: true
@@ -168,3 +168,23 @@ helppanel:
   enabled: true
   permissions: ["@everyone"]
   aliases: ["help"]
+
+pollcreate:
+  enabled: true
+  permissions: ["*"]
+  aliases: ["createpoll", "cpoll", "pcreate"]
+
+pollend:
+  enabled: true
+  permissions: ["*"]
+  aliases: ["endpoll", "epoll", "pend"]
+
+pollvoters:
+  enabled: true
+  permissions: ["*"]
+  aliases: ["voterspoll", "vpoll", "pvoters"]
+
+pollinfo:
+  enabled: true
+  permissions: ["*"]
+  aliases: ["infopoll", "ipoll", "pinfo"]

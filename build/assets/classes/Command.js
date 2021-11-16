@@ -7,6 +7,7 @@ class Command {
         this.messages = this.client.messages;
         this.userdb = this.client.userdb;
         this.bundledb = this.client.bundledb;
+        this.polldb = this.client.polldb;
         this.ranMessage = "";
         this.username = "";
         this.help = {

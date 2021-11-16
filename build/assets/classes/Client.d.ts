@@ -5,6 +5,7 @@ import Logger from "../helpers/Logger";
 import UsersDatabase from "../databases/Users";
 import SettingsDatabase from "../databases/Settings";
 import BundlesDatabase from "../databases/Bundels";
+import PollsDatabase from "../databases/Poll";
 declare class CustomClient extends Client {
     constructor();
     loadYaml(filePath: string): any;
@@ -43,5 +44,6 @@ interface CustomClient {
     l: any;
     cmds: any;
     bundledb: BundlesDatabase;
+    polldb: PollsDatabase;
 }
 export default CustomClient;

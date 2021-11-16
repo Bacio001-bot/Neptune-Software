@@ -6,6 +6,7 @@ import UserDatabase from "../databases/Users";
 import ICommand from "../interfaces/ICommand";
 import SettingsDatabase from "../databases/Settings";
 import BundlesDatabase from "../databases/Bundels";
+import PollsDatabase from "../databases/Poll";
 declare class Command {
     constructor(client: CustomClient, options: ICommand);
     startCooldown(user: User): void;
@@ -21,5 +22,6 @@ interface Command {
     username: string;
     cooldown: Set<string>;
     bundledb: BundlesDatabase;
+    polldb: PollsDatabase;
 }
 export default Command;

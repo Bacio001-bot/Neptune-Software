@@ -36,6 +36,7 @@ export default class HelpPanelCommand extends Command {
         "panels",
         "utils",
         "ticket",
+        "poll",
         "suggestion",
         "bundle",
       ];
@@ -76,6 +77,10 @@ export default class HelpPanelCommand extends Command {
         if (cat == "ticket") {
           emoji = "🎟️"
           description = "Ticket commands"
+        }
+        if (cat == "poll") {
+          emoji = "📝"
+          description = "Poll commands"
         }
 
         embedDisplay = embedDisplay += `> \u200B**❯ \u200B ${emoji} \u200B  ${catHolder} »** ${description}\n`;

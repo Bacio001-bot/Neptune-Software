@@ -6,6 +6,7 @@ import UserDatabase from "../databases/Users";
 import ICommand from "../interfaces/ICommand";
 import SettingsDatabase from "../databases/Settings";
 import BundlesDatabase from "../databases/Bundels";
+import PollsDatabase from "../databases/Poll";
  
 class Command {
 
@@ -16,6 +17,7 @@ class Command {
 
         this.userdb = this.client.userdb;
         this.bundledb = this.client.bundledb;
+        this.polldb = this.client.polldb
 
         this.ranMessage = "";
         this.username = "";
@@ -58,6 +60,7 @@ interface Command {
     username: string;
     cooldown: Set<string>;
     bundledb: BundlesDatabase;
+    polldb: PollsDatabase;
     
 }
 

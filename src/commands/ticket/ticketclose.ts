@@ -34,6 +34,12 @@ export default class TicketdeleteCommand extends Command {
 
   async execute(message: Message, args: string[]): Promise<void> {
     try {
+
+      if(!(message.channel as TextChannel).name.includes("ticket"))       return this.messages.error(
+        "Ticket Close Error",
+        `You can only run this command in a ticket`,
+        message
+      );
       
       await (message.channel as any).setParent(
         (message.channel as any).parent,

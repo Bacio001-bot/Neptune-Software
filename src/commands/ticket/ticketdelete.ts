@@ -26,6 +26,12 @@ export default class TicketdeleteCommand extends Command {
   async execute(message: Message, args: string[]): Promise<void> {
     try {
 
+      if(!(message.channel as TextChannel).name.includes("ticket"))       return this.messages.error(
+        "Ticket Delete Error",
+        `You can only run this command in a ticket`,
+        message
+      );
+
         fs.readdirSync('storage/tickets/').forEach((file) => {
             let fileArgs = file.split('-')
             if(fileArgs[1] == args[0]) {

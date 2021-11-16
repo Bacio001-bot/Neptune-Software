@@ -4,7 +4,7 @@ import { JsonDB } from "node-json-db";
 import { GuildMember } from "discord.js";
 declare class PollsDatabase extends Database {
     constructor();
-    addPoll(member: GuildMember, pollID: number, title: string, startDate: string, endDate: string, duration: number): Promise<boolean>;
+    addPoll(member: GuildMember, title: string, description: string, options: string, channelid: string, messageid: string, startDate: string, endDate: string, duration: number, pollid: number, votes: any): Promise<boolean>;
     removePoll(findBy: number, property: string): void;
     removeAll(): void;
     getPoll(findBy: number, property: string): IPoll | null;

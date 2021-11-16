@@ -30,6 +30,7 @@ const Messages_1 = __importDefault(require("../helpers/Messages"));
 const Logger_1 = __importDefault(require("../helpers/Logger"));
 const Users_1 = __importDefault(require("../databases/Users"));
 const Bundels_1 = __importDefault(require("../databases/Bundels"));
+const Poll_1 = __importDefault(require("../databases/Poll"));
 class CustomClient extends discord_js_1.Client {
     constructor() {
         super({
@@ -57,6 +58,7 @@ class CustomClient extends discord_js_1.Client {
         this.menus = new discord_js_1.Collection();
         this.logger = new Logger_1.default(this);
         this.messages = new Messages_1.default(this);
+        this.polldb = new Poll_1.default();
         this.userdb = new Users_1.default();
         this.bundledb = new Bundels_1.default();
         this.placeholder = new Placeholder_1.default(this);

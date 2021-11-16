@@ -1,0 +1,117 @@
+{
+    "polls": [
+        {
+            "discordID": "173347297181040640",
+            "pollID": 509107,
+            "title": "Do you guys want more movie nights?",
+            "description": "If you guys want more movie nights you can vote below to do soe",
+            "active": false,
+            "options": "Yes - No - Maybe",
+            "channelID": "848658541375782916",
+            "messageID": "909460996228268053",
+            "startDate": "Sun Nov 14 2021 16:13:18 GMT+0100 (Central European Standard Time)",
+            "endDate": "Sun Nov 14 2021 17:13:18 GMT+0100 (Central European Standard Time)",
+            "durationMs": 3600000,
+            "votes": [
+                {
+                    "option": "Maybe",
+                    "voteCount": 1,
+                    "voters": [
+                        "173347297181040640"
+                    ]
+                },
+                {
+                    "option": "Yes",
+                    "voteCount": 0,
+                    "voters": []
+                },
+                {
+                    "option": "No",
+                    "voteCount": 0,
+                    "voters": []
+                }
+            ]
+        },
+        {
+            "discordID": "173347297181040640",
+            "pollID": 898477,
+            "title": "Test poll",
+            "description": "I'm testing this poll",
+            "active": true,
+            "options": "Test1 - Test2",
+            "channelID": "856523315438813184",
+            "messageID": "909503857594355743",
+            "startDate": "Sun Nov 14 2021 19:03:37 GMT+0100 (Central European Standard Time)",
+            "endDate": "Mon Nov 15 2021 19:03:37 GMT+0100 (Central European Standard Time)",
+            "durationMs": 86400000,
+            "votes": [
+                {
+                    "option": "Test1",
+                    "voteCount": 1,
+                    "voters": [
+                        "173347297181040640"
+                    ]
+                },
+                {
+                    "option": "Test2",
+                    "voteCount": 1,
+                    "voters": [
+                        "173347297181040640"
+                    ]
+                }
+            ]
+        },
+        {
+            "discordID": "173347297181040640",
+            "pollID": 803020,
+            "title": "test 2",
+            "description": "Testing this",
+            "active": true,
+            "options": "Test 1 - Test2",
+            "channelID": "856523315438813184",
+            "messageID": "909504262059466813",
+            "startDate": "Sun Nov 14 2021 19:05:13 GMT+0100 (Central European Standard Time)",
+            "endDate": "Sun Nov 14 2021 19:10:13 GMT+0100 (Central European Standard Time)",
+            "durationMs": 300000,
+            "votes": [
+                {
+                    "option": "Test 1",
+                    "voteCount": 0,
+                    "voters": []
+                },
+                {
+                    "option": "Test2",
+                    "voteCount": 0,
+                    "voters": []
+                }
+            ]
+        },
+        {
+            "discordID": "173347297181040640",
+            "pollID": 821867,
+            "title": "Test",
+            "description": "Test2",
+            "active": false,
+            "options": "test1 - test2",
+            "channelID": "848553985538261016",
+            "messageID": "909505467162693653",
+            "startDate": "Sun Nov 14 2021 19:10:00 GMT+0100 (Central European Standard Time)",
+            "endDate": "Sun Nov 14 2021 20:10:00 GMT+0100 (Central European Standard Time)",
+            "durationMs": 3600000,
+            "votes": [
+                {
+                    "option": "test2",
+                    "voteCount": 1,
+                    "voters": [
+                        "173347297181040640"
+                    ]
+                },
+                {
+                    "option": "test1",
+                    "voteCount": 0,
+                    "voters": []
+                }
+            ]
+        }
+    ]
+}

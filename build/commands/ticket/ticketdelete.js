@@ -26,6 +26,8 @@ class TicketdeleteCommand extends Command_1.default {
     }
     async execute(message, args) {
         try {
+            if (!message.channel.name.includes("ticket"))
+                return this.messages.error("Ticket Delete Error", `You can only run this command in a ticket`, message);
             fs_1.default.readdirSync('storage/tickets/').forEach((file) => {
                 let fileArgs = file.split('-');
                 if (fileArgs[1] == args[0]) {

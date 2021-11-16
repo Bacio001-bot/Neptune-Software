@@ -22,6 +22,7 @@ import UsersDatabase from "../databases/Users";
 import SettingsDatabase from "../databases/Settings";
 import BundlesDatabase from "../databases/Bundels";
 import Placeholder from "../helpers/Placeholder";
+import PollsDatabase from "../databases/Poll";
 
 
 class CustomClient extends Client {
@@ -55,6 +56,7 @@ class CustomClient extends Client {
         this.logger = new Logger(this);
         this.messages = new Messages(this);
 
+        this.polldb = new PollsDatabase()
         this.userdb = new UsersDatabase();
         this.bundledb = new BundlesDatabase();
         this.placeholder = new PlaceHolder(this);
@@ -277,6 +279,7 @@ interface CustomClient {
     l: any;
     cmds: any;
     bundledb: BundlesDatabase;
+    polldb: PollsDatabase;
 
 }
 

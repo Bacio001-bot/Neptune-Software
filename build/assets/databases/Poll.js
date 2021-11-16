@@ -11,18 +11,22 @@ class PollsDatabase extends Database_1.default {
         super();
         this.polls = new node_json_db_1.JsonDB(new JsonDBConfig_1.Config(`${process.cwd()}/storage/polls.json`, true, true, "/"));
     }
-    addPoll(member, pollID, title, startDate, endDate, duration) {
+    addPoll(member, title, description, options, channelid, messageid, startDate, endDate, duration, pollid, votes) {
         return new Promise((res, rej) => {
             var _a;
             const pollData = {
                 discordID: (_a = member.user) === null || _a === void 0 ? void 0 : _a.id,
-                pollID: pollID,
+                pollID: pollid,
                 title: title,
+                description: description,
+                active: true,
+                options: options,
+                channelID: channelid,
+                messageID: messageid,
                 startDate: startDate,
                 endDate: endDate,
                 durationMs: duration,
-                noVoters: [],
-                yesVoters: [],
+                votes: votes,
             };
             this.polls.push("/polls[]", pollData, true);
             res(true);

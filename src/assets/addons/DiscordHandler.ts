@@ -13,15 +13,19 @@ export default (client: CustomClient, bot: Bot, message: Message): void => {
     let command = client.getCommand(cmd);
     
     let perm = false
+    let roles = ""
 
     command.permissions.forEach((p) => {
+        roles = roles += `${p} `
         message.member?.roles.cache.forEach((role) => {
             if(role.name == p) return perm = true
         })
     })
 
-    if(!perm) return
-
+    if(!perm) {
+        message.reply({ content: `❌ You don't have the right role to run this command! Allowed Roles: ${roles}`, allowedMentions: { repliedUser: true }})
+        return;
+    }
     if (!command) return;
 
     if (command.help.type !== "discord") return;

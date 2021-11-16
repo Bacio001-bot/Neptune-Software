@@ -10,9 +10,9 @@
             },
             "messages": {
                 "everyone": 1,
-                "replies": 7,
+                "replies": 9,
                 "tts": 1,
-                "total": 281
+                "total": 535
             }
         },
         {
@@ -27,7 +27,7 @@
                 "everyone": 0,
                 "replies": 2,
                 "tts": 0,
-                "total": 19
+                "total": 22
             }
         },
         {
@@ -88,7 +88,7 @@
                 "everyone": 0,
                 "replies": 0,
                 "tts": 0,
-                "total": 1
+                "total": 8
             }
         },
         {
@@ -101,9 +101,9 @@
             },
             "messages": {
                 "everyone": 0,
-                "replies": 0,
+                "replies": 1,
                 "tts": 0,
-                "total": 3
+                "total": 4
             }
         }
     ]

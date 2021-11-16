@@ -8,15 +8,19 @@ exports.default = (client, bot, message) => {
         return;
     let command = client.getCommand(cmd);
     let perm = false;
+    let roles = "";
     command.permissions.forEach((p) => {
         var _a;
+        roles = roles += `${p} `;
         (_a = message.member) === null || _a === void 0 ? void 0 : _a.roles.cache.forEach((role) => {
             if (role.name == p)
                 return perm = true;
         });
     });
-    if (!perm)
+    if (!perm) {
+        message.reply({ content: `❌ You don't have the right role to run this command! Allowed Roles: ${roles}`, allowedMentions: { repliedUser: true } });
         return;
+    }
     if (!command)
         return;
     if (command.help.type !== "discord")

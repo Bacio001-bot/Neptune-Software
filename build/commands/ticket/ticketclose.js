@@ -28,6 +28,8 @@ class TicketdeleteCommand extends Command_1.default {
     async execute(message, args) {
         var _a, _b;
         try {
+            if (!message.channel.name.includes("ticket"))
+                return this.messages.error("Ticket Close Error", `You can only run this command in a ticket`, message);
             await message.channel.setParent(message.channel.parent, {
                 lockPermissions: true,
             });

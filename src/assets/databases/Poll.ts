@@ -3,7 +3,7 @@ import IPoll from "../interfaces/IPoll";
 import { JsonDB } from "node-json-db";
 import { Config } from "node-json-db/dist/lib/JsonDBConfig";
 import { userInfo } from "os";
-import { GuildMember } from "discord.js";
+import { GuildMember, Options } from "discord.js";
 
 class PollsDatabase extends Database {
   constructor() {
@@ -13,18 +13,22 @@ class PollsDatabase extends Database {
     );
   }
 
-  addPoll(member: GuildMember, pollID: number, title: string, startDate: string, endDate: string, duration: number,): Promise<boolean> {
+  addPoll(member: GuildMember, title: string, description:string, options:string, channelid:string, messageid:string, startDate: string, endDate: string, duration: number, pollid: number, votes:any): Promise<boolean> {
     return new Promise((res, rej) => {
 
       const pollData: IPoll = {
         discordID: member.user?.id,
-        pollID: pollID,
+        pollID: pollid,
         title: title,
+        description: description,
+        active: true,
+        options: options,
+        channelID: channelid,
+        messageID: messageid,
         startDate: startDate,
         endDate: endDate,
         durationMs: duration,
-        noVoters: [],
-        yesVoters: [],
+        votes: votes,
       };
 
       this.polls.push("/polls[]", pollData, true);
