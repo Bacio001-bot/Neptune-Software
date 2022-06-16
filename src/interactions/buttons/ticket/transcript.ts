@@ -19,6 +19,9 @@ export default class TicketInteraction extends InteractionClass {
 
   async execute(interaction: any, args: string[]): Promise<void> {
     try {
+
+      await interaction.deferUpdate()
+
         if(this.client.config.ticket.user_transcript_enabled) {
             let topic = interaction.channel.topic
             interaction.channel.setTopic(topic.replace('FALSE', 'TRUE'))

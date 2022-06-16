@@ -130,5 +130,13 @@ class Messages {
             .setTimestamp();
         channel.send({ embeds: [embed] }).catch((err) => { });
     }
+    async applicationEvent(title, description, channel, color) {
+        const embed = new discord_js_1.MessageEmbed()
+            .setAuthor(`${title}`)
+            .setDescription(description)
+            .setColor(color)
+            .setTimestamp();
+        channel.send({ embeds: [embed] }).catch((err) => { });
+    }
 }
 exports.default = Messages;

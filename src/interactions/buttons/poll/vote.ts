@@ -10,8 +10,8 @@ export default class PollInteraction extends InteractionClass {
       type: "discord",
       category: "poll",
       requirements: {
-        userPermissions: ["SEND_MESSAGES"],
-        clientPermissions: ["SEND_MESSAGES"],
+        userPermissions: ["VIEW_CHANNEL"],
+        clientPermissions: ["VIEW_CHANNEL"],
         guildOnly: true,
       },
     });
@@ -19,6 +19,8 @@ export default class PollInteraction extends InteractionClass {
 
   async execute(interaction: any, args: string[]): Promise<void> {
     try {
+
+     await interaction.deferUpdate()
 
       let options 
       let id = interaction.values.toString()

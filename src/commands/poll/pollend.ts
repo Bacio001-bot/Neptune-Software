@@ -36,7 +36,7 @@ export default class PollCreateCommand extends Command {
 
       let result = this.client.polldb.getPoll(parseInt(args[0]), "pollID");
       let channel = message.guild?.channels.cache.find(c => c.id == result?.channelID);
-      let pollMessage = (channel as TextChannel).messages.cache.find(m => m.id == result?.messageID)
+      let pollMessage = await (channel as TextChannel).messages.fetch(result?.messageID as string)
       let pollStarter = message.guild?.members.cache.find(m => m.id == result?.discordID)
 
       if(pollMessage && result?.active) {

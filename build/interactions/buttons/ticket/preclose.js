@@ -23,6 +23,7 @@ class TicketInteraction extends Interaction_1.default {
     async execute(interaction, args) {
         var _a, _b;
         try {
+            await interaction.deferUpdate();
             await interaction.channel.setParent(interaction.channel.parent, {
                 lockPermissions: true,
             });

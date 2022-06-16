@@ -59,7 +59,7 @@ export default class VerifyCommand extends Command {
 
           message.member?.roles.add(role);
 
-          this.userdb.updateUser(args[0], "verifyCode", "verifyCode", null);
+          this.userdb.updateUser(args[0], "verifyCode", "verifyCode", '');
           this.messages.success(
             "Verified",
             `You have been verified and given the role \`${this.client.config.member_join.verify.role}\``,

@@ -6,6 +6,7 @@ import UsersDatabase from "../databases/Users";
 import SettingsDatabase from "../databases/Settings";
 import BundlesDatabase from "../databases/Bundels";
 import PollsDatabase from "../databases/Poll";
+import GiveawaysDatabase from "../databases/Giveaway";
 declare class CustomClient extends Client {
     constructor();
     loadYaml(filePath: string): any;
@@ -20,7 +21,7 @@ declare class CustomClient extends Client {
     getChannel(find: any): TextChannel | ThreadChannel | null;
     getRole(find: any): Role | null;
     getUser(find: any): GuildMember | null;
-    start(): void;
+    start(): Promise<void>;
 }
 interface CustomClient {
     logger: Logger;
@@ -45,5 +46,6 @@ interface CustomClient {
     cmds: any;
     bundledb: BundlesDatabase;
     polldb: PollsDatabase;
+    giveawaydb: GiveawaysDatabase;
 }
 export default CustomClient;

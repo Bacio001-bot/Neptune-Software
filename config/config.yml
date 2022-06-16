@@ -2,23 +2,24 @@ discord:
   error:
     dms_disabled_channel: "general" #Use this channel if dm's disabled by user
   bot:
-    token: "ODUxMTI5NzY2Mjk5MDQxODAy.YLzyXQ.4YI2yAoSgVBqJWnbuv8_OBLe9xM"
-    prefix: "s!"
-    cooldown: "5" 
-    serverID: "848553984988938271"
-    admin_users:
+    license: ""
+    token: "" # Go to discord developer portal and get a token.
+    prefix: "s!" # You can change this to whatever you want this is used to tell the bot it's a command
+    cooldown: "5" # Cooldown between each command
+    serverID: "848553984988938271" # Change this to your server
+    admin_users: # Users that have 100% access to the bot
       - "173347297181040640"
-  embed:
+  embed: 
     color: "#FFD700"
     footer: "This is my Footer"
   staff: 
-    roles:
+    roles: # Roles that are allowed to use buttons on the bot
       - "wallcheck2"
       - "test12345"
 
 moderation:
-  mute:
-    role: "muted"
+  mute: # Role that will be given upon running the mute command
+    role: "863614398265950239"
   promotion:
     roles: #Make sure all the roles are below the bot role NOTE: Roles are sorted Highest to lowest - Top role in list is Top role
       - "milestone 1"
@@ -34,46 +35,171 @@ role:
       - ["2️⃣", "buffercheck", "Get access to that game"]
   auto: #Role that will be given on joining the server
     enabled: true
-    name: "new role" 
+    role: "new role" 
+  notification: #If you get a role and want people to know this you can get the bot to send a message in a channel notifying everyone of it
+    channel: "848553985538261016"
+    role: "853009151877578752"
+    # message: "<:BA:923287894343430194> %MEMBER_MENTION% just verified! Welcome!"
+    message: "%MEMBER_MENTION% just verified! Welcome!"
 
 suggestion:
-  enabled: true
-  channel: "logs"
+  enabled: true  
+  channel: "logs" # Channel where the suggestion will be send
 
 ticket:
   enabled: true
-  pin_instruction: true
-  log_channel: "logs"
-  archive_category: "archive"
-  user_transcript_enabled: true
-  categories: #Format (Emoji - Category_Lable - Guild_Category (Make sure they exist in the guild))
-    - ["👍", "General Support", "tickets"]
-    - ["💥", "Store Support", "tickets"]
-    - ["✅", "Admin Support", "tickets"]
-    - ["⚙️", "Reports & Appeals", "tickets"]
+  pin_instruction: true # Pin the top message upon creating a ticket
+  log_channel: "logs" # Channel where transcripts get saved
+  archive_category: "archive" # Channel where tickets will be moved on archiving them
+  user_transcript_enabled: true # Allow users to request a transcript
+  categories: # Format (Emoji - Category_Lable - Guild_Category (Make sure they exist in the guild))
+    - ["👍", "General Support", "tickets", 0]
+    - ["💥", "Store Support", "tickets", 1]
+    - ["✅", "Admin Support", "tickets", 2]
+    - ["⚙️", "Reports & Appeals", "tickets", 3]
+  questions: 
+    - [ 
+      "This is question one",
+      "This is question two",
+      "This is question three",
+      "This is question four",
+      "This is question five",
+      "This is question six",
+      "This is question seven",
+      "This is question eight",
+      "This is question nine",
+      "This is question ten",
+      "This is question eleven",
+      "This is question twelve",
+      "This is question thirdteen",
+      "This is question fourteen",
+      ]
+    - [ 
+      "This is question one",
+      "This is question two",
+      "This is question three",
+      "This is question four",
+      "This is question five",
+      "This is question six",
+      "This is question seven",
+      "This is question eight",
+      "This is question nine",
+      "This is question ten",
+      "This is question eleven",
+      "This is question twelve",
+      "This is question thirdteen",
+      "This is question fourteen",
+      ]
+    - [ 
+      "This is question one",
+      "This is question two",
+      "This is question three",
+      "This is question four",
+      "This is question five",
+      "This is question six",
+      "This is question seven",
+      "This is question eight",
+      "This is question nine",
+      "This is question ten",
+      "This is question eleven",
+      "This is question twelve",
+      "This is question thirdteen",
+      "This is question fourteen",
+      ]
+    - [ 
+      "This is question one",
+      "This is question two",
+      "This is question three",
+      "This is question four",
+      "This is question five",
+      "This is question six",
+      "This is question seven",
+      "This is question eight",
+      "This is question nine",
+      "This is question ten",
+      "This is question eleven",
+      "This is question twelve",
+      "This is question thirdteen",
+      "This is question fourteen",
+      ]
 
+      
+application:
+  enabled: true
+  vote_channel: "logs" # Channel where transcripts get saved
+  accept_deny_ping_channel: "archive" # Channel where tickets will be moved on archiving them
+  categories: # Format (Emoji - Category_Lable - Guild_Category (Make sure they exist in the guild))
+    - ["👍", "Staff", "tickets"]
+    - ["💥", "Marketing", "tickets"]
 
 bundles:
   enabled: true
-  names:
+  names: # Bundle names which can be used you can add more your self
     - "bundle1"
     - "bundle2"
     - "bundle3"
-  channel: "logs"
 
 member_join:
-  verify:
+  verify: # Role they recieve after running the verify command
     enabled: true
     role: "Friends"
-  age:
+  age: # Days required for a account to be or gets kicked if not format (1s, 1m, 1d, 1w, 1M, 1y)
     enabled: true
-    required_days: "1d" #Days required for a account to be or gets kicked if not format (1s, 1m, 1d, 1w, 1M, 1y)
+    required_days: "1d" 
   welcome: 
     enabled: true
-    channel: "general"
+    channel: "general" # Welcome message channel
+    # "%MEMBER_MENTION%" = Mention User
+    # "%MEMBER_USERNAME%" = Username
+    # "%MEMBER_TAG%" = Usertag
+    # "%GUILD_NAME%" = Guildname
+    # "%GUILD_ID%" = Guildid
     text: "Welcome %MEMBER_MENTION% \n Questions: <#848553985538261016> \n Information: <#856523315438813184> \n Reviews: <#883759807251746927>  \n\n%MEMBER_USERNAME% we hope that you will have a great time in our server, `%GUILD_NAME%` This text is fully customizable to your liking!!"
-    memberCount: true
-    mentionUser: true
+    memberCount: true # Show member count
+    mentionUser: true # Mention User
+
+level_system:
+  blacklisted_text_channels:
+    - "848658541375782916"
+    - "850415470296170547"
+  enabled: true
+  xp_per_message: 3
+  xp_per_minute: 1
+  xp_for_role: 
+    - ["milestone 1", 1000]
+    - ["milestone 2", 2000]
+    - ["milestone 3", 3000]
+  xp_for_level:
+    - 100
+    - 255
+    - 475
+    - 770
+    - 1150
+    - 1625
+    - 2205
+    - 2900
+    - 3050
+    - 4675
+    - 5775
+    - 7030
+    - 8450
+    - 10045
+    - 11825
+    - 13800
+    - 15980
+    - 20995
+    - 23850
+    - 26950
+    - 30305
+    - 33925
+    - 37820
+    - 42000
+    - 46475
+    - 51255
+    - 56350
+    - 61770
+    - 67525
+
 
 logging:
   voice:

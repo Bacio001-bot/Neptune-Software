@@ -8,6 +8,7 @@ declare class Logger {
     log(log: string): void;
     logCommand(log: string): void;
     logEvent(log: string): void;
+    logLicense(log: string): void;
     logDiscord(log: string): void;
     logMinecraft(log: string): void;
     highlight(text: string): string;
@@ -19,6 +20,7 @@ interface Logger {
     prefixes: {
         default: string;
         log: string;
+        license: string;
         command: string;
         event: string;
         discord: string;

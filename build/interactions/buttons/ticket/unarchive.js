@@ -20,6 +20,7 @@ class TicketInteraction extends Interaction_1.default {
     }
     async execute(interaction, args) {
         try {
+            await interaction.deferUpdate();
             let topicArgs = interaction.channel.topic.split(" - ");
             await interaction.channel.setParent(this.client.getCategory(topicArgs[3]), {
                 lockPermissions: true,

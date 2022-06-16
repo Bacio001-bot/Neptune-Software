@@ -1,6 +1,7 @@
 import CustomClient from "../classes/Client"; 
 import { Bot } from "mineflayer";
 import { Message, Role } from "discord.js";
+import db from 'quick.db'
 
 export default (client: CustomClient, bot: Bot, message: Message): void => {
     
@@ -49,6 +50,7 @@ export default (client: CustomClient, bot: Bot, message: Message): void => {
 
     try {
         command.execute(message, args);
+
         client.commandData = [];
     } catch (error) {
         console.log(error);

@@ -20,11 +20,11 @@ class TicketInteraction extends Interaction_1.default {
     }
     async execute(interaction, args) {
         try {
-            interaction.channel.delete();
             let topicArgs = interaction.channel.topic.split(" - ");
             let channel = this.client.getChannel(this.client.config.logging.ticket.channel);
             if (this.client.config.logging.ticket.enabled)
                 this.messages.ticketEvent(`Ticket Deleted`, `**\`${interaction.user.tag}\` has deleted the ticket \`#${topicArgs[1]}\`**`, channel, "RED");
+            await interaction.channel.delete();
         }
         catch (err) {
             console.log(err);

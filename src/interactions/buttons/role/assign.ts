@@ -19,10 +19,13 @@ export default class RoleInteraction extends InteractionClass {
 
   async execute(interaction: any, args: string[]): Promise<void> {
     try {
+
+      await interaction.deferUpdate()
+
         let role = interaction.guild.roles.cache.find(r => r.name == interaction.values.toString())
         try {
             await interaction.member.roles.add(role)
-            await interaction.member.send({ content: `✅ \`${role.name}\` has been assigned`}).catch()
+            await interaction.member.send({ content: `✅ The role \`${role.name}\` has been assigned`}).catch()
 
         } catch(err) {
             console.log(err)

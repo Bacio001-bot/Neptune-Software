@@ -25,7 +25,7 @@ class TicketPanelCommand extends Command_1.default {
         });
     }
     async execute(message, args) {
-        var _a, _b;
+        var _a;
         try {
             if (!this.client.config.role.select.enabled)
                 return this.messages.error("Role Panel Error", `Role selector is disabled`, message);
@@ -53,7 +53,7 @@ class TicketPanelCommand extends Command_1.default {
                 .setTitle(`Role Select System`)
                 .setDescription(`**Select one of the roles below to get it**\n${roleShowcase}\n *Remove the role by reselecting it*`)
                 .setColor(this.client.config.discord.embed.color)
-                .setFooter(`${(_a = message.guild) === null || _a === void 0 ? void 0 : _a.name}`, `${(_b = message.guild) === null || _b === void 0 ? void 0 : _b.iconURL()}`)
+                .setFooter(`${(_a = message.guild) === null || _a === void 0 ? void 0 : _a.name}`)
                 .setTimestamp();
             rolechannel === null || rolechannel === void 0 ? void 0 : rolechannel.send({
                 embeds: [rPanelEmbed],

@@ -18,4 +18,5 @@ export default class Messages {
     stickerEvent(title: string, description: string, sticker: Sticker, channel: TextChannel | ThreadChannel, color: ColorResolvable): Promise<void>;
     boostEvent(title: string, description: string, channel: TextChannel): Promise<void>;
     ticketEvent(title: string, description: string, channel: TextChannel, color: ColorResolvable): Promise<void>;
+    applicationEvent(title: string, description: string, channel: TextChannel, color: ColorResolvable): Promise<void>;
 }

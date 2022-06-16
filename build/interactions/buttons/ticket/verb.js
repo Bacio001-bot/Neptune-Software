@@ -20,6 +20,7 @@ class TicketInteraction extends Interaction_1.default {
     }
     async execute(interaction, args) {
         try {
+            await interaction.deferUpdate();
             let topicArgs = interaction.channel.topic.split(" - ");
             let user = this.client.getUser(topicArgs[0]);
             if (user) {
@@ -33,7 +34,8 @@ class TicketInteraction extends Interaction_1.default {
                 let channelTopicArgs = interaction.channel.topic.split(' - ');
                 let channel = this.client.getChannel(this.client.config.logging.ticket.channel);
                 if (this.client.config.logging.ticket.enabled)
-                    this.messages.ticketEvent(`Ticket Verbed`, `**\`${interaction.user.tag}\` has verbed the ticket \`#${channelTopicArgs[1]}\`**`, channel, this.client.config.discord.embed.color);
+                    return this.messages.ticketEvent(`Ticket Verbed`, `**\`${interaction.user.tag}\` has verbed the ticket \`#${channelTopicArgs[1]}\`**`, channel, this.client.config.discord.embed.color);
+                interaction.deferUpdate();
             }
             else {
                 return this.messages.error("Ticket Error", `A error occured please contact the developer`, interaction.message);

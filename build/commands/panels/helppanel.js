@@ -34,8 +34,11 @@ class HelpPanelCommand extends Command_1.default {
                 "utils",
                 "ticket",
                 "poll",
+                "giveaway",
                 "suggestion",
+                "fun",
                 "bundle",
+                "level",
             ];
             let embedDisplay = "";
             let menuCategories = [];
@@ -46,6 +49,10 @@ class HelpPanelCommand extends Command_1.default {
                 if (cat == "bundle") {
                     emoji = "📦";
                     description = "Faction and skyblock bundles";
+                }
+                if (cat == "level") {
+                    emoji = "⏫";
+                    description = "Level commands";
                 }
                 if (cat == "moderation") {
                     emoji = "⚙️";
@@ -75,6 +82,14 @@ class HelpPanelCommand extends Command_1.default {
                     emoji = "📝";
                     description = "Poll commands";
                 }
+                if (cat == "giveaway") {
+                    emoji = "🎉";
+                    description = "Giveaway commands";
+                }
+                if (cat == "fun") {
+                    emoji = "🎲";
+                    description = "Fun commands";
+                }
                 embedDisplay = embedDisplay += `> \u200B**❯ \u200B ${emoji} \u200B  ${catHolder} »** ${description}\n`;
                 menuCategories.push({
                     menuCategories: `general_help`,
@@ -84,11 +99,14 @@ class HelpPanelCommand extends Command_1.default {
                     value: `help_${catHolder}`,
                 });
             });
+            let picture = (_a = message.author) === null || _a === void 0 ? void 0 : _a.displayAvatarURL();
+            if (!picture)
+                picture = '';
             let helpEmbed = new discord_js_1.MessageEmbed()
                 .setTitle(`Help`)
-                .setDescription(`\n\n${embedDisplay} \n**Command Count:** ${this.client.commands.size}\n**Button Count:** ${this.client.buttons.size} \n\n __*Run a command with it's required arguments for examples*__`)
+                .setDescription(`\n\n${embedDisplay} \n**Command Count:** ${this.client.commands.size}\n**Button / Menu Count:** ${this.client.buttons.size} \n\n __*Some commands can be ran without arguments for examples*__`)
                 .setColor(this.client.config.discord.embed.color)
-                .setFooter(`${(_a = message.guild) === null || _a === void 0 ? void 0 : _a.name}`, `${(_b = message.guild) === null || _b === void 0 ? void 0 : _b.iconURL()}`)
+                .setFooter(`${(_b = message.guild) === null || _b === void 0 ? void 0 : _b.name}`, picture)
                 .setTimestamp();
             let helpMenu = new discord_js_1.MessageActionRow().addComponents(new discord_js_1.MessageSelectMenu()
                 .setCustomId("general_help")
@@ -97,7 +115,7 @@ class HelpPanelCommand extends Command_1.default {
             (_c = message.channel) === null || _c === void 0 ? void 0 : _c.send({
                 embeds: [helpEmbed],
                 components: [helpMenu],
-            });
+            }).catch();
         }
         catch (err) {
             console.log(err);

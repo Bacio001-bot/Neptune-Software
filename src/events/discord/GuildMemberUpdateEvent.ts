@@ -8,7 +8,16 @@ export default class GuildMemberUpdateEvent extends Event {
     }
 
     async execute(oldMember: GuildMember, newMember: GuildMember): Promise<void> {
-
+        let oldHasRole = oldMember.roles.cache.find(r => r === this.client.getRole(this.client.config.role.notification.role))
+        let newHasRole = newMember.roles.cache.find(r => r === this.client.getRole(this.client.config.role.notification.role))
+        if(!oldHasRole && newHasRole) {
+            if(this.client.config.role.notification.enabled) {
+                let channel = this.client.getChannel(this.client.config.role.notification.channel)
+                let message = this.placeholder.replaceWelcomeMessage(this.client.config.role.notification.message, newMember)
+                let sentMessage = await channel?.send(message).catch((err) => console.log(err))
+                await sentMessage?.react('👋')
+            } 
+        }
         if(this.client.config.logging.boost.enabled) {
             let channel = this.client.getChannel(this.client.config.logging.boost.channel)
             if(channel){          

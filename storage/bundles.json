@@ -1,36 +1,4 @@
 {
     "bundles": [
-        {
-            "bundleId": 970174,
-            "bundelName": "bundle2",
-            "facName": "test2",
-            "facLeaderName": "Bacio001",
-            "facLeaderId": "173347297181040640",
-            "bundlegiven": true
-        },
-        {
-            "bundleId": 315140,
-            "bundelName": "bundle3",
-            "facName": "test3",
-            "facLeaderName": "Bacio001",
-            "facLeaderId": "173347297181040640",
-            "bundlegiven": true
-        },
-        {
-            "bundleId": 573136,
-            "bundelName": "bundle1",
-            "facName": "Faction1",
-            "facLeaderName": "Bacio001",
-            "facLeaderId": "173347297181040640",
-            "bundlegiven": true
-        },
-        {
-            "bundleId": 999908,
-            "bundelName": "bundle2",
-            "facName": "Faction2",
-            "facLeaderName": "Wolf",
-            "facLeaderId": "194220041389080576",
-            "bundlegiven": true
-        }
     ]
 }

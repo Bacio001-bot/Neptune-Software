@@ -28,12 +28,17 @@ class EmbedCommand extends Command_1.default {
         try {
             let channel = this.client.getChannel(args[0]);
             if (channel) {
-                let embedMessage = message.content.substring(this.client.config.discord.bot.prefix.length).split(" ").toString();
-                embedMessage = args.splice(1).join(" ");
+                let embedMessage = message.content.replace(this.client.config.discord.bot.prefix, "").toString();
+                embedMessage = embedMessage.replace('embed', '');
+                embedMessage = embedMessage.replace('say', '');
+                embedMessage = embedMessage.replace(args[0], '');
                 const embed = new discord_js_1.MessageEmbed()
                     .setDescription(embedMessage)
                     .setColor(this.client.config.discord.embed.color);
                 channel.send({ embeds: [embed] });
+            }
+            else {
+                return this.messages.error("Embed Error", `Not a valid channel supplied`, message);
             }
         }
         catch (err) {

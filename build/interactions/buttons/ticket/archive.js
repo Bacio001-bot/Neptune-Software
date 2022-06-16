@@ -20,6 +20,7 @@ class TicketInteraction extends Interaction_1.default {
     }
     async execute(interaction, args) {
         try {
+            await interaction.deferUpdate();
             await interaction.channel.setParent(this.client.getChannel(this.client.config.ticket.archive_category), {
                 lockPermissions: true,
             });

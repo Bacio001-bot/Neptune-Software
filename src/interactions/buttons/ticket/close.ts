@@ -29,6 +29,8 @@ export default class TicketInteraction extends InteractionClass {
 
   async execute(interaction: any, args: string[]): Promise<void> {
     try {
+
+      
       let topicArgs = interaction.channel.topic.split(" - ");
 
       let msgs = await interaction.message.channel.messages.fetch({
@@ -98,7 +100,7 @@ export default class TicketInteraction extends InteractionClass {
 
       }
 
-      interaction.channel.delete().catch((err) =>{console.log(err)})
+      return interaction.channel.delete().catch((err) =>{console.log(err)})
     } catch (err) {
       console.log(err);
       return this.messages.error(

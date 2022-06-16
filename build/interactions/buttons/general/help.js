@@ -19,6 +19,7 @@ class TicketInteraction extends Interaction_1.default {
         });
     }
     async execute(interaction, args) {
+        await interaction.deferUpdate();
         try {
             let id = interaction.values.toString().split('_');
             id = id[1];
@@ -40,7 +41,7 @@ class TicketInteraction extends Interaction_1.default {
             });
             let embed = interaction.message.embeds[0].setDescription(helpEmbed);
             embed = embed.setTitle(`Help ${id}`);
-            await interaction.message.edit({
+            return await interaction.message.edit({
                 embeds: [embed],
             });
         }

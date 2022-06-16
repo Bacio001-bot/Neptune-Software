@@ -20,6 +20,8 @@ export default class TicketInteraction extends InteractionClass {
   async execute(interaction: any, args: string[]): Promise<void> {
     try {
 
+      await interaction.deferUpdate()
+
         let topicArgs = interaction.channel.topic.split(" - ");
 
         await interaction.channel.setParent(this.client.getCategory(topicArgs[3]), {

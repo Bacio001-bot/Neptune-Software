@@ -246,5 +246,19 @@ export default class Messages {
       .setTimestamp()
     channel.send({ embeds: [embed] }).catch((err) => {});
   }
+
+  async applicationEvent(
+    title: string,
+    description: string,
+    channel: TextChannel,
+    color: ColorResolvable
+    ): Promise<void> {
+    const embed = new MessageEmbed()
+      .setAuthor(`${title}`)
+      .setDescription(description)
+      .setColor(color)
+      .setTimestamp()
+    channel.send({ embeds: [embed] }).catch((err) => {});
+  }
   
 }

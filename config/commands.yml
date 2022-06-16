@@ -1,14 +1,53 @@
+  ###################
+  # Ticket Category #
+  ###################
 
-ticketpanel:
-  enabled: true 
+
+ticketinfo:
+  enabled: true
+  permissions: ['@everyone']
+  aliases: ['tinfo']
+
+ticketclose:
+  enabled: true
+  permissions: ['@everyone']
+  aliases: ['close', 'tclose']
+
+ticketadd:
+  enabled: true
+  permissions: ['*']
+  aliases: ['tadd']
+
+ticketremove:
+  enabled: true
+  permissions: ['*']
+  aliases: ['tremove']
+
+ticketlog:
+  enabled: true
   permissions: ["*"]
-  aliases: ["tpanel"]
+  aliases: ["tlog"]
 
-rolepanel:
-  enabled: true 
+ticketdelete:
+  enabled: true
   permissions: ["*"]
-  aliases: ["rpanel"]
+  aliases: ["tdelete"]
 
+ticketstats:
+  enabled: true
+  permissions: ['@everyone']
+  aliases: ["tstats"]
+
+
+  #######################
+  # Moderation Category #
+  #######################
+
+purge:
+  enabled: true
+  permissions: ['*']
+  aliases: []
+  
 ban:
   enabled: true 
   permissions: ["*"]
@@ -39,6 +78,11 @@ promote:
   permissions: ["*"]
   aliases: []
 
+demote:
+  enabled: true 
+  permissions: ["*"]
+  aliases: []
+
 assign:
   enabled: true 
   permissions: ["*"]
@@ -49,15 +93,36 @@ unassign:
   permissions: ["*"]
   aliases: ["takerole", "trole", "removerole", "rrole"]
 
-serverinfo:
-  enabled: true 
-  permissions: ["@everyone"]
-  aliases: ["sinfo"]
 
-verify:
+  ###################
+  # Poll Category #
+  ###################
+
+
+pollcreate:
   enabled: true
-  permissions: ["@everyone"]
-  aliases: []
+  permissions: ["*"]
+  aliases: ["createpoll", "cpoll", "pcreate"]
+
+pollend:
+  enabled: true
+  permissions: ["*"]
+  aliases: ["endpoll", "epoll", "pend"]
+
+pollvoters:
+  enabled: true
+  permissions: ["*"]
+  aliases: ["voterspoll", "vpoll", "pvoters"]
+
+pollinfo:
+  enabled: true
+  permissions: ["*"]
+  aliases: ["infopoll", "ipoll", "pinfo"]
+
+
+  ###################
+  # Bundle Category #
+  ###################
 
 bundleadd:
   enabled: true
@@ -89,10 +154,14 @@ bundletaken:
   permissions: ["*"]
   aliases: ["buntaken", "btaken", "buntake", "btake"]
 
-embed:
-  enabled: true
-  permissions: ["*", "test12345"]
-  aliases: ["say"]
+  #################
+  # Info Category #
+  #################
+
+serverinfo:
+  enabled: true 
+  permissions: ["@everyone"]
+  aliases: ["sinfo"]
 
 avatar:
   enabled: true
@@ -113,55 +182,50 @@ invitetop:
   enabled: true
   permissions: ["@everyone"]
   aliases: []
-
-test:
-  enabled: true
-  permissions: ["@everyone"]
-  aliases: []
-
-ticketlog:
-  enabled: true
-  permissions: ["*"]
-  aliases: ["tlog"]
-
-ticketdelete:
-  enabled: true
-  permissions: ["*"]
-  aliases: ["tdelete"]
-
-ticketstats:
-  enabled: true
-  permissions: ['@everyone']
-  aliases: ["tstats"]
-
+  
 messagesstats:
   enabled: true
   permissions: ['@everyone']
   aliases: ['mstats']
 
+  ###################
+  # Utils Category #
+  ###################
+
+
+ticketpanel:
+  enabled: true 
+  permissions: ["*"]
+  aliases: ["tpanel"]
+
+applicationpanel:
+  enabled: true 
+  permissions: ["*"]
+  aliases: ["apanel"]
+
+rolepanel:
+  enabled: true 
+  permissions: ["*"]
+  aliases: ["rpanel"]
+
+verify:
+  enabled: true
+  permissions: ["@everyone"]
+  aliases: []
+
+embed:
+  enabled: true
+  permissions: ["*", "test12345"]
+  aliases: ['say']
+
+editembed:
+  enabled: true
+  permissions: ["*", "test12345"]
+  aliases: ['editsay']
+
 suggest:
   enabled: true
   permissions: ['@everyone']
-  aliases: []
-
-ticketclose:
-  enabled: true
-  permissions: ['@everyone']
-  aliases: ['close', 'tclose']
-
-ticketadd:
-  enabled: true
-  permissions: ['*']
-  aliases: ['tadd']
-
-ticketremove:
-  enabled: true
-  permissions: ['*']
-  aliases: ['tremove']
-
-purge:
-  enabled: true
-  permissions: ['*']
   aliases: []
 
 helppanel:
@@ -169,22 +233,70 @@ helppanel:
   permissions: ["@everyone"]
   aliases: ["help"]
 
-pollcreate:
+afk:
   enabled: true
-  permissions: ["*"]
-  aliases: ["createpoll", "cpoll", "pcreate"]
+  permissions: ["@everyone"]
+  aliases: ["gone"]
 
-pollend:
-  enabled: true
-  permissions: ["*"]
-  aliases: ["endpoll", "epoll", "pend"]
+  #####################
+  # Giveaway Category #
+  #####################
 
-pollvoters:
-  enabled: true
-  permissions: ["*"]
-  aliases: ["voterspoll", "vpoll", "pvoters"]
 
-pollinfo:
+giveawaycreate:
   enabled: true
   permissions: ["*"]
-  aliases: ["infopoll", "ipoll", "pinfo"]
+  aliases: ["creategiveaway", "cgiveaway", "gcreate"]
+
+giveawayend:
+  enabled: true
+  permissions: ["*"]
+  aliases: ["endgiveaway", "egiveaway", "gend"]
+
+giveawayinfo:
+  enabled: true
+  permissions: ["*"]
+  aliases: ["infogiveaway", "igiveaway", "ginfo"]
+
+giveawayentries:
+  enabled: true
+  permissions: ["*"]
+  aliases: ["gentries", "engiveaway", "entriesgiveaway"]
+
+giveawayreroll:
+  enabled: true
+  permissions: ["*"]
+  aliases: ["rerollgiveaway", "rgiveaway", "greroll"]
+
+  #####################
+  # Fun Category #
+  #####################
+
+minesweeper:
+  enabled: true
+  permissions: ["@everyone"]
+  aliases: []
+
+tictactoe:
+  enabled: true
+  permissions: ["@everyone"]
+  aliases: []
+
+rockpaperscissors:
+  enabled: true
+  permissions: ["@everyone"]
+  aliases: ["rps"]
+
+  #####################
+  # Level Category #
+  #####################
+
+level:
+  enabled: true
+  permissions: ["@everyone"]
+  aliases: []
+  
+leveltop:
+  enabled: true
+  permissions: ["@everyone"]
+  aliases: []

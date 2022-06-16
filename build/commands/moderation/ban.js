@@ -9,14 +9,14 @@ class BanCommand extends Command_1.default {
         super(client, {
             name: "ban",
             description: "Ban Users",
-            arguments: "<user>",
+            arguments: "<user> [reason]",
             example: "/ban Bacio001",
             category: "moderation",
             type: "discord",
             deleteMessage: true,
             cooldown: true,
             requirements: {
-                args: { min: 1, max: 2 },
+                args: { min: 1, max: 1000 },
                 userPermissions: ["BAN_MEMBERS"],
                 clientPermissions: ["BAN_MEMBERS"],
                 guildOnly: true,

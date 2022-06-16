@@ -20,6 +20,8 @@ export default class TicketInteraction extends InteractionClass {
   async execute(interaction: any, args: string[]): Promise<void> {
     try {
           
+      await interaction.deferUpdate()
+
         interaction.guild.roles.cache.forEach( async(role) => {
             if (!role.permissions.has('ADMINISTRATOR')) await interaction.channel.permissionOverwrites.edit(role, {
                 VIEW_CHANNEL: false,

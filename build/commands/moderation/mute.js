@@ -67,6 +67,9 @@ class MuteCommand extends Command_1.default {
                     return this.messages.error("Mute Error", `Supply a valid time`, message);
                 }
                 this.messages.success("User Muted", `\`${user.user.tag}\` has been muted by \`${message.author.tag}\`\n\n **Time:**\`${time}\`\n\n **Reason:** \n \`\`\`${reason}\`\`\``, message);
+                user.send(`You have been muted by \`${message.author.tag}\`\n\n **Time:**\`${time}\`\n\n **Reason:** \n \`\`\`${reason}\`\`\``).catch((err) => {
+                    return this.messages.error("User Mute Error", `Couldn't notify the user of there mute reason`, message);
+                });
                 try {
                     user.roles.add(mutedRole);
                 }

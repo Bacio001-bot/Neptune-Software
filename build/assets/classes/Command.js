@@ -8,6 +8,7 @@ class Command {
         this.userdb = this.client.userdb;
         this.bundledb = this.client.bundledb;
         this.polldb = this.client.polldb;
+        this.giveawaydb = this.client.giveawaydb;
         this.ranMessage = "";
         this.username = "";
         this.help = {

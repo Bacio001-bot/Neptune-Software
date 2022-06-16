@@ -51,7 +51,7 @@ class TicketPanelCommand extends Command_1.default {
                 .setTitle(`Ticket System`)
                 .setDescription(`> Select one of the options below to create a ticket`)
                 .setColor(this.client.config.discord.embed.color)
-                .setFooter(`${(_a = message.guild) === null || _a === void 0 ? void 0 : _a.name}`, `${(_b = message.guild) === null || _b === void 0 ? void 0 : _b.iconURL()}`)
+                .setFooter(`${(_a = message.guild) === null || _a === void 0 ? void 0 : _a.name}`, `${(_b = message.guild) === null || _b === void 0 ? void 0 : _b.iconURL()}` || ' ')
                 .setTimestamp();
             ticketchannel === null || ticketchannel === void 0 ? void 0 : ticketchannel.send({
                 embeds: [tPanelEmbed],

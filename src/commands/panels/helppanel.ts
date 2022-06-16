@@ -37,8 +37,11 @@ export default class HelpPanelCommand extends Command {
         "utils",
         "ticket",
         "poll",
+        "giveaway",
         "suggestion",
+        "fun",
         "bundle",
+        "level",
       ];
       let embedDisplay: string = "";
       let menuCategories: any[] = [];
@@ -53,6 +56,11 @@ export default class HelpPanelCommand extends Command {
         if (cat == "bundle") {
           emoji = "📦"
           description = "Faction and skyblock bundles"
+        }
+
+        if (cat == "level") {
+          emoji = "⏫"
+          description = "Level commands"
         }
         if (cat == "moderation") {
           emoji = "⚙️"
@@ -82,6 +90,14 @@ export default class HelpPanelCommand extends Command {
           emoji = "📝"
           description = "Poll commands"
         }
+        if (cat == "giveaway") {
+          emoji = "🎉"
+          description = "Giveaway commands"
+        }
+        if (cat == "fun") {
+          emoji = "🎲"
+          description = "Fun commands"
+        }
 
         embedDisplay = embedDisplay += `> \u200B**❯ \u200B ${emoji} \u200B  ${catHolder} »** ${description}\n`;
 
@@ -95,14 +111,17 @@ export default class HelpPanelCommand extends Command {
 
       });
 
+      let picture = message.author?.displayAvatarURL()
+
+      if(!picture) picture = ''
 
       let helpEmbed = new MessageEmbed()
         .setTitle(`Help`)
         .setDescription(
-          `\n\n${embedDisplay} \n**Command Count:** ${this.client.commands.size}\n**Button Count:** ${this.client.buttons.size} \n\n __*Run a command with it's required arguments for examples*__`
+          `\n\n${embedDisplay} \n**Command Count:** ${this.client.commands.size}\n**Button / Menu Count:** ${this.client.buttons.size} \n\n __*Some commands can be ran without arguments for examples*__`
         )
         .setColor(this.client.config.discord.embed.color)
-        .setFooter(`${message.guild?.name}`, `${message.guild?.iconURL()}`)
+        .setFooter(`${message.guild?.name}`, picture)
         .setTimestamp();
 
       let helpMenu = new MessageActionRow().addComponents(
@@ -115,7 +134,7 @@ export default class HelpPanelCommand extends Command {
       message.channel?.send({
         embeds: [helpEmbed],
         components: [helpMenu],
-      });
+      }).catch()
     } catch (err) {
       console.log(err);
       return this.messages.error(

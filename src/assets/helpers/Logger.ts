@@ -9,6 +9,7 @@ class Logger {
             default: prefix,
             log: `${chalk.gray("[")}${chalk.yellow("LOG")}${chalk.gray("]")}`,
             command: `${chalk.gray("[")}${chalk.blueBright("COMMANDS")}${chalk.gray("]")}`,
+            license: `${chalk.gray("[")}${chalk.redBright("❌")}${chalk.gray("]")}`,
             event: `${chalk.gray("[")}${chalk.blueBright("EVENTS")}${chalk.gray("]")}`,
             discord: `${chalk.gray("[")}${chalk.redBright("DISCORD")}${chalk.gray("]")}`,
             minecraft: `${chalk.gray("[")}${chalk.greenBright("MINECRAFT")}${chalk.gray("]")}`,
@@ -27,6 +28,8 @@ class Logger {
 
     logEvent(log: string): void { return this.log(`${this.prefixes.event} ${log}`); }
 
+    logLicense(log: string): void { return this.log(`${this.prefixes.license} ${log}`); }
+
     logDiscord(log: string): void { return this.log(`${this.prefixes.discord} ${log}`); }
 
     logMinecraft(log: string): void { return this.log(`${this.prefixes.minecraft} ${log}`); }
@@ -38,17 +41,17 @@ class Logger {
     logo(): void {
         console.log(
 
-            chalk.black ("-------------------------------------------------------------------------------------------------------------------\n"),
-            chalk.blueBright(" █████╗  ██████╗███████╗  "),chalk.white ("   ███████╗███████╗██████╗ ██╗   ██╗██╗ ██████╗███████╗███████╗\n"),
-            chalk.blueBright("██╔══██╗██╔════╝██╔════╝  "),chalk.white ("   ██╔════╝██╔════╝██╔══██╗██║   ██║██║██╔════╝██╔════╝██╔════╝\n"),
-            chalk.blueBright("███████║██║     █████╗    "),chalk.white ("   ███████╗█████╗  ██████╔╝██║   ██║██║██║     █████╗  ███████╗\n"),
-            chalk.blueBright("██╔══██║██║     ██╔══╝    "),chalk.white ("   ╚════██║██╔══╝  ██╔══██╗╚██╗ ██╔╝██║██║     ██╔══╝  ╚════██║\n"),
-            chalk.blueBright("██║  ██║╚██████╗███████╗  "),chalk.white ("   ███████║███████╗██║  ██║ ╚████╔╝ ██║╚██████╗███████╗███████║\n"),
-            chalk.blueBright("╚═╝  ╚═╝ ╚═════╝╚══════╝  "),chalk.white ("   ╚══════╝╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚═╝ ╚═════╝╚══════╝╚══════╝\n"),
-            chalk.gray("\n[»] "),chalk.bold("Ace Services Server Bot V1"),
+            chalk.black ("--------------------------------------------------------------------------------------------------------------------------------------------------\n"),
+            chalk.blue("███╗   ██╗███████╗██████╗ ████████╗██╗   ██╗███╗   ██╗███████╗"),chalk.blueBright ("   ███████╗███████╗██████╗ ██╗   ██╗██╗ ██████╗███████╗███████╗\n"),
+            chalk.blue("████╗  ██║██╔════╝██╔══██╗╚══██╔══╝██║   ██║████╗  ██║██╔════╝"),chalk.blueBright ("   ██╔════╝██╔════╝██╔══██╗██║   ██║██║██╔════╝██╔════╝██╔════╝\n"),
+            chalk.blue("██╔██╗ ██║█████╗  ██████╔╝   ██║   ██║   ██║██╔██╗ ██║█████╗ "),chalk.blueBright ("    ███████╗█████╗  ██████╔╝██║   ██║██║██║     █████╗  ███████╗\n"),
+            chalk.blue("██║╚██╗██║██╔══╝  ██╔═══╝    ██║   ██║   ██║██║╚██╗██║██╔══╝ "),chalk.blueBright ("    ╚════██║██╔══╝  ██╔══██╗╚██╗ ██╔╝██║██║     ██╔══╝  ╚════██║\n"),
+            chalk.blue("██║ ╚████║███████╗██║        ██║   ╚██████╔╝██║ ╚████║███████╗"),chalk.blueBright ("   ███████║███████╗██║  ██║ ╚████╔╝ ██║╚██████╗███████╗███████║\n"),
+            chalk.blue("╚═╝  ╚═══╝╚══════╝╚═╝        ╚═╝    ╚═════╝ ╚═╝  ╚═══╝╚══════╝"),chalk.blueBright ("   ╚══════╝╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚═╝ ╚═════╝╚══════╝╚══════╝\n"),
+            chalk.gray("\n[»] "),chalk.bold("Neptune Services Server Bot V1"),
             chalk.gray("\n[»] "),chalk.bold(`Config contents validated`),
             chalk.gray("\n[»] "),chalk.bold("Developer: Bacio"),
-            chalk.gray("\n[»] "),chalk.bold("https://discord.gg/Rgkgmtvzv5\n"),
+            chalk.gray("\n[»] "),chalk.bold("https://discord.gg/Y8djTwsj88\n"),
           
           );
     }
@@ -60,6 +63,7 @@ interface Logger {
     prefixes: {
         default: string;
         log: string;
+        license: string;
         command: string;
         event: string;
         discord: string;

@@ -23,7 +23,8 @@ import SettingsDatabase from "../databases/Settings";
 import BundlesDatabase from "../databases/Bundels";
 import Placeholder from "../helpers/Placeholder";
 import PollsDatabase from "../databases/Poll";
-
+import GiveawaysDatabase from "../databases/Giveaway";
+import axios from "axios"
 
 class CustomClient extends Client {
     constructor() {
@@ -56,6 +57,7 @@ class CustomClient extends Client {
         this.logger = new Logger(this);
         this.messages = new Messages(this);
 
+        this.giveawaydb = new GiveawaysDatabase()
         this.polldb = new PollsDatabase()
         this.userdb = new UsersDatabase();
         this.bundledb = new BundlesDatabase();
@@ -83,7 +85,6 @@ class CustomClient extends Client {
                 
                 fs.readdir(`${process.cwd()}/build/commands/${cat}`, async (err, files) => {
                     if (err) reject(err);
-
                     files.forEach(async f => {
                         if (!(f.split(".").pop() === "js") || f.endsWith("d.ts")) return;
                         const settings: Command = new (await import(`${process.cwd()}/build/commands/${cat}/${f}`)).default(this);
@@ -206,14 +207,19 @@ class CustomClient extends Client {
     } 
 
     getChannel(find: any): TextChannel | ThreadChannel | null {
-        const guild = this.guilds.cache.get(this.config.discord.bot.serverID);
-        if(find.includes('<#') && find.includes('>')) {
-            find = find.replace('<#', '')
-            find = find.replace('>', '')
+        try {
+            const guild = this.guilds.cache.get(this.config.discord.bot.serverID);
+            if(find.includes('<#') && find.includes('>')) {
+                find = find.replace('<#', '')
+                find = find.replace('>', '')
+            }
+            let ch = guild?.channels.cache.find(ch => ch.name === find) || this.channels.cache.get(find);
+            if (ch) return (ch as TextChannel);
+            return null;
+        } catch(err) {
+            console.log(err)
+            return null;
         }
-        let ch = guild?.channels.cache.find(ch => ch.name === find) || this.channels.cache.get(find);
-        if (ch) return (ch as TextChannel);
-        return null;
     } 
 
     getRole(find: any): Role | null {
@@ -249,11 +255,17 @@ class CustomClient extends Client {
         return null;
     }
 
-    start(): void {
-        this.loadCommands();
-        this.loadEvents();
-        this.loadInteractions();
-        this.login(this.token);
+    async start(): Promise<void> {
+
+        try {
+            this.loadCommands();
+            this.loadEvents();
+            this.loadInteractions();
+            this.login(this.token);
+        } catch (err:any) {
+            this.logger.logLicense(err.response.data)
+        }
+    
     }
 }
 
@@ -280,6 +292,7 @@ interface CustomClient {
     cmds: any;
     bundledb: BundlesDatabase;
     polldb: PollsDatabase;
+    giveawaydb: GiveawaysDatabase;
 
 }
 

@@ -21,6 +21,7 @@ class TicketInteraction extends Interaction_1.default {
     async execute(interaction, args) {
         var _a, _b;
         try {
+            await interaction.deferUpdate();
             let topicArgs = interaction.channel.topic.split(" - ");
             if (((_b = (_a = interaction.channel) === null || _a === void 0 ? void 0 : _a.parent) === null || _b === void 0 ? void 0 : _b.name) == this.client.config.ticket.archive_category) {
                 await interaction.channel.setParent(this.client.getCategory(topicArgs[3]));

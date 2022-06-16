@@ -26,6 +26,9 @@ export default class TicketInteraction extends InteractionClass {
 
   async execute(interaction: any, args: string[]): Promise<void> {
     try {
+
+      await interaction.deferUpdate()
+
       let topicArgs = interaction.channel.topic.split(" - ");
       let user = this.client.getUser(topicArgs[0]);
 
@@ -49,11 +52,11 @@ export default class TicketInteraction extends InteractionClass {
 
         let channel = this.client.getChannel(this.client.config.logging.ticket.channel)
 
-        if (this.client.config.logging.ticket.enabled) this.messages.ticketEvent(`Ticket Verbed`,
+        if (this.client.config.logging.ticket.enabled) return this.messages.ticketEvent(`Ticket Verbed`,
         `**\`${interaction.user.tag}\` has verbed the ticket \`#${channelTopicArgs[1]}\`**`,
         channel as TextChannel,
         this.client.config.discord.embed.color)
-        
+        interaction.deferUpdate()
       } else {
         return this.messages.error(
           "Ticket Error",

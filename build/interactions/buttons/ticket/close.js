@@ -64,7 +64,7 @@ class TicketInteraction extends Interaction_1.default {
                 this.userdb.updateUser(user === null || user === void 0 ? void 0 : user.id, "discordID", "openTickets", result.tickets.openTickets - 1);
                 this.userdb.updateUser(user === null || user === void 0 ? void 0 : user.id, "discordID", "closedTickets", result.tickets.closedTickets + 1);
             }
-            interaction.channel.delete().catch((err) => { console.log(err); });
+            return interaction.channel.delete().catch((err) => { console.log(err); });
         }
         catch (err) {
             console.log(err);

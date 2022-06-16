@@ -19,6 +19,9 @@ export default class SuggestionInteraction extends InteractionClass {
 
   async execute(interaction: any, args: string[]): Promise<void> {
     try {
+
+      await interaction.deferUpdate()
+
       let embed = interaction.message.embeds[0].setColor("#00ff00");
       await interaction.message.edit({
           embeds: [embed],

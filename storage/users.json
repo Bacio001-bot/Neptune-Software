@@ -3,108 +3,61 @@
         {
             "discordID": "173347297181040640",
             "discordName": "Bacio001",
-            "verifyCode": "NULL",
-            "tickets": {
-                "openTickets": 12,
-                "closedTickets": 5
-            },
-            "messages": {
-                "everyone": 1,
-                "replies": 9,
-                "tts": 1,
-                "total": 535
-            }
-        },
-        {
-            "discordID": "681637554889555976",
-            "discordName": "!IGNLuuk",
-            "verifyCode": "NULL",
+            "verifyCode": "",
+            "xp": 114,
             "tickets": {
                 "openTickets": 0,
                 "closedTickets": 0
+            },
+            "messages": {
+                "everyone": 0,
+                "replies": 0,
+                "tts": 0,
+                "total": 37
+            },
+            "voiceTime": 0
+        },
+        {
+            "discordID": "686350213845090358",
+            "discordName": "BacioTest",
+            "verifyCode": "",
+            "xp": 24,
+            "tickets": {
+                "openTickets": 0,
+                "closedTickets": 0
+            },
+            "applications": {
+                "openApplications": 0,
+                "closedApplications": 0
+            },
+            "messages": {
+                "everyone": 0,
+                "replies": 0,
+                "tts": 0,
+                "total": 7
+            },
+            "voiceTime": 0
+        },
+        {
+            "discordID": "291949033973350401",
+            "discordName": "スズモグ",
+            "verifyCode": "",
+            "xp": 27,
+            "tickets": {
+                "openTickets": 0,
+                "closedTickets": 0
+            },
+            "applications": {
+                "openApplications": 0,
+                "closedApplications": 0
             },
             "messages": {
                 "everyone": 0,
                 "replies": 2,
                 "tts": 0,
-                "total": 22
-            }
-        },
-        {
-            "discordID": "218685852367192075",
-            "discordName": "Yui The Pink Kitty",
-            "verifyCode": null,
-            "tickets": {
-                "openTickets": 0,
-                "closedTickets": 0
-            },
-            "messages": {
-                "everyone": 0,
-                "replies": 0,
-                "tts": 0,
-                "total": 0
-            }
-        },
-        {
-            "discordID": "324596012955992065",
-            "discordName": "jack.",
-            "verifyCode": null,
-            "tickets": {
-                "openTickets": 0,
-                "closedTickets": 0
-            },
-            "messages": {
-                "everyone": 0,
-                "replies": 0,
-                "tts": 0,
-                "total": 6
-            }
-        },
-        {
-            "discordID": "159400035946201088",
-            "discordTag": "! ollie#3190",
-            "discordName": "! ollie",
-            "verifyCode": "102896",
-            "tickets": {
-                "openTickets": 0,
-                "closedTickets": 0
-            },
-            "messages": {
-                "everyone": 0,
-                "replies": 0,
-                "tts": 0,
-                "total": 1
-            }
-        },
-        {
-            "discordID": "686350213845090358",
-            "discordName": "BacioTest",
-            "verifyCode": "378841",
-            "tickets": {
-                "openTickets": 0,
-                "closedTickets": 0
-            },
-            "messages": {
-                "everyone": 0,
-                "replies": 0,
-                "tts": 0,
                 "total": 8
-            }
-        },
-        {
-            "discordID": "799619366370672661",
-            "discordName": "NJWF1",
-            "verifyCode": "NULL",
-            "tickets": {
-                "openTickets": 0,
-                "closedTickets": 0
             },
-            "messages": {
-                "everyone": 0,
-                "replies": 1,
-                "tts": 0,
-                "total": 4
-            }
+            "voiceTime": 0
         }
     ]
 }

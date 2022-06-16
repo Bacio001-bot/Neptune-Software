@@ -20,6 +20,7 @@ class SuggestionInteraction extends Interaction_1.default {
     }
     async execute(interaction, args) {
         try {
+            await interaction.deferUpdate();
             let embed = interaction.message.embeds[0].setColor("#ff0000");
             await interaction.message.edit({
                 embeds: [embed],

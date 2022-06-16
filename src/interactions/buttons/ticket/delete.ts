@@ -30,8 +30,6 @@ export default class TicketInteraction extends InteractionClass {
   async execute(interaction: any, args: string[]): Promise<void> {
     try {
 
-        interaction.channel.delete()
-
         let topicArgs = interaction.channel.topic.split(" - ");
         let channel = this.client.getChannel(this.client.config.logging.ticket.channel)
 
@@ -39,6 +37,8 @@ export default class TicketInteraction extends InteractionClass {
         `**\`${interaction.user.tag}\` has deleted the ticket \`#${topicArgs[1]}\`**`,
         channel as TextChannel,
         "RED")
+
+        await interaction.channel.delete()
 
     } catch (err) {
       console.log(err);

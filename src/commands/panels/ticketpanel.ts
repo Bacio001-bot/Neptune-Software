@@ -78,7 +78,7 @@ export default class TicketPanelCommand extends Command {
           `> Select one of the options below to create a ticket`
         )
         .setColor(this.client.config.discord.embed.color)
-        .setFooter(`${message.guild?.name}`, `${message.guild?.iconURL()}`)
+        .setFooter(`${message.guild?.name}`, `${message.guild?.iconURL()}` || ' ')
         .setTimestamp()
 
       ticketchannel?.send({

@@ -31,6 +31,7 @@ const Logger_1 = __importDefault(require("../helpers/Logger"));
 const Users_1 = __importDefault(require("../databases/Users"));
 const Bundels_1 = __importDefault(require("../databases/Bundels"));
 const Poll_1 = __importDefault(require("../databases/Poll"));
+const Giveaway_1 = __importDefault(require("../databases/Giveaway"));
 class CustomClient extends discord_js_1.Client {
     constructor() {
         super({
@@ -58,6 +59,7 @@ class CustomClient extends discord_js_1.Client {
         this.menus = new discord_js_1.Collection();
         this.logger = new Logger_1.default(this);
         this.messages = new Messages_1.default(this);
+        this.giveawaydb = new Giveaway_1.default();
         this.polldb = new Poll_1.default();
         this.userdb = new Users_1.default();
         this.bundledb = new Bundels_1.default();
@@ -197,15 +199,21 @@ class CustomClient extends discord_js_1.Client {
         return null;
     }
     getChannel(find) {
-        const guild = this.guilds.cache.get(this.config.discord.bot.serverID);
-        if (find.includes('<#') && find.includes('>')) {
-            find = find.replace('<#', '');
-            find = find.replace('>', '');
+        try {
+            const guild = this.guilds.cache.get(this.config.discord.bot.serverID);
+            if (find.includes('<#') && find.includes('>')) {
+                find = find.replace('<#', '');
+                find = find.replace('>', '');
+            }
+            let ch = (guild === null || guild === void 0 ? void 0 : guild.channels.cache.find(ch => ch.name === find)) || this.channels.cache.get(find);
+            if (ch)
+                return ch;
+            return null;
         }
-        let ch = (guild === null || guild === void 0 ? void 0 : guild.channels.cache.find(ch => ch.name === find)) || this.channels.cache.get(find);
-        if (ch)
-            return ch;
-        return null;
+        catch (err) {
+            console.log(err);
+            return null;
+        }
     }
     getRole(find) {
         const guild = this.getGuild();
@@ -233,11 +241,13 @@ class CustomClient extends discord_js_1.Client {
         }
         return null;
     }
-    start() {
+    async start() {
+        
         this.loadCommands();
         this.loadEvents();
         this.loadInteractions();
         this.login(this.token);
+
     }
 }
 exports.default = CustomClient;

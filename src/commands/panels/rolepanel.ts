@@ -82,7 +82,7 @@ import {
             `**Select one of the roles below to get it**\n${roleShowcase}\n *Remove the role by reselecting it*`
           )
           .setColor(this.client.config.discord.embed.color)
-          .setFooter(`${message.guild?.name}`, `${message.guild?.iconURL()}`)
+          .setFooter(`${message.guild?.name}`)
           .setTimestamp()
   
           rolechannel?.send({

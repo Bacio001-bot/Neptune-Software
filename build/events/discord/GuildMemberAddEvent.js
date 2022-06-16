@@ -18,7 +18,7 @@ class GuildMemberAddEvent extends Event_1.default {
             }
         }
         if (this.client.config.role.auto.enabled) {
-            let role = this.client.getRole(this.client.config.role.auto.name);
+            let role = this.client.getRole(this.client.config.role.auto.role);
             if (role)
                 member.roles.add(role);
         }
@@ -54,7 +54,8 @@ class GuildMemberAddEvent extends Event_1.default {
         }
         let code = Math.floor(100000 + Math.random() * 900000).toString();
         this.userdb.addUser(member, code);
-        this.messages.private("Verification System", `To verify send \`${this.client.config.discord.bot.prefix}verify ${code}\` in \`${member.guild.name}\``, member);
+        if (this.client.config.member_join.verify.enabled)
+            this.messages.private("Verification System", `To verify send \`${this.client.config.discord.bot.prefix}verify ${code}\` in \`${member.guild.name}\``, member);
     }
 }
 exports.default = GuildMemberAddEvent;

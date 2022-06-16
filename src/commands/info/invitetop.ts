@@ -76,7 +76,7 @@ export default class AvatarCommand extends Command {
           i.deferUpdate()
           if(i.customId === "back") {
               currentPage -= 1;
-              usersEmbed.author = `Invite leaderboard - Page: ${currentPage}/${maxPage}` as MessageEmbedAuthor , message.guild?.iconURL() || ''
+              usersEmbed.author = `Invite leaderboard - Page: ${currentPage}/${maxPage}` as any , message.guild?.iconURL() || ''
               usersEmbed.description = getDescription(currentPage)
               await msg.edit({
                   embeds: [usersEmbed],
@@ -84,7 +84,7 @@ export default class AvatarCommand extends Command {
               });
           } else {
               currentPage += 1;
-              usersEmbed.author = `Invite leaderboard - Page: ${currentPage}/${maxPage}` as MessageEmbedAuthor , message.guild?.iconURL() || ''
+              usersEmbed.author = `Invite leaderboard - Page: ${currentPage}/${maxPage}` as any , message.guild?.iconURL() || ''
               usersEmbed.description = getDescription(currentPage)
               await msg.edit({
                   embeds: [usersEmbed],

@@ -29,6 +29,9 @@ export default class TicketInteraction extends InteractionClass {
 
   async execute(interaction: any, args: string[]): Promise<void> {
     try {
+
+      await interaction.deferUpdate()
+
       await (interaction.channel as any).setParent(
         (interaction.channel as any).parent,
         {

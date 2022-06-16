@@ -7,6 +7,7 @@ import ICommand from "../interfaces/ICommand";
 import SettingsDatabase from "../databases/Settings";
 import BundlesDatabase from "../databases/Bundels";
 import PollsDatabase from "../databases/Poll";
+import GiveawaysDatabase from "../databases/Giveaway";
  
 class Command {
 
@@ -18,6 +19,7 @@ class Command {
         this.userdb = this.client.userdb;
         this.bundledb = this.client.bundledb;
         this.polldb = this.client.polldb
+        this.giveawaydb = this.client.giveawaydb
 
         this.ranMessage = "";
         this.username = "";
@@ -61,6 +63,7 @@ interface Command {
     cooldown: Set<string>;
     bundledb: BundlesDatabase;
     polldb: PollsDatabase;
+    giveawaydb: GiveawaysDatabase;
     
 }
 

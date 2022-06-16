@@ -28,6 +28,10 @@ import {
     }
   
     async execute(interaction: any, args: string[]): Promise<void> {
+
+      await interaction.deferUpdate()
+
+      
       try {
         let id = interaction.values.toString().split('_')
         id = id[1]
@@ -47,10 +51,10 @@ import {
             }
           }
         })
-
+        
       let embed = interaction.message.embeds[0].setDescription(helpEmbed)
       embed = embed.setTitle(`Help ${id}`)
-      await interaction.message.edit({
+      return await interaction.message.edit({
         embeds: [embed],
       });      
     } catch (err) {

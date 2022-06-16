@@ -19,9 +19,14 @@ class UsersDatabase extends Database_1.default {
                 discordID: user.id,
                 discordName: user.user.username,
                 verifyCode: verifycode,
+                xp: 0,
                 tickets: {
                     openTickets: 0,
                     closedTickets: 0,
+                },
+                applications: {
+                    openApplications: 0,
+                    closedApplications: 0,
                 },
                 messages: {
                     everyone: 0,
@@ -29,6 +34,7 @@ class UsersDatabase extends Database_1.default {
                     tts: 0,
                     total: 0,
                 },
+                voiceTime: 0,
             };
             this.users.push("/users[]", userData, true);
             res(true);
@@ -58,10 +64,11 @@ class UsersDatabase extends Database_1.default {
     }
     updateUser(findBy, property, field, value) {
         try {
+            const insertable = ["xp", "voiceTime"];
             const user = this.getUser(findBy, property);
             if (!user)
                 return;
-            if (user[field] != undefined) {
+            if (user[field] != undefined || insertable.includes(field)) {
                 user[field] = value;
                 this.users.save();
                 return;

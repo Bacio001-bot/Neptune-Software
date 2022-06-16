@@ -117,6 +117,14 @@ export default class MuteCommand extends Command {
           message
         );
 
+        user.send(`You have been muted by \`${message.author.tag}\`\n\n **Time:**\`${time}\`\n\n **Reason:** \n \`\`\`${reason}\`\`\``).catch((err) => {
+          return this.messages.error(
+            "User Mute Error",
+            `Couldn't notify the user of there mute reason`,
+            message
+          );
+         })
+
         try {
           user.roles.add(mutedRole);
         } catch (err) {
